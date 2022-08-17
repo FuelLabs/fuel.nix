@@ -180,6 +180,9 @@
       fuel-dev = pkgs.mkShell {
         name = "fuel-dev";
         inputsFrom = pkgs.lib.attrValues fuelpkgs;
+        buildInputs = [ pkgs.grpc-tools ];
+        inherit (fuelpkgs.fuel-core) LIBCLANG_PATH;
+        PROTOC = "${pkgs.grpc-tools}/bin/protoc";
       };
       default = fuel-dev;
     };
