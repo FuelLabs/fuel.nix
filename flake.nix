@@ -177,12 +177,24 @@
     };
 
     mkDevShells = pkgs: rust-platform: fuelpkgs: rec {
-      fuel-dev = pkgs.mkShell {
-        name = "fuel-dev";
-        inputsFrom = pkgs.lib.attrValues fuelpkgs;
-        buildInputs = [ pkgs.grpc-tools ];
+      fuel-core-dev = pkgs.mkShell {
+        name = "fuel-core-dev";
+        inputsFrom = with fuelpkgs; [fuel-core fuel-gql-cli];
+        buildInputs = [pkgs.grpc-tools];
         inherit (fuelpkgs.fuel-core) LIBCLANG_PATH;
         PROTOC = "${pkgs.grpc-tools}/bin/protoc";
+      };
+
+      sway-dev = pkgs.mkShell {
+        name = "sway-dev";
+        inputsFrom = with fuelpkgs; [forc forc-explore forc-fmt forc-lsp];
+        buildInputs = with fuelpkgs; [fuel-core fuel-gql-cli];
+      };
+
+      fuel-dev = pkgs.mkShell {
+        name = "fuel-dev";
+        inputsFrom = [fuel-core-dev sway-dev];
+        inherit (fuel-core-dev) LIBCLANG_PATH PROTOC;
       };
       default = fuel-dev;
     };
