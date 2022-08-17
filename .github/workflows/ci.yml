@@ -7,8 +7,16 @@ on:
       - main
 
 jobs:
-  # Checks the nix formatting.
+  cancel-previous-runs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
   nix-fmt-check:
+    needs: cancel-previous-runs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.4.0
@@ -17,8 +25,8 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - run: nix fmt -- --check ./
 
-  # Check the fuel flake.
   nix-flake-check:
+    needs: cancel-previous-runs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.4.0
@@ -27,8 +35,8 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - run: nix flake check --no-update-lock-file
 
-  # Build fuel-core
   nix-build-fuel-core:
+    needs: cancel-previous-runs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.4.0
@@ -37,8 +45,8 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - run: nix build --no-update-lock-file .#fuel-core
 
-  # Build fuel-gql-cli
   nix-build-fuel-gql-cli:
+    needs: cancel-previous-runs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.4.0
@@ -47,8 +55,8 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - run: nix build --no-update-lock-file .#fuel-gql-cli
 
-  # Build forc
   nix-build-forc:
+    needs: cancel-previous-runs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2.4.0
