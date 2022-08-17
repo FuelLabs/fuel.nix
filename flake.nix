@@ -55,7 +55,6 @@
         LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
         meta = {
           homepage = "https://github.com/fuellabs/fuel-core";
-          license = pkgs.lib.licenses.bsl11;
         };
       };
 
@@ -71,7 +70,6 @@
         ];
         meta = {
           homepage = "https://github.com/fuellabs/fuel-core";
-          license = pkgs.lib.licenses.bsl11;
         };
       };
 
