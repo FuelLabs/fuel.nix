@@ -2,11 +2,11 @@
   "nodes": {
     "flake-utils": {
       "locked": {
-        "lastModified": 1656065134,
-        "narHash": "sha256-oc6E6ByIw3oJaIyc67maaFcnjYOz1mMcOtHxbEf9NwQ=",
+        "lastModified": 1656928814,
+        "narHash": "sha256-RIFfgBuKz6Hp89yRr7+NR5tzIAbn52h8vT6vXkYjZoM=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "bee6a7250dd1b01844a2de7e02e4df7d8a0a206c",
+        "rev": "7e2a3b3dfd9af950a856d66b0a7d01e3c18aa249",
         "type": "github"
       },
       "original": {
@@ -18,11 +18,11 @@
     "fuel-core-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1657747305,
-        "narHash": "sha256-FjUha5nDAh6LnstGK6IYtKTztglygh7jxqZ+fJbKC7A=",
+        "lastModified": 1660598149,
+        "narHash": "sha256-NS6346ftPKKM4Jm1+x/QIdN6+iQca1y5+VI65yB6sWA=",
         "owner": "fuellabs",
         "repo": "fuel-core",
-        "rev": "96fc1500fb2e1d07252006b5c57ca76e00f2fc90",
+        "rev": "0a36d473b3575ff08684a2d8e730aaafe44a46c6",
         "type": "github"
       },
       "original": {
@@ -33,11 +33,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1658015103,
-        "narHash": "sha256-mO+23f3SO+fBzEvbxRe6GkSB5Xp43CT2sV8Rs8MYdz8=",
+        "lastModified": 1660574513,
+        "narHash": "sha256-nkMQ1TKIIAYIVbbUzjxfjPn3H1zZFW20TrHUFAjwvNU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "8f485713f5e6b6883a9b6959afa98688360a3ecb",
+        "rev": "af9e00071d0971eb292fd5abef334e66eda3cb69",
         "type": "github"
       },
       "original": {
@@ -65,11 +65,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1658112572,
-        "narHash": "sha256-L7OgumNmdM5b4yVhB7vVOtTR5Jw0uClpOpiW+T9MEGY=",
+        "lastModified": 1660618363,
+        "narHash": "sha256-SdIGzmiMjAfKyZScxb497AA4oHiiaHMPhb9iwLtoaMk=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "aa8c2247998fe2f25030d1f509d8ed06970e5ab1",
+        "rev": "b480a97c66038e9a6ff68cbf0c4fa4a783416e0b",
         "type": "github"
       },
       "original": {
@@ -82,11 +82,11 @@
     "sway-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1658130411,
-        "narHash": "sha256-CY41L5poghqg/05/IroiHWCUWxZFgF/TSXUg+/cmn0I=",
+        "lastModified": 1660668585,
+        "narHash": "sha256-d3pyQsB6sV2V97VOFO4ROYZlveZrwI3VMJwH/KkN3hI=",
         "owner": "fuellabs",
         "repo": "sway",
-        "rev": "6db7c2f49e5f92c6a4232168373f721970b033ee",
+        "rev": "88820bed80e9b7e68ec0e1a78c64f6b70d7e1dd4",
         "type": "github"
       },
       "original": {
@@ -113,11 +113,11 @@
     },
     "utils": {
       "locked": {
-        "lastModified": 1656928814,
-        "narHash": "sha256-RIFfgBuKz6Hp89yRr7+NR5tzIAbn52h8vT6vXkYjZoM=",
+        "lastModified": 1659877975,
+        "narHash": "sha256-zllb8aq3YO3h8B/U0/J1WBgAL8EX5yWf5pMj3G0NAmc=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "7e2a3b3dfd9af950a856d66b0a7d01e3c18aa249",
+        "rev": "c0e246b9b83f637f4681389ecabcb2681b4f3af0",
         "type": "github"
       },
       "original": {
