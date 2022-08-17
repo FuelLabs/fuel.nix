@@ -2,14 +2,6 @@
 
 A Nix flake for the Fuel Labs ecosystem. https://fuel.network/
 
-## TO-DO
-
-- [ ] Package each tool's master branch
-- [ ] Add support for selecting any released version.
-- [ ] Add a `forcPlatform` wrapper around `forc` and related plugins for
-  trivially packaging Sway projects on Nix. Inspired by `rustPlatform` and
-  `rust-overlay`.
-
 ## System Requirements
 
 Requires a recent version of [Nix][nix-manual] with [the "flakes" feature][nix-flakes] enabled.
@@ -22,7 +14,7 @@ Includes the following packages:
 | --- | --- |
 | [`fuel-core`][fuel-core-repo] | The Fuel VM node client. |
 | [`fuel-gql-cli`][fuel-core-repo] | A Fuel VM transaction client. |
-| [`forc`][sway-repo] | The Fuel Orchestrator. Provides the Sway compiler, packaging and plugin support. |
+| [`forc`][sway-repo] | The Fuel Orchestrator. Compiler, packaging and plugin support. |
 | [`forc-explore`][sway-repo] | Runs the Fuel Explorer. |
 | [`forc-fmt`][sway-repo] | The Sway code formatter. |
 | [`forc-lsp`][sway-repo] | The Sway Language Server Protocol implementation. |
