@@ -57,4 +57,4 @@ jobs:
         with:
           name: mitchmindtree-fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - run: nix build --no-update-lock-file .#${{ matrix.job.package }}
+      - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.job.package }}
