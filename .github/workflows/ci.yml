@@ -35,32 +35,26 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - run: nix flake check --no-update-lock-file
 
-  nix-build-fuel-core:
+  nix-build:
     needs: cancel-previous-runs
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        job:
+          - package: fuel-core
+          - package: fuel-gql-cli
+          - package: forc
+          - package: forc-explore
+          - package: forc-fmt
+          - package: forc-lsp
+          - package: sway-vim
     steps:
       - uses: actions/checkout@v2.4.0
       - uses: cachix/install-nix-action@v16
         with:
           nix_path: nixpkgs=channel:nixos-unstable
-      - run: nix build --no-update-lock-file .#fuel-core
-
-  nix-build-fuel-gql-cli:
-    needs: cancel-previous-runs
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2.4.0
-      - uses: cachix/install-nix-action@v16
+      - uses: cachix/cachix-action@v10
         with:
-          nix_path: nixpkgs=channel:nixos-unstable
-      - run: nix build --no-update-lock-file .#fuel-gql-cli
-
-  nix-build-forc:
-    needs: cancel-previous-runs
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2.4.0
-      - uses: cachix/install-nix-action@v16
-        with:
-          nix_path: nixpkgs=channel:nixos-unstable
-      - run: nix build --no-update-lock-file .#forc
+          name: mitchmindtree-fuellabs
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.job.package }}
