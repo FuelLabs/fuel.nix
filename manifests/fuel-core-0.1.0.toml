@@ -1,0 +1,8 @@
+name = "fuel-core"
+repo = "https://github.com/fuellabs/fuel-core"
+tag = "v0.1.0"
+version = "0.1.0"
+rev = "634a202132bd8900ccb899eebef938dfee96bec8"
+hash = "sha256-0LRXjstqXMjXFiSKaU3Wrx4dMTldLvQd+gNVqHvCuZo="
+subdir = "./fuel-core"
+lock = "./Cargo.lock"
