@@ -19,6 +19,7 @@ echo "Manifests directory: $MANIFESTS_DIR"
 
 # The set of fuel repositories.
 declare -A fuel_repos=(
+    [forc-wallet]="https://github.com/fuellabs/forc-wallet"
     [fuel-core]="https://github.com/fuellabs/fuel-core"
     [sway]="https://github.com/fuellabs/sway"
     [sway-vim]="https://github.com/fuellabs/sway.vim"
@@ -37,9 +38,21 @@ declare -A pkg_forc=(
     [name]="forc"
     [repo]="${fuel_repos[sway]}"
 )
+declare -A pkg_forc_explore=(
+    [name]="forc-explore"
+    [repo]="${fuel_repos[sway]}"
+)
 declare -A pkg_forc_fmt=(
     [name]="forc-fmt"
     [repo]="${fuel_repos[sway]}"
+)
+declare -A pkg_forc_lsp=(
+    [name]="forc-lsp"
+    [repo]="${fuel_repos[sway]}"
+)
+declare -A pkg_forc_wallet=(
+    [name]="forc-wallet"
+    [repo]="${fuel_repos[forc-wallet]}"
 )
 
 # Create a temporary directory for cloning repositories.
@@ -118,7 +131,10 @@ function refresh_published {
 refresh_published pkg_fuel_core
 refresh_published pkg_fuel_gql_cli
 refresh_published pkg_forc
+refresh_published pkg_forc_explore
 refresh_published pkg_forc_fmt
+refresh_published pkg_forc_lsp
+refresh_published pkg_forc_wallet
 
 # # Ensure the `manifests/published` directory exists and contains an entry for
 # # each published version of each package.
