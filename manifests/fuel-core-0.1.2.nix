@@ -1,10 +1,7 @@
 {
   pname = "fuel-core";
-  url = "https://github.com/fuellabs/fuel-core";
-  tag = "v0.1.2";
   version = "0.1.2";
+  url = "https://github.com/fuellabs/fuel-core";
   rev = "07f1a3ffe2d7904c51b6c87daa0198d45ea2fdd8";
   sha256 = "sha256-VQ2fv7Hz+kFSOzfxCEqiEfoi+GR+IQfPPM8x/vo5SbU=";
-  subdir = "fuel-core";
-  lock = "Cargo.lock";
 }
