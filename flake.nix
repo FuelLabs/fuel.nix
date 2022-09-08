@@ -196,7 +196,10 @@
       packages-latest = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.latest;
       packages-default = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.defaults;
     in
-      packages-semver // packages-latest // packages-default // rec {
+      packages-semver
+      // packages-latest
+      // packages-default
+      // rec {
         fuel-latest = pkgs.symlinkJoin {
           name = "fuel-latest";
           paths = pkgs.lib.attrValues packages-latest;
