@@ -35,15 +35,9 @@ jobs:
     strategy:
       matrix:
         job:
-          - package: fuel-core
-          - package: fuel-gql-cli
-          - package: forc
-          - package: forc-explore
-          - package: forc-fmt
-          - package: forc-lsp
-          - package: forc-wallet
-          - package: sway-vim
+          - package: fuel
           - package: fuel-nightly
+          - package: sway-vim
     steps:
       - uses: actions/checkout@v2.4.0
       - uses: cachix/install-nix-action@v16

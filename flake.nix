@@ -46,6 +46,7 @@
         (m: m.pname != "fuel-core" || pkgs.lib.versionAtLeast m.version "0.9.0")
         (m: m.pname != "fuel-gql-cli" || pkgs.lib.versionAtLeast m.version "0.9.0")
         (m: m.pname != "forc" || pkgs.lib.versionAtLeast m.version "0.19.0")
+        (m: m.pname != "forc-client" || pkgs.lib.versionAtLeast m.version "0.19.0")
         (m: m.pname != "forc-explore" || pkgs.lib.versionAtLeast m.version "0.19.0")
         (m: m.pname != "forc-fmt" || pkgs.lib.versionAtLeast m.version "0.19.0")
         (m: m.pname != "forc-lsp" || pkgs.lib.versionAtLeast m.version "0.19.0")
@@ -110,6 +111,16 @@
         {
           condition = m: m.pname == "forc";
           patch = m: {
+            nativeBuildInputs = [
+              pkgs.perl # for openssl-sys
+              pkgs.pkg-config # for openssl-sys
+            ];
+          };
+        }
+        {
+          condition = m: m.pname == "forc-client";
+          patch = m: {
+            buildAndTestSubdir = "forc-plugins/${m.pname}";
             nativeBuildInputs = [
               pkgs.perl # for openssl-sys
               pkgs.pkg-config # for openssl-sys
