@@ -39,106 +39,191 @@
     utils.eachSupportedSystem =
       inputs.utils.lib.eachSystem utils.supportedSystems;
 
+    # Collect the manifests, one for each package that we will construct.
+    lib.manifests = pkgs: rust-platform: rec {
+      # The set of manually defined manifest filters to be applied.
+      filters = [
+        (m: m.pname != "fuel-core" || pkgs.lib.versionAtLeast m.version "0.9.0")
+        (m: m.pname != "fuel-gql-cli" || pkgs.lib.versionAtLeast m.version "0.9.0")
+        (m: m.pname != "forc" || pkgs.lib.versionAtLeast m.version "0.19.0")
+        (m: m.pname != "forc-explore" || pkgs.lib.versionAtLeast m.version "0.19.0")
+        (m: m.pname != "forc-fmt" || pkgs.lib.versionAtLeast m.version "0.19.0")
+        (m: m.pname != "forc-lsp" || pkgs.lib.versionAtLeast m.version "0.19.0")
+        (m: m.pname != "forc-wallet" || pkgs.lib.versionAtLeast m.version "0.1.0")
+      ];
+
+      # Returns true if the given manifest passes all our filters.
+      filter = m: pkgs.lib.all (f: f m) filters;
+
+      # Patches are applied if their condition is met in the order they are defined in this list.
+      patches = [
+        {
+          condition = m: true;
+          patch = m: {
+            cargoLock.lockFile = "${m.src}/Cargo.lock";
+            nativeBuildInputs = [
+              rust-platform.rust.cargo
+              rust-platform.rust.rustc
+            ];
+            meta.homepage = m.src.gitRepoUrl;
+            meta.platforms = utils.supportedSystems;
+          };
+        }
+        {
+          condition = m:
+            pkgs.lib.any (url: m.src.gitRepoUrl == url) [
+              "https://github.com/fuellabs/sway"
+              "https://github.com/fuellabs/fuel-core"
+            ];
+          patch = m: {
+            buildAndTestSubdir = m.pname;
+          };
+        }
+        {
+          condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/sway" && pkgs.lib.versionAtLeast m.version "0.19.0";
+          patch = m: {
+            cargoLock.outputHashes = {
+              "mdbook-0.4.20" = "sha256-hNyG2DVD1KFttXF4m8WnfoxRjA0cghA7NoV5AW7wZrI=";
+            };
+            meta.license = pkgs.lib.licenses.asl20;
+          };
+        }
+        {
+          condition = m: m.pname == "fuel-core";
+          patch = m: {
+            nativeBuildInputs =
+              m.nativeBuildInputs
+              ++ [
+                pkgs.clang
+                pkgs.pkg-config
+              ];
+            LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
+          };
+        }
+        {
+          condition = m: m.pname == "fuel-gql-cli";
+          patch = m: {
+            buildAndTestSubdir = "fuel-client";
+          };
+        }
+        {
+          condition = m: m.pname == "forc";
+          patch = m: {
+            nativeBuildInputs = [
+              pkgs.perl # for openssl-sys
+              pkgs.pkg-config # for openssl-sys
+            ];
+          };
+        }
+        {
+          condition = m: m.pname == "forc-explore";
+          patch = m: {
+            buildAndTestSubdir = "forc-plugins/${m.pname}";
+          };
+        }
+        {
+          condition = m: m.pname == "forc-fmt";
+          patch = m: {
+            buildAndTestSubdir = "forc-plugins/${m.pname}";
+          };
+        }
+        {
+          condition = m: m.pname == "forc-lsp";
+          patch = m: {
+            buildAndTestSubdir = "forc-plugins/${m.pname}";
+            nativeBuildInputs = [
+              pkgs.perl # for openssl-sys
+              pkgs.pkg-config # for openssl-sys
+            ];
+          };
+        }
+        {
+          condition = m: m.pname == "forc-wallet" && m.version == "0.1.0";
+          patch = m: {
+            cargoPatches = [
+              ./patch/forc-wallet-0.1.0-update-lock.patch
+            ];
+            cargoHash = "sha256-LXQaPcpf/n1RRFTQXAP6PexfEI67U2Z5OOW5DzNJvX8=";
+            cargoLock = null;
+          };
+        }
+      ];
+
+      # Apply all `patches` whose conditions are met by the given manifest.
+      patch = let
+        filtered = m: pkgs.lib.filter (p: p.condition m) patches;
+        apply = m: p: pkgs.lib.recursiveUpdate m (p.patch m);
+      in
+        m: pkgs.lib.foldl apply m (filtered m);
+
+      # Load each manifest file and construct the attributes.
+      manifest = filename: let
+        fileattrs = import (./manifests + "/${filename}");
+      in {
+        inherit (fileattrs) pname version;
+        src = pkgs.fetchgit {
+          inherit (fileattrs) url rev sha256;
+        };
+      };
+
+      # Read the manifest files.
+      filenames = builtins.attrNames (builtins.readDir ./manifests);
+      all = map manifest filenames;
+      filtered = ms: builtins.filter filter ms;
+      patched = ms: map patch ms;
+      prepared = patched (filtered all);
+
+      # Find the latest version for each package.
+      latest = let
+        update = m: acc:
+          acc
+          // {
+            "${m.pname}" =
+              if builtins.hasAttr m.pname acc && pkgs.lib.versionAtLeast acc."${m.pname}".version m.version
+              then acc."${m.pname}"
+              else m;
+          };
+        set = pkgs.lib.foldr update {} prepared;
+      in
+        pkgs.lib.mapAttrs' (name: v: pkgs.lib.nameValuePair (name + "-latest") v) set;
+
+      # Construct the default packages as aliases of the latest versions.
+      defaults = pkgs.lib.mapAttrs' (n: v: pkgs.lib.nameValuePair (pkgs.lib.removeSuffix "-latest" n) v) latest;
+    };
+
+    # Generate the published packages from the `manifests` directory.
+    mkPublishedPackages = pkgs: rust-platform: let
+      manifests = lib.manifests pkgs rust-platform;
+      packageAttr = manifest: {
+        name = builtins.replaceStrings ["."] ["-"] "${manifest.pname}-${manifest.version}";
+        value = rust-platform.buildRustPackage manifest;
+      };
+      packages-semver = builtins.listToAttrs (map packageAttr manifests.prepared);
+      packages-latest = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.latest;
+      packages-default = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.defaults;
+    in
+      packages-semver
+      // packages-latest
+      // packages-default
+      // rec {
+        fuel-latest = pkgs.symlinkJoin {
+          name = "fuel-latest";
+          paths = pkgs.lib.attrValues packages-latest;
+        };
+        fuel = fuel-latest;
+        default = fuel;
+      };
+
     mkPackages = pkgs: rust-platform: rec {
-      fuel-core = rust-platform.buildRustPackage {
-        name = "fuel-core";
-        version = "master";
-        src = inputs.fuel-core-src;
-        cargoLock.lockFile = "${inputs.fuel-core-src}/Cargo.lock";
-        buildAndTestSubdir = "fuel-core";
-        nativeBuildInputs = [
-          pkgs.clang
-          pkgs.pkg-config
-          rust-platform.rust.cargo
-          rust-platform.rust.rustc
+      refresh-manifests = pkgs.writeShellApplication {
+        name = "refresh-manifests";
+        runtimeInputs = [
+          pkgs.git # Used to fetch the fuel repos.
+          pkgs.nix # Used to generate the package src sha256 hashes.
+          pkgs.semver-tool # Validate semver retrieved from git tags.
         ];
-        LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
-        meta = {
-          homepage = "https://github.com/fuellabs/fuel-core";
-        };
-      };
-
-      fuel-gql-cli = rust-platform.buildRustPackage {
-        name = "fuel-gql-cli";
-        version = "master";
-        src = inputs.fuel-core-src;
-        cargoLock.lockFile = "${inputs.fuel-core-src}/Cargo.lock";
-        buildAndTestSubdir = "fuel-client";
-        nativeBuildInputs = [
-          rust-platform.rust.cargo
-          rust-platform.rust.rustc
-        ];
-        meta = {
-          homepage = "https://github.com/fuellabs/fuel-core";
-        };
-      };
-
-      forc = rust-platform.buildRustPackage {
-        name = "forc";
-        version = "master";
-        src = inputs.sway-src;
-        cargoHash = "sha256-Va6MqFiYxMn3NWU0xOKOlGec/Qus4Z3dSSCrUid7cKY=";
-        buildAndTestSubdir = "forc";
-        nativeBuildInputs = [
-          pkgs.perl # for openssl-sys
-          pkgs.pkg-config # for openssl-sys
-          rust-platform.rust.cargo
-          rust-platform.rust.rustc
-        ];
-        meta = {
-          homepage = "https://github.com/fuellabs/sway";
-          license = pkgs.lib.licenses.asl20;
-        };
-      };
-
-      forc-explore = rust-platform.buildRustPackage {
-        name = "forc-explore";
-        version = "master";
-        src = inputs.sway-src;
-        cargoHash = "sha256-3xnrgnEJFEWQ1JS1RwuNKvYP68SFyOPrnBxr++1XL4k=";
-        buildAndTestSubdir = "forc-plugins/forc-explore";
-        nativeBuildInputs = [
-          rust-platform.rust.cargo
-          rust-platform.rust.rustc
-        ];
-        meta = {
-          homepage = "https://github.com/fuellabs/sway";
-          license = pkgs.lib.licenses.asl20;
-        };
-      };
-
-      forc-fmt = rust-platform.buildRustPackage {
-        name = "forc-fmt";
-        version = "master";
-        src = inputs.sway-src;
-        cargoHash = "sha256-nufph2fKJs6IjAH8flxHuh4emCo2o8Kr/T1hh2oW3DI=";
-        buildAndTestSubdir = "forc-plugins/forc-fmt";
-        nativeBuildInputs = [
-          rust-platform.rust.cargo
-          rust-platform.rust.rustc
-        ];
-        meta = {
-          homepage = "https://github.com/fuellabs/sway";
-          license = pkgs.lib.licenses.asl20;
-        };
-      };
-
-      forc-lsp = rust-platform.buildRustPackage {
-        name = "forc-lsp";
-        version = "master";
-        src = inputs.sway-src;
-        cargoHash = "sha256-bc/Xr0aBdZ+xoR0Ij72ItaoGB3X+v7cOGW+um3SCJiQ=";
-        buildAndTestSubdir = "forc-plugins/forc-lsp";
-        nativeBuildInputs = [
-          pkgs.perl # for openssl-sys
-          pkgs.pkg-config # for openssl-sys
-          rust-platform.rust.cargo
-          rust-platform.rust.rustc
-        ];
-        meta = {
-          homepage = "https://github.com/fuellabs/sway";
-          license = pkgs.lib.licenses.asl20;
-        };
+        checkPhase = ""; # Temporarily disable check phase while devving.
+        text = builtins.readFile ./script/refresh-manifests.sh;
       };
 
       sway-vim = pkgs.vimUtils.buildVimPluginFrom2Nix {
@@ -150,20 +235,6 @@
           license = pkgs.lib.licenses.mit;
         };
       };
-
-      fuel = pkgs.symlinkJoin {
-        name = "fuel";
-        paths = [
-          fuel-core
-          fuel-gql-cli
-          forc
-          forc-explore
-          forc-fmt
-          forc-lsp
-        ];
-      };
-
-      default = fuel;
     };
 
     overlays = rec {
@@ -208,7 +279,7 @@
         cargo = rust;
       };
     in rec {
-      packages = mkPackages pkgs rust-platform;
+      packages = mkPackages pkgs rust-platform // mkPublishedPackages pkgs rust-platform;
       devShells = mkDevShells pkgs rust-platform packages;
       formatter = pkgs.alejandra;
     };
