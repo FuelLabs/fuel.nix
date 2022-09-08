@@ -30,11 +30,11 @@
 
   outputs = inputs: let
     utils.supportedSystems = [
+      "x86_64-linux"
       "aarch64-linux"
       "i686-linux"
-      "x86_64-linux"
-      "aarch64-darwin"
       "x86_64-darwin"
+      "aarch64-darwin"
     ];
     utils.eachSupportedSystem =
       inputs.utils.lib.eachSystem utils.supportedSystems;
@@ -80,7 +80,7 @@
           };
         }
         {
-          condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/sway" && pkgs.lib.versionAtLeast m.version "0.19.0";
+          condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/sway" && pkgs.lib.versionAtLeast m.version "0.19.0" && m.date < "2022-09-08";
           patch = m: {
             cargoLock.outputHashes = {
               "mdbook-0.4.20" = "sha256-hNyG2DVD1KFttXF4m8WnfoxRjA0cghA7NoV5AW7wZrI=";
@@ -160,7 +160,7 @@
       manifest = filename: let
         fileattrs = import (./manifests + "/${filename}");
       in {
-        inherit (fileattrs) pname version;
+        inherit (fileattrs) pname version date;
         src = pkgs.fetchgit {
           inherit (fileattrs) url rev sha256;
         };
@@ -168,42 +168,71 @@
 
       # Read the manifest files.
       filenames = builtins.attrNames (builtins.readDir ./manifests);
-      all = map manifest filenames;
-      filtered = ms: builtins.filter filter ms;
-      patched = ms: map patch ms;
-      prepared = patched (filtered all);
 
-      # Find the latest version for each package.
+      # Filter and patch the published package manifests.
+      published = rec {
+        fnames = builtins.filter (n: !(pkgs.lib.hasInfix "nightly" n)) filenames;
+        all = map manifest fnames;
+        filtered = ms: builtins.filter filter ms;
+        patched = ms: map patch ms;
+        prepared = patched (filtered all);
+      };
+
+      # Filter and patch the nightly package manifests.
+      nightly = rec {
+        fnames = builtins.filter (n: pkgs.lib.hasInfix "nightly" n) filenames;
+        all = map manifest fnames;
+        filtered = ms: builtins.filter filter ms;
+        patched = ms: map patch ms;
+        prepared = patched (filtered all);
+      };
+
+      # Find the latest published and nightly version for each package.
       latest = let
         update = m: acc:
           acc
           // {
             "${m.pname}" =
-              if builtins.hasAttr m.pname acc && pkgs.lib.versionAtLeast acc."${m.pname}".version m.version
+              if builtins.hasAttr m.pname acc && pkgs.lib.versionAtLeast acc."${m.pname}".version m.version && acc."${m.pname}".date >= m.date
               then acc."${m.pname}"
               else m;
           };
-        set = pkgs.lib.foldr update {} prepared;
-      in
-        pkgs.lib.mapAttrs' (name: v: pkgs.lib.nameValuePair (name + "-latest") v) set;
+        map-published = name: v: pkgs.lib.nameValuePair (name + "-latest") v;
+        map-nightly = name: v: pkgs.lib.nameValuePair (name + "-nightly") v;
+        fold-published = pkgs.lib.foldr update {} published.prepared;
+        fold-nightly = pkgs.lib.foldr update {} nightly.prepared;
+      in {
+        published = pkgs.lib.mapAttrs' map-published fold-published;
+        nightly = pkgs.lib.mapAttrs' map-nightly fold-nightly;
+      };
 
       # Construct the default packages as aliases of the latest versions.
-      defaults = pkgs.lib.mapAttrs' (n: v: pkgs.lib.nameValuePair (pkgs.lib.removeSuffix "-latest" n) v) latest;
+      defaults = pkgs.lib.mapAttrs' (n: v: pkgs.lib.nameValuePair (pkgs.lib.removeSuffix "-latest" n) v) latest.published;
     };
 
     # Generate the published packages from the `manifests` directory.
     mkPublishedPackages = pkgs: rust-platform: let
       manifests = lib.manifests pkgs rust-platform;
+      packageName = manifest: builtins.replaceStrings ["."] ["-"] "${manifest.pname}-${manifest.version}";
+      packageNameNightly = manifest: "${packageName manifest}-nightly-${manifest.date}";
       packageAttr = manifest: {
-        name = builtins.replaceStrings ["."] ["-"] "${manifest.pname}-${manifest.version}";
+        name = packageName manifest;
         value = rust-platform.buildRustPackage manifest;
       };
-      packages-semver = builtins.listToAttrs (map packageAttr manifests.prepared);
-      packages-latest = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.latest;
+      packageAttrNightly = manifest: {
+        name = packageNameNightly manifest;
+        value = rust-platform.buildRustPackage manifest;
+      };
+      packages-published = builtins.listToAttrs (map packageAttr manifests.published.prepared);
+      packages-nightly = builtins.listToAttrs (map packageAttrNightly manifests.nightly.prepared);
+      packages-latest = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.latest.published;
+      packages-latest-nightly = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.latest.nightly;
       packages-default = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.defaults;
     in
-      packages-semver
+      packages-published
+      // packages-nightly
       // packages-latest
+      // packages-latest-nightly
       // packages-default
       // rec {
         fuel-latest = pkgs.symlinkJoin {
