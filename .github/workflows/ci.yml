@@ -43,6 +43,7 @@ jobs:
           - package: forc-lsp
           - package: forc-wallet
           - package: sway-vim
+          - package: fuel-nightly
     steps:
       - uses: actions/checkout@v2.4.0
       - uses: cachix/install-nix-action@v16
