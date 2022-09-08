@@ -135,11 +135,3 @@ refresh_published pkg_forc_explore
 refresh_published pkg_forc_fmt
 refresh_published pkg_forc_lsp
 refresh_published pkg_forc_wallet
-
-# # Ensure the `manifests/published` directory exists and contains an entry for
-# # each published version of each package.
-# # manifests/published/forc-0.21.0, etc.
-# update_published() {
-#     local published_path = "$manifests_path/published"
-#     mkdir -p published_path
-# }
