@@ -55,6 +55,7 @@ jobs:
           - package: forc-explore
           - package: forc-fmt
           - package: forc-lsp
+          - package: forc-wallet
           - package: sway-vim
     steps:
       - uses: actions/checkout@v2.4.0
