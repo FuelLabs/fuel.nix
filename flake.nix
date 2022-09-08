@@ -97,6 +97,7 @@
                 pkgs.clang
                 pkgs.pkg-config
               ];
+            doCheck = false; # Already tested at repo, causes longer build times.
             LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
           };
         }
@@ -138,13 +139,34 @@
           };
         }
         {
-          condition = m: m.pname == "forc-wallet" && m.version == "0.1.0";
+          condition = m: m.pname == "forc-wallet" && m.version == "0.1.0" && m.date < "2022-09-04";
           patch = m: {
             cargoPatches = [
               ./patch/forc-wallet-0.1.0-update-lock.patch
             ];
             cargoHash = "sha256-LXQaPcpf/n1RRFTQXAP6PexfEI67U2Z5OOW5DzNJvX8=";
             cargoLock = null;
+          };
+        }
+
+        {
+          condition = m: m.pname == "fuel-core" && m.version == "0.10.1" && m.date == "2022-09-07";
+          patch = m: {
+            cargoPatches = [
+              ./patch/fuel-core-0.10.1-nightly-2022-09-08-update-lock.patch
+            ];
+            cargoHash = "sha256-WyGQWKLVtk+z0mahfve/0SyEW4u1oo3xQOUCYi9CKWM=";
+            cargoLock = null;
+          };
+        }
+        {
+          condition = m: m.pname == "fuel-gql-cli" && m.version == "0.10.1" && m.date == "2022-09-07";
+          patch = m: {
+              cargoPatches = [
+                ./patch/fuel-core-0.10.1-nightly-2022-09-08-update-lock.patch
+              ];
+              cargoHash = "sha256-xxFA97O1RX1rR9LGvU7z/4r/8b/VmeMksaoRYTgXcPo=";
+              cargoLock = null;
           };
         }
       ];
@@ -238,6 +260,10 @@
         fuel-latest = pkgs.symlinkJoin {
           name = "fuel-latest";
           paths = pkgs.lib.attrValues packages-latest;
+        };
+        fuel-nightly = pkgs.symlinkJoin {
+          name = "fuel-nightly";
+          paths = pkgs.lib.attrValues packages-latest-nightly;
         };
         fuel = fuel-latest;
         default = fuel;
