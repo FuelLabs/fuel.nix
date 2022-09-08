@@ -101,6 +101,12 @@
           };
         }
         {
+          condition = m: m.pname == "fuel-gql-cli";
+          patch = m: {
+            buildAndTestSubdir = "fuel-client";
+          };
+        }
+        {
           condition = m: m.pname == "forc";
           patch = m: {
             nativeBuildInputs = [
@@ -118,13 +124,13 @@
         {
           condition = m: m.pname == "forc-fmt";
           patch = m: {
-            buildAndTestSubdir = "plugins/${m.pname}";
+            buildAndTestSubdir = "forc-plugins/${m.pname}";
           };
         }
         {
           condition = m: m.pname == "forc-lsp";
           patch = m: {
-            buildAndTestSubdir = "plugins/${m.pname}";
+            buildAndTestSubdir = "forc-plugins/${m.pname}";
             nativeBuildInputs = [
               pkgs.perl # for openssl-sys
               pkgs.pkg-config # for openssl-sys
