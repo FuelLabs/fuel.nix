@@ -162,11 +162,11 @@
         {
           condition = m: m.pname == "fuel-gql-cli" && m.version == "0.10.1" && m.date == "2022-09-07";
           patch = m: {
-              cargoPatches = [
-                ./patch/fuel-core-0.10.1-nightly-2022-09-08-update-lock.patch
-              ];
-              cargoHash = "sha256-xxFA97O1RX1rR9LGvU7z/4r/8b/VmeMksaoRYTgXcPo=";
-              cargoLock = null;
+            cargoPatches = [
+              ./patch/fuel-core-0.10.1-nightly-2022-09-08-update-lock.patch
+            ];
+            cargoHash = "sha256-xxFA97O1RX1rR9LGvU7z/4r/8b/VmeMksaoRYTgXcPo=";
+            cargoLock = null;
           };
         }
       ];
