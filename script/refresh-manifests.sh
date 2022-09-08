@@ -38,6 +38,10 @@ declare -A pkg_forc=(
     [name]="forc"
     [repo]="${fuel_repos[sway]}"
 )
+declare -A pkg_forc_client=(
+    [name]="forc-client"
+    [repo]="${fuel_repos[sway]}"
+)
 declare -A pkg_forc_explore=(
     [name]="forc-explore"
     [repo]="${fuel_repos[sway]}"
@@ -205,6 +209,7 @@ function refresh {
 refresh pkg_fuel_core
 refresh pkg_fuel_gql_cli
 refresh pkg_forc
+refresh pkg_forc_client
 refresh pkg_forc_explore
 refresh pkg_forc_fmt
 refresh pkg_forc_lsp
