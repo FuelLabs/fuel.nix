@@ -1,0 +1,25 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index d57d70a..dc32e53 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -94,6 +94,8 @@ jobs:
+             args: --all-targets --all-features
+           - command: make
+             args: build
++          - command: check
++            args: --locked --all-targets --all-features
+           - command: test
+             args: --all-targets --all-features --workspace --exclude fuel-p2p
+           - command: test
+diff --git a/Cargo.lock b/Cargo.lock
+index 1ebce38..671f0bb 100644
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -2130,7 +2130,6 @@ dependencies = [
+  "insta",
+  "itertools",
+  "lazy_static",
+- "prometheus",
+  "rand 0.8.5",
+  "rocksdb",
+  "serde",
