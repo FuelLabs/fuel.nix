@@ -81,7 +81,11 @@
           };
         }
         {
-          condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/sway" && pkgs.lib.versionAtLeast m.version "0.19.0" && m.date < "2022-09-08";
+          condition = m:
+            m.src.gitRepoUrl
+            == "https://github.com/fuellabs/sway"
+            && pkgs.lib.versionAtLeast m.version "0.19.0"
+            && (m.date < "2022-09-08" || m.src.rev == "19b9fecdba613a229b7b3c3db7fe86113aefb2fe");
           patch = m: {
             cargoLock.outputHashes = {
               "mdbook-0.4.20" = "sha256-hNyG2DVD1KFttXF4m8WnfoxRjA0cghA7NoV5AW7wZrI=";
@@ -230,21 +234,21 @@
               then acc."${m.pname}"
               else m;
           };
-        map-published = name: v: pkgs.lib.nameValuePair (name + "-latest") v;
-        map-nightly = name: v: pkgs.lib.nameValuePair (name + "-nightly") v;
-        fold-published = pkgs.lib.foldr update {} published.prepared;
-        fold-nightly = pkgs.lib.foldr update {} nightly.prepared;
+        mapPublished = name: v: pkgs.lib.nameValuePair (name + "-latest") v;
+        mapNightly = name: v: pkgs.lib.nameValuePair (name + "-nightly") v;
+        foldPublished = pkgs.lib.foldr update {} published.prepared;
+        foldNightly = pkgs.lib.foldr update {} nightly.prepared;
       in {
-        published = pkgs.lib.mapAttrs' map-published fold-published;
-        nightly = pkgs.lib.mapAttrs' map-nightly fold-nightly;
+        published = pkgs.lib.mapAttrs' mapPublished foldPublished;
+        nightly = pkgs.lib.mapAttrs' mapNightly foldNightly;
       };
 
       # Construct the default packages as aliases of the latest versions.
       defaults = pkgs.lib.mapAttrs' (n: v: pkgs.lib.nameValuePair (pkgs.lib.removeSuffix "-latest" n) v) latest.published;
     };
 
-    # Generate the published packages from the `manifests` directory.
-    mkPublishedPackages = pkgs: rust-platform: let
+    # Generate the packages from the `manifests` directory.
+    mkPackages = pkgs: rust-platform: let
       manifests = lib.manifests pkgs rust-platform;
       packageName = manifest: builtins.replaceStrings ["."] ["-"] "${manifest.pname}-${manifest.version}";
       packageNameNightly = manifest: "${packageName manifest}-nightly-${manifest.date}";
@@ -256,52 +260,52 @@
         name = packageNameNightly manifest;
         value = rust-platform.buildRustPackage manifest;
       };
-      packages-published = builtins.listToAttrs (map packageAttr manifests.published.prepared);
-      packages-nightly = builtins.listToAttrs (map packageAttrNightly manifests.nightly.prepared);
-      packages-latest = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.latest.published;
-      packages-latest-nightly = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.latest.nightly;
-      packages-default = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.defaults;
-    in
-      packages-published
-      // packages-nightly
-      // packages-latest
-      // packages-latest-nightly
-      // packages-default
-      // rec {
+      packagesPublished = builtins.listToAttrs (map packageAttr manifests.published.prepared);
+      packagesNightly = builtins.listToAttrs (map packageAttrNightly manifests.nightly.prepared);
+      packagesPublishedLatest = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.latest.published;
+      packagesNightlyLatest = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.latest.nightly;
+      packagesDefault = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.defaults;
+      packagesGroups = rec {
         fuel-latest = pkgs.symlinkJoin {
           name = "fuel-latest";
-          paths = pkgs.lib.attrValues packages-latest;
+          paths = pkgs.lib.attrValues packagesPublishedLatest;
         };
         fuel-nightly = pkgs.symlinkJoin {
           name = "fuel-nightly";
-          paths = pkgs.lib.attrValues packages-latest-nightly;
+          paths = pkgs.lib.attrValues packagesNightlyLatest;
         };
         fuel = fuel-latest;
         default = fuel;
       };
-
-    mkPackages = pkgs: rust-platform: rec {
-      refresh-manifests = pkgs.writeShellApplication {
-        name = "refresh-manifests";
-        runtimeInputs = [
-          pkgs.git # Used to fetch the fuel repos.
-          pkgs.nix # Used to generate the package src sha256 hashes.
-          pkgs.semver-tool # Validate semver retrieved from git tags.
-        ];
-        checkPhase = ""; # Temporarily disable check phase while devving.
-        text = builtins.readFile ./script/refresh-manifests.sh;
-      };
-
-      sway-vim = pkgs.vimUtils.buildVimPluginFrom2Nix {
-        pname = "sway-vim";
-        version = "master";
-        src = inputs.sway-vim-src;
-        meta = {
-          homepage = "https://github.com/fuellabs/sway.vim";
-          license = pkgs.lib.licenses.mit;
+      packagesOther = {
+        refresh-manifests = pkgs.writeShellApplication {
+          name = "refresh-manifests";
+          runtimeInputs = [
+            pkgs.git # Used to fetch the fuel repos.
+            pkgs.nix # Used to generate the package src sha256 hashes.
+            pkgs.semver-tool # Validate semver retrieved from git tags.
+          ];
+          checkPhase = ""; # Temporarily disable check phase while devving.
+          text = builtins.readFile ./script/refresh-manifests.sh;
+        };
+        sway-vim = pkgs.vimUtils.buildVimPluginFrom2Nix {
+          pname = "sway-vim";
+          version = "master";
+          src = inputs.sway-vim-src;
+          meta = {
+            homepage = "https://github.com/fuellabs/sway.vim";
+            license = pkgs.lib.licenses.mit;
+          };
         };
       };
-    };
+    in
+      packagesPublished
+      // packagesNightly
+      // packagesPublishedLatest
+      // packagesNightlyLatest
+      // packagesDefault
+      // packagesGroups
+      // packagesOther;
 
     overlays = rec {
       fuel = final: prev: let
@@ -345,7 +349,7 @@
         cargo = rust;
       };
     in rec {
-      packages = mkPackages pkgs rust-platform // mkPublishedPackages pkgs rust-platform;
+      packages = mkPackages pkgs rust-platform;
       devShells = mkDevShells pkgs rust-platform packages;
       formatter = pkgs.alejandra;
     };
