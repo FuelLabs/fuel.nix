@@ -4,20 +4,12 @@
   '';
 
   inputs = {
-    fuel-core-src = {
-      url = "github:fuellabs/fuel-core";
-      flake = false;
-    };
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
     };
     rust-overlay = {
       url = "github:oxalica/rust-overlay/master";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    sway-src = {
-      url = "github:fuellabs/sway";
-      flake = false;
     };
     sway-vim-src = {
       url = "github:fuellabs/sway.vim";
