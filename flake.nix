@@ -192,7 +192,8 @@
         inputsFrom = let
           isLatestPublished = name: pkgs.lib.hasInfix "latest" name && !(pkgs.lib.hasInfix "nightly" name);
           latestPublished = pkgs.lib.filterAttrs (n: v: isLatestPublished n) fuelpkgs;
-        in pkgs.lib.mapAttrsToList (n: v: v) latestPublished;
+        in
+          pkgs.lib.mapAttrsToList (n: v: v) latestPublished;
         inherit (fuel-core-dev) LIBCLANG_PATH PROTOC;
       };
       default = fuel-dev;
