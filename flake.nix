@@ -183,13 +183,16 @@
 
       sway-dev = pkgs.mkShell {
         name = "sway-dev";
-        inputsFrom = with fuelpkgs; [forc forc-explore forc-fmt forc-lsp];
+        inputsFrom = with fuelpkgs; [forc forc-client forc-explore forc-fmt forc-lsp];
         buildInputs = with fuelpkgs; [fuel-core fuel-gql-cli];
       };
 
       fuel-dev = pkgs.mkShell {
         name = "fuel-dev";
-        inputsFrom = [fuel-core-dev sway-dev];
+        inputsFrom = let
+          isLatestPublished = name: pkgs.lib.hasInfix "latest" name && !(pkgs.lib.hasInfix "nightly" name);
+          latestPublished = pkgs.lib.filterAttrs (n: v: isLatestPublished n) fuelpkgs;
+        in pkgs.lib.mapAttrsToList (n: v: v) latestPublished;
         inherit (fuel-core-dev) LIBCLANG_PATH PROTOC;
       };
       default = fuel-dev;
