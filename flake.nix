@@ -31,152 +31,15 @@
     utils.eachSupportedSystem =
       inputs.utils.lib.eachSystem utils.supportedSystems;
 
-    # Collect the manifests, one for each package that we will construct.
-    lib.manifests = pkgs: rust-platform: rec {
-      # The set of manually defined manifest filters to be applied.
-      filters = [
-        (m: m.pname != "fuel-core" || pkgs.lib.versionAtLeast m.version "0.9.0")
-        (m: m.pname != "fuel-gql-cli" || pkgs.lib.versionAtLeast m.version "0.9.0")
-        (m: m.pname != "forc" || pkgs.lib.versionAtLeast m.version "0.19.0")
-        (m: m.pname != "forc-client" || pkgs.lib.versionAtLeast m.version "0.19.0")
-        (m: m.pname != "forc-explore" || pkgs.lib.versionAtLeast m.version "0.19.0")
-        (m: m.pname != "forc-fmt" || pkgs.lib.versionAtLeast m.version "0.19.0")
-        (m: m.pname != "forc-lsp" || pkgs.lib.versionAtLeast m.version "0.19.0")
-        (m: m.pname != "forc-wallet" || pkgs.lib.versionAtLeast m.version "0.1.0")
-      ];
+    # Collect the package manifests and sort them into published, nightly,
+    # latest and default sets.
+    mkManifests = pkgs: rust-platform: let
+      # Load the manually defined filters and patches.
+      filters = import ./filters.nix {inherit pkgs;};
+      patches = import ./patches.nix {inherit pkgs rust-platform;};
 
       # Returns true if the given manifest passes all our filters.
       filter = m: pkgs.lib.all (f: f m) filters;
-
-      # Patches are applied if their condition is met in the order they are defined in this list.
-      patches = [
-        {
-          condition = m: true;
-          patch = m: {
-            cargoLock.lockFile = "${m.src}/Cargo.lock";
-            nativeBuildInputs = [
-              rust-platform.rust.cargo
-              rust-platform.rust.rustc
-            ];
-            meta.homepage = m.src.gitRepoUrl;
-            meta.platforms = utils.supportedSystems;
-          };
-        }
-        {
-          condition = m:
-            pkgs.lib.any (url: m.src.gitRepoUrl == url) [
-              "https://github.com/fuellabs/sway"
-              "https://github.com/fuellabs/fuel-core"
-            ];
-          patch = m: {
-            buildAndTestSubdir = m.pname;
-          };
-        }
-        {
-          condition = m:
-            m.src.gitRepoUrl
-            == "https://github.com/fuellabs/sway"
-            && pkgs.lib.versionAtLeast m.version "0.19.0"
-            && (m.date < "2022-09-08" || m.src.rev == "19b9fecdba613a229b7b3c3db7fe86113aefb2fe");
-          patch = m: {
-            cargoLock.outputHashes = {
-              "mdbook-0.4.20" = "sha256-hNyG2DVD1KFttXF4m8WnfoxRjA0cghA7NoV5AW7wZrI=";
-            };
-            meta.license = pkgs.lib.licenses.asl20;
-          };
-        }
-        {
-          condition = m: m.pname == "fuel-core";
-          patch = m: {
-            nativeBuildInputs =
-              m.nativeBuildInputs
-              ++ [
-                pkgs.clang
-                pkgs.pkg-config
-              ];
-            doCheck = false; # Already tested at repo, causes longer build times.
-            LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
-          };
-        }
-        {
-          condition = m: m.pname == "fuel-gql-cli";
-          patch = m: {
-            buildAndTestSubdir = "fuel-client";
-          };
-        }
-        {
-          condition = m: m.pname == "forc";
-          patch = m: {
-            nativeBuildInputs = [
-              pkgs.perl # for openssl-sys
-              pkgs.pkg-config # for openssl-sys
-            ];
-          };
-        }
-        {
-          condition = m: m.pname == "forc-client";
-          patch = m: {
-            buildAndTestSubdir = "forc-plugins/${m.pname}";
-            nativeBuildInputs = [
-              pkgs.perl # for openssl-sys
-              pkgs.pkg-config # for openssl-sys
-            ];
-          };
-        }
-        {
-          condition = m: m.pname == "forc-explore";
-          patch = m: {
-            buildAndTestSubdir = "forc-plugins/${m.pname}";
-          };
-        }
-        {
-          condition = m: m.pname == "forc-fmt";
-          patch = m: {
-            buildAndTestSubdir = "forc-plugins/${m.pname}";
-          };
-        }
-        {
-          condition = m: m.pname == "forc-lsp";
-          patch = m: {
-            buildAndTestSubdir = "forc-plugins/${m.pname}";
-            nativeBuildInputs = [
-              pkgs.perl # for openssl-sys
-              pkgs.pkg-config # for openssl-sys
-            ];
-          };
-        }
-        {
-          condition = m: m.pname == "forc-wallet" && m.version == "0.1.0" && m.date < "2022-09-04";
-          patch = m: {
-            cargoPatches = [
-              ./patch/forc-wallet-0.1.0-update-lock.patch
-            ];
-            cargoHash = "sha256-LXQaPcpf/n1RRFTQXAP6PexfEI67U2Z5OOW5DzNJvX8=";
-            cargoLock = null;
-          };
-        }
-
-        {
-          condition = m: m.pname == "fuel-core" && m.version == "0.10.1" && m.date == "2022-09-07";
-          patch = m: {
-            cargoPatches = [
-              ./patch/fuel-core-0.10.1-nightly-2022-09-08-update-lock.patch
-            ];
-            cargoHash = "sha256-WyGQWKLVtk+z0mahfve/0SyEW4u1oo3xQOUCYi9CKWM=";
-            cargoLock = null;
-          };
-        }
-        {
-          condition = m: m.pname == "fuel-gql-cli" && m.version == "0.10.1" && m.date == "2022-09-07";
-          patch = m: {
-            cargoPatches = [
-              ./patch/fuel-core-0.10.1-nightly-2022-09-08-update-lock.patch
-            ];
-            cargoHash = "sha256-xxFA97O1RX1rR9LGvU7z/4r/8b/VmeMksaoRYTgXcPo=";
-            cargoLock = null;
-          };
-        }
-      ];
 
       # Apply all `patches` whose conditions are met by the given manifest.
       patch = let
@@ -185,7 +48,7 @@
       in
         m: pkgs.lib.foldl apply m (filtered m);
 
-      # Load each manifest file and construct the attributes.
+      # Load a manifest file given its filename and construct the attributes.
       manifest = filename: let
         fileattrs = import (./manifests + "/${filename}");
       in {
@@ -194,7 +57,7 @@
           inherit (fileattrs) url rev sha256;
         };
       };
-
+    in rec {
       # Read the manifest files.
       filenames = builtins.attrNames (builtins.readDir ./manifests);
 
@@ -239,9 +102,9 @@
       defaults = pkgs.lib.mapAttrs' (n: v: pkgs.lib.nameValuePair (pkgs.lib.removeSuffix "-latest" n) v) latest.published;
     };
 
-    # Generate the packages from the `manifests` directory.
+    # Generate the packages from the manifest sets.
     mkPackages = pkgs: rust-platform: let
-      manifests = lib.manifests pkgs rust-platform;
+      manifests = mkManifests pkgs rust-platform;
       packageName = manifest: builtins.replaceStrings ["."] ["-"] "${manifest.pname}-${manifest.version}";
       packageNameNightly = manifest: "${packageName manifest}-nightly-${manifest.date}";
       packageAttr = manifest: {
@@ -254,9 +117,9 @@
       };
       packagesPublished = builtins.listToAttrs (map packageAttr manifests.published.prepared);
       packagesNightly = builtins.listToAttrs (map packageAttrNightly manifests.nightly.prepared);
-      packagesPublishedLatest = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.latest.published;
-      packagesNightlyLatest = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.latest.nightly;
-      packagesDefault = pkgs.lib.mapAttrs (n: manifest: rust-platform.buildRustPackage manifest) manifests.defaults;
+      packagesPublishedLatest = pkgs.lib.mapAttrs (n: m: rust-platform.buildRustPackage m) manifests.latest.published;
+      packagesNightlyLatest = pkgs.lib.mapAttrs (n: m: rust-platform.buildRustPackage m) manifests.latest.nightly;
+      packagesDefault = pkgs.lib.mapAttrs (n: m: rust-platform.buildRustPackage m) manifests.defaults;
       packagesGroups = rec {
         fuel-latest = pkgs.symlinkJoin {
           name = "fuel-latest";
