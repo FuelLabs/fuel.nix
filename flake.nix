@@ -136,6 +136,7 @@
         refresh-manifests = pkgs.writeShellApplication {
           name = "refresh-manifests";
           runtimeInputs = [
+            pkgs.coreutils # For `date` command
             pkgs.git # Used to fetch the fuel repos.
             pkgs.nix # Used to generate the package src sha256 hashes.
             pkgs.semver-tool # Validate semver retrieved from git tags.
