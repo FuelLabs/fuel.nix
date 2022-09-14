@@ -15,9 +15,11 @@ Includes the following packages:
 | [`fuel-core`][fuel-core-repo] | The Fuel VM node client. |
 | [`fuel-gql-cli`][fuel-core-repo] | A Fuel VM transaction client. |
 | [`forc`][sway-repo] | The Fuel Orchestrator. Compiler, packaging and plugin support. |
+| [`forc-client`][sway-repo] | Provides the `forc deploy` and `forc run` commands. |
 | [`forc-explore`][sway-repo] | Runs the Fuel Explorer. |
 | [`forc-fmt`][sway-repo] | The Sway code formatter. |
 | [`forc-lsp`][sway-repo] | The Sway Language Server Protocol implementation. |
+| [`forc-wallet`][forc-wallet-repo] | A Fuel Wallet CLI implementation. |
 | [`sway-vim`][sway-vim-repo] | The Sway Vim plugin. |
 | `fuel` | All of the above tools under a single package. |
 
@@ -81,6 +83,7 @@ inspired by nixpkgs' `rustPlatform`.*
 
 [nix-manual]: https://nixos.org/manual/nix/stable/
 [nix-flakes]: https://nixos.wiki/wiki/Flakes
+[forc-wallet-repo]: https://github.com/fuellabs/forc-wallet
 [fuel-core-repo]: https://github.com/fuellabs/fuel-core
 [rust-overlay-repo]: https://github.com/oxalica/rust-overlay
 [sway-repo]: https://github.com/fuellabs/sway
