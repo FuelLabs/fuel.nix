@@ -3,6 +3,6 @@
   version = "0.10.1";
   date = "2022-09-07";
   url = "https://github.com/fuellabs/fuel-core";
-  rev = "142fc328684e9263f377a24ce1db74683e502160";
-  sha256 = "sha256-JHmSV+uyUMEn11RHaaUSy5EW6M3cHMpEDmTH3n5gw9s=";
+  rev = "5ad0dfd6a0a7a1779113300d2627106fd96a1638";
+  sha256 = "sha256-+ML6gZCqZ1Z0vjG9qrdZrmFjzyg3ThQRmzlI5lDWSpg=";
 }
