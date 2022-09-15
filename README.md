@@ -23,42 +23,87 @@ Includes the following packages:
 | [`sway-vim`][sway-vim-repo] | The Sway Vim plugin. |
 | `fuel` | All of the above tools under a single package. |
 
-If you have Nix installed with the "flakes" feature enabled, you can run the
-above programs like so:
+If you have Nix installed with the "flakes" feature enabled, you can run any of
+the above programs like so:
 
 ```
 nix run github:mitchmindtree/fuel.nix#fuel-core
 ```
 
-For now this flake simply pins the repo of each respective tool's master branch.
-The future goal is to allow for selecting specific versions or following a
-particular channel (e.g. nightly, stable) akin to [oxalica's
-rust-overlay][rust-overlay-repo].
+To run the latest nightly for a package, add `-nightly` to the end, e.g.
 
-*TODO: Add fuel-indexer, forc-wallet, any other fuel tools/applications.*
+```
+nix run github:mitchmindtree/fuel.nix#forc-nightly
+```
 
-## Dev Shell
+To enter a temporary shell with all of the fuel packages available on `$PATH`,
+you can use the following:
 
-This flake features a `fuel-dev` devShell. It allows for trivially entering a
-shell that includes all of the above package dependencies available on the PATH.
-This is useful for developers working *on* the sway tools.
+```
+nix shell github:mitchmindtree/fuel.nix#fuel
+```
 
-If you have Nix installed with the "flakes" feature enabled, you can enter this
-shell with:
+When you `exit` the shell the tools will no longer be on the `PATH`.
+
+The `nix shell` command is useful for maintaining isolated, temporary
+environments and to avoid endlessly polluting your `PATH` with different
+versions. E.g. in the following, we trivially switch between a stable fuel
+toolchain and nightly toolchain:
+
+```sh
+$ nix shell github:mitchmindtree/fuel.nix#fuel
+
+# All latest stable `fuel` packages on `PATH`.
+
+$ exit
+
+# No fuel packages on `PATH`
+
+$ nix shell github:mitchmindtree/fuel.nix#fuel-nightly
+
+# All latest nightly `fuel` packages on `PATH`.
+```
+
+
+To specify a specific version, append the semver or nightly date to the end:
+
+```
+nix run github:mitchmindtree/fuel.nix#forc-fmt-0.24.1
+```
+```
+nix run github:mitchmindtree/fuel.nix#forc-fmt-0-24-3-nightly-2022-09-14
+```
+
+## Dev Shells
+
+This flake also features a few `devShell`s that make it easy to drop into a
+development shell for working on the fuel packages. They allow you to drop into
+a temporary shell with all the tools and environment variables required to build
+the various fuel projects yourself.
+
+| Dev Shell | Description |
+| --- | --- |
+| `fuel-core-dev` | A shell for working on the `fuel-core` repo. |
+| `sway-dev` | A shell for working on the `sway` repo. |
+| `fuel-dev` | A shell ready for working with on any Fuel repo. |
+
+You can enter a temporary dev shell like so:
 
 ```
 nix develop github:mitchmindtree/fuel.nix#fuel-dev
 ```
 
-When you `exit` the shell these tools will no longer be on the `PATH`.
+Note that you can also enter a dev shell for individual packages. E.g. the
+following enters a dev shell with the required environment for working on the
+Sway language server implementation
+
+```
+nix develop github:mitchmindtree/fuel.nix#forc-lsp
+```
 
 Note that currently the vim plugin still needs to be installed separately. See
 the "Overlay" section below and the [Nix Vim wiki](https://nixos.wiki/wiki/Vim)
 for more details.
-
-*TODO: Provide a `fuel` devShell that provides all of the above packages
-directly under a single shell for developers building applications with the Fuel
-tools. This should be the default devShell.*
 
 ## Overlay
 
