@@ -170,11 +170,11 @@ function refresh_nightlies {
     local last_git_rev=""
     local pkg_git_rev=""
     while [[ "$date_nightly" < "$date_today" || "$date_nightly" == "$date_today" ]]; do
-        local pkg_git_rev=$(cd $pkg_repo_dir && git log --before="$date_nightly" --pretty=oneline -1 | cut -d ' ' -f1)
+        local pkg_git_rev=$(cd $pkg_repo_dir && git log --before="$date_nightly 00:00:00 +0000" --pretty=oneline -1 | cut -d ' ' -f1)
         if [[ "${#pkg_git_rev}" == 40 && $pkg_git_rev != $last_git_rev ]]; then
             # Retrieve version from the tag preceding the nightly date.
             local prefix=" (tag: v"
-            local git_tag_line=$(cd $pkg_repo_dir && git log --tags --simplify-by-decoration --before="$date_nightly" --pretty="format:%d" | grep -e "(tag: v" | cut -d ')' -f1 | cut -d ',' -f1 | head -n 1)
+            local git_tag_line=$(cd $pkg_repo_dir && git log --tags --simplify-by-decoration --before="$date_nightly 00:00:00 +0000" --pretty="format:%d" | grep -e "(tag: v" | cut -d ')' -f1 | cut -d ',' -f1 | head -n 1)
             local pkg_version=${git_tag_line#"$prefix"}
             if [[ $(semver validate "$pkg_version") != "valid" ]]; then
                 pkg_version="0.0.0"

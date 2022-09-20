@@ -3,6 +3,6 @@
   version = "0.23.0";
   date = "2022-09-04";
   url = "https://github.com/fuellabs/sway";
-  rev = "36aa76d3e1572d2d3054483be59345797ce04b36";
-  sha256 = "sha256-A4NYsyilLbJeqGkOtR67wrIUEWsqwtW4RsY4asNXScM=";
+  rev = "4712e5b26c6c0f778d7771ef1b35a229fe3a371d";
+  sha256 = "sha256-ZdH69u5DOe/fjARXWpJe0J21K/rVL4YJD5/qHQdlr50=";
 }
