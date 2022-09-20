@@ -195,7 +195,7 @@ function refresh_nightlies {
             (cd $pkg_repo_dir && git checkout -q "$pkg_git_branch")
             last_git_rev="$pkg_git_rev"
         fi
-        date_nightly=`date '+%F' -d "$date_nightly+1 days"`
+        date_nightly=`date -u '+%F' -d "$date_nightly+1 days"`
     done
     last_git_rev=""
 }
