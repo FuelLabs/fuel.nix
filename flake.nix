@@ -173,7 +173,7 @@
       default = fuel;
     };
 
-    mkDevShells = pkgs: rust-platform: fuelpkgs: rec {
+    mkDevShells = pkgs: fuelpkgs: rec {
       fuel-core-dev = pkgs.mkShell {
         name = "fuel-core-dev";
         inputsFrom = with fuelpkgs; [fuel-core fuel-gql-cli];
@@ -210,7 +210,7 @@
       };
     in rec {
       packages = mkPackages pkgs rust-platform;
-      devShells = mkDevShells pkgs rust-platform packages;
+      devShells = mkDevShells pkgs packages;
       formatter = pkgs.alejandra;
     };
 
