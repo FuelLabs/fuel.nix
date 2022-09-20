@@ -1,0 +1,52 @@
+name: "refresh-manifests"
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Midnight UTC
+  workflow_dispatch:
+
+jobs:
+  refresh-manifests:
+    name: "Refresh manifests and sync channels"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3.0.2
+        with:
+          persist-credentials: false
+          ref: main
+      - uses: cachix/install-nix-action@v16
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+      - uses: cachix/cachix-action@v10
+        with:
+          name: mitchmindtree-fuellabs
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      - name: Refresh manifests
+        timeout-minutes: 5
+        run: nix run .#refresh-manifests
+      - name: Check and commit changes
+        id: commit
+        continue-on-error: true
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add manifests
+          git commit -m "manifest: update"
+      - name: Validate nix files changed
+        if: steps.commit.outcome == 'success'
+        run: |
+          files=( $(git diff --name-only HEAD HEAD^ '*.nix') )
+          echo "${#files[*]} nix files changed: ${files[*]}"
+          if [[ "${#files[*]}" -ne 0 ]]; then
+            nix-instantiate --parse "${files[@]}" >/dev/null
+          fi
+      - name: Build fuel for cache
+        run: nix build --print-build-logs --no-update-lock-file .#fuel
+      - name: Build fuel-nightly for cache
+        run: nix build --print-build-logs --no-update-lock-file .#fuel-nightly
+      - name: Push changes
+        if: steps.commit.outcome == 'success'
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
