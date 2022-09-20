@@ -1,21 +1,20 @@
 # This file contains a list of manually defined manifest patches.
 # These are used to update or transform manifests to suit the specific needs of each package.
 # Patches are applied if their condition is met in the order they are defined in this list.
-{
-  pkgs,
-  rust-platform,
-}: [
-  # By default, most packages have their `Cargo.lock` file in the repository
-  # root and depend on `cargo` and `rust`.
+{pkgs}: [
+  # By default, most packages have their `Cargo.lock` file in the repo root.
+  # We also specify a base, minimum Rust version. This version should never
+  # change in order to avoid invalidating the cache for all previously built
+  # packages. Instead, if a new version of a fuel package requires a newer
+  # version of Rust, we should specify the necessary condition in a new patch
+  # to ensure only newer packages use the newer version of Rust.
   {
     condition = m: true;
     patch = m: {
       cargoLock.lockFile = "${m.src}/Cargo.lock";
-      nativeBuildInputs = [
-        rust-platform.rust.cargo
-        rust-platform.rust.rustc
-      ];
       meta.homepage = m.src.gitRepoUrl;
+      nativeBuildInputs = [];
+      rust = pkgs.rust-bin.stable."1.63.0".default;
     };
   }
 
@@ -41,7 +40,7 @@
       m.src.gitRepoUrl
       == "https://github.com/fuellabs/sway"
       && pkgs.lib.versionAtLeast m.version "0.19.0"
-      && (m.date < "2022-09-08" || m.src.rev == "19b9fecdba613a229b7b3c3db7fe86113aefb2fe");
+      && (m.date <= "2022-09-08" || m.src.rev == "19b9fecdba613a229b7b3c3db7fe86113aefb2fe");
     patch = m: {
       cargoLock.outputHashes = {
         "mdbook-0.4.20" = "sha256-hNyG2DVD1KFttXF4m8WnfoxRjA0cghA7NoV5AW7wZrI=";

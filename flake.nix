@@ -33,10 +33,10 @@
 
     # Collect the package manifests and sort them into published, nightly,
     # latest and default sets.
-    mkManifests = pkgs: rust-platform: let
+    mkManifests = pkgs: let
       # Load the manually defined filters and patches.
       filters = import ./filters.nix {inherit pkgs;};
-      patches = import ./patches.nix {inherit pkgs rust-platform;};
+      patches = import ./patches.nix {inherit pkgs;};
 
       # Returns true if the given manifest passes all our filters.
       filter = m: pkgs.lib.all (f: f m) filters;
@@ -103,23 +103,30 @@
     };
 
     # Generate the packages from the manifest sets.
-    mkPackages = pkgs: rust-platform: let
-      manifests = mkManifests pkgs rust-platform;
+    mkPackages = pkgs: let
+      manifests = mkManifests pkgs;
       packageName = manifest: builtins.replaceStrings ["."] ["-"] "${manifest.pname}-${manifest.version}";
       packageNameNightly = manifest: "${packageName manifest}-nightly-${manifest.date}";
+      buildRustPackage = manifest: let
+        rust-platform = pkgs.makeRustPlatform {
+          rustc = manifest.rust;
+          cargo = manifest.rust;
+        };
+      in
+        rust-platform.buildRustPackage manifest;
       packageAttr = manifest: {
         name = packageName manifest;
-        value = rust-platform.buildRustPackage manifest;
+        value = buildRustPackage manifest;
       };
       packageAttrNightly = manifest: {
         name = packageNameNightly manifest;
-        value = rust-platform.buildRustPackage manifest;
+        value = buildRustPackage manifest;
       };
       packagesPublished = builtins.listToAttrs (map packageAttr manifests.published.prepared);
       packagesNightly = builtins.listToAttrs (map packageAttrNightly manifests.nightly.prepared);
-      packagesPublishedLatest = pkgs.lib.mapAttrs (n: m: rust-platform.buildRustPackage m) manifests.latest.published;
-      packagesNightlyLatest = pkgs.lib.mapAttrs (n: m: rust-platform.buildRustPackage m) manifests.latest.nightly;
-      packagesDefault = pkgs.lib.mapAttrs (n: m: rust-platform.buildRustPackage m) manifests.defaults;
+      packagesPublishedLatest = pkgs.lib.mapAttrs (n: m: buildRustPackage m) manifests.latest.published;
+      packagesNightlyLatest = pkgs.lib.mapAttrs (n: m: buildRustPackage m) manifests.latest.nightly;
+      packagesDefault = pkgs.lib.mapAttrs (n: m: buildRustPackage m) manifests.defaults;
       packagesGroups = rec {
         fuel-latest = pkgs.symlinkJoin {
           name = "fuel-latest";
@@ -203,13 +210,8 @@
     mkOutput = system: let
       overlays = [inputs.rust-overlay.overlays.default];
       pkgs = import inputs.nixpkgs {inherit overlays system;};
-      rust = pkgs.rust-bin.stable.latest.default;
-      rust-platform = pkgs.makeRustPlatform {
-        rustc = rust;
-        cargo = rust;
-      };
     in rec {
-      packages = mkPackages pkgs rust-platform;
+      packages = mkPackages pkgs;
       devShells = mkDevShells pkgs packages;
       formatter = pkgs.alejandra;
     };
