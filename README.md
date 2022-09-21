@@ -4,7 +4,43 @@ A Nix flake for the Fuel Labs ecosystem. https://fuel.network/
 
 ## System Requirements
 
-Requires a recent version of [Nix][nix-manual] with [the "flakes" feature][nix-flakes] enabled.
+Requires a recent version of [Nix][nix-manual] with [the "flakes"
+feature][nix-flakes] enabled.
+
+## Enable the FuelLabs Nix cache
+
+Building all of the fuel packages locally from scratch can take a long time! To
+avoid users having to build everything from scratch, we provide a Nix binary
+cache hosted by [cachix][fuellabs-cachix].
+
+On NixOS, you can declare the cache within your configuration (e.g.
+`/etc/nixos/configuration.nix`) like so:
+
+```nix
+{
+  nix = {
+    settings = {
+      substituters = [
+        "https://mitchmindtree-fuellabs.cachix.org"
+      ];
+      trusted-public-keys = [
+        "mitchmindtree-fuellabs.cachix.org-1:UDUQvwjM3wRCZe1chrgqAehb3M0M5x9qjpEwJwPn7Ik="
+      ];
+    };
+  };
+}
+```
+
+On non-NixOS systems, you can declare the cache within your Nix configuration
+file (e.g. `/etc/nix/nix.conf`):
+
+```
+substituters = https://mitchmindtree-fuellabs.cachix.org
+trusted-public-keys = mitchmindtree-fuellabs.cachix.org-1:UDUQvwjM3wRCZe1chrgqAehb3M0M5x9qjpEwJwPn7Ik=
+```
+
+Alternatively, you can use [the Cachix command line tool][cachix-docs] to enable
+the cache imperatively.
 
 ## Packages
 
@@ -126,10 +162,12 @@ welcome.
 inspired by nixpkgs' `rustPlatform`.*
 
 
-[nix-manual]: https://nixos.org/manual/nix/stable/
-[nix-flakes]: https://nixos.wiki/wiki/Flakes
+[cachix-docs]: https://docs.cachix.org/
 [forc-wallet-repo]: https://github.com/fuellabs/forc-wallet
 [fuel-core-repo]: https://github.com/fuellabs/fuel-core
+[fuellabs-cachix]: https://app.cachix.org/cache/mitchmindtree-fuellabs
+[nix-flakes]: https://nixos.wiki/wiki/Flakes
+[nix-manual]: https://nixos.org/manual/nix/stable/
 [rust-overlay-repo]: https://github.com/oxalica/rust-overlay
 [sway-repo]: https://github.com/fuellabs/sway
 [sway-vim-repo]: https://github.com/fuellabs/sway.vim
