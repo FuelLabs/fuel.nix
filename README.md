@@ -7,22 +7,19 @@ A Nix flake for the Fuel Labs ecosystem. https://fuel.network/
 Requires a recent version of [Nix][nix-manual] with [the "flakes"
 feature][nix-flakes] enabled.
 
-## Enable the FuelLabs Nix cache
+We also recommend enabling the Fuel Labs Nix cache hosted by
+[cachix][fuellabs-cachix]. Otherwise, upon first use Nix will try to build all
+of the packages from scratch which can take a long time!
 
-Building all of the fuel packages locally from scratch can take a long time! To
-avoid users having to build everything from scratch, we provide a Nix binary
-cache hosted by [cachix][fuellabs-cachix].
-
-On NixOS, you can declare the cache within your configuration (e.g.
-`/etc/nixos/configuration.nix`) like so:
+On **NixOS**, we can enable the necessary features and our cache within our
+NixOS configuration (i.e. `/etc/nixos/configuration.nix`) like so:
 
 ```nix
 {
   nix = {
     settings = {
-      substituters = [
-        "https://mitchmindtree-fuellabs.cachix.org"
-      ];
+      experimental-features = ["nix-command" "flakes"];
+      substituters = ["https://mitchmindtree-fuellabs.cachix.org"];
       trusted-public-keys = [
         "mitchmindtree-fuellabs.cachix.org-1:UDUQvwjM3wRCZe1chrgqAehb3M0M5x9qjpEwJwPn7Ik="
       ];
@@ -31,16 +28,14 @@ On NixOS, you can declare the cache within your configuration (e.g.
 }
 ```
 
-On non-NixOS systems, you can declare the cache within your Nix configuration
-file (e.g. `/etc/nix/nix.conf`):
+On **non-NixOS** systems, you may add the following to your Nix configuration
+file (e.g.  `/etc/nix/nix.conf`):
 
-```
+```conf
+experimental-features = nix-command flakes
 substituters = https://mitchmindtree-fuellabs.cachix.org
 trusted-public-keys = mitchmindtree-fuellabs.cachix.org-1:UDUQvwjM3wRCZe1chrgqAehb3M0M5x9qjpEwJwPn7Ik=
 ```
-
-Alternatively, you can use [the Cachix command line tool][cachix-docs] to enable
-the cache imperatively.
 
 ## Packages
 
