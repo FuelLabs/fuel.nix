@@ -2,6 +2,9 @@
 
 A Nix flake for the Fuel Labs ecosystem. https://fuel.network/
 
+Each night at midnight (UTC) this repo is automatically updated with the latest
+stable and nightly releases of all fuel packages.
+
 ## System Requirements
 
 Requires a recent version of [Nix][nix-manual] with [the "flakes"
