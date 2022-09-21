@@ -61,20 +61,20 @@ If you have Nix installed with the "flakes" feature enabled, you can run any of
 the above programs like so:
 
 ```
-nix run github:mitchmindtree/fuel.nix#fuel-core
+nix run github:fuellabs/fuel.nix#fuel-core
 ```
 
 To run the latest nightly for a package, add `-nightly` to the end, e.g.
 
 ```
-nix run github:mitchmindtree/fuel.nix#forc-nightly
+nix run github:fuellabs/fuel.nix#forc-nightly
 ```
 
 To enter a temporary shell with all of the fuel packages available on `$PATH`,
 you can use the following:
 
 ```
-nix shell github:mitchmindtree/fuel.nix#fuel
+nix shell github:fuellabs/fuel.nix#fuel
 ```
 
 When you `exit` the shell the tools will no longer be on the `PATH`.
@@ -85,7 +85,7 @@ versions. E.g. in the following, we trivially switch between a stable fuel
 toolchain and nightly toolchain:
 
 ```sh
-$ nix shell github:mitchmindtree/fuel.nix#fuel
+$ nix shell github:fuellabs/fuel.nix#fuel
 
 # All latest stable `fuel` packages on `PATH`.
 
@@ -93,7 +93,7 @@ $ exit
 
 # No fuel packages on `PATH`
 
-$ nix shell github:mitchmindtree/fuel.nix#fuel-nightly
+$ nix shell github:fuellabs/fuel.nix#fuel-nightly
 
 # All latest nightly `fuel` packages on `PATH`.
 ```
@@ -102,10 +102,10 @@ $ nix shell github:mitchmindtree/fuel.nix#fuel-nightly
 To specify a specific version, append the semver or nightly date to the end:
 
 ```
-nix run github:mitchmindtree/fuel.nix#forc-fmt-0.24.1
+nix run github:fuellabs/fuel.nix#forc-fmt-0.24.1
 ```
 ```
-nix run github:mitchmindtree/fuel.nix#forc-fmt-0-24-3-nightly-2022-09-14
+nix run github:fuellabs/fuel.nix#forc-fmt-0-24-3-nightly-2022-09-14
 ```
 
 ## Dev Shells
@@ -124,7 +124,7 @@ the various fuel projects yourself.
 You can enter a temporary dev shell like so:
 
 ```
-nix develop github:mitchmindtree/fuel.nix#fuel-dev
+nix develop github:fuellabs/fuel.nix#fuel-dev
 ```
 
 Note that you can also enter a dev shell for individual packages. E.g. the
@@ -132,7 +132,7 @@ following enters a dev shell with the required environment for working on the
 Sway language server implementation
 
 ```
-nix develop github:mitchmindtree/fuel.nix#forc-lsp
+nix develop github:fuellabs/fuel.nix#forc-lsp
 ```
 
 Note that currently the vim plugin still needs to be installed separately. See
