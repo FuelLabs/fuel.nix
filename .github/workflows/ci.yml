@@ -31,13 +31,11 @@ jobs:
 
   nix-build:
     needs: cancel-previous-runs
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        job:
-          - package: fuel
-          - package: fuel-nightly
-          - package: sway-vim
+        package: [fuel, fuel-nightly, sway-vim]
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2.4.0
       - uses: cachix/install-nix-action@v16
@@ -47,4 +45,4 @@ jobs:
         with:
           name: mitchmindtree-fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.job.package }}
+      - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
