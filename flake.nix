@@ -174,9 +174,17 @@
       fuel = final: prev: let
         fuelpkgs = mkPackages prev;
       in {
-        inherit (fuelpkgs) fuel-core fuel-gql-cli forc forc-explore forc-fmt forc-lsp;
+        inherit (fuelpkgs) fuel;
         vimPlugins = prev.vimPlugins // {inherit (fuelpkgs) sway-vim;};
       };
+
+      fuel-nightly = final: prev: let
+        fuelpkgs = mkPackages prev;
+      in {
+        inherit (fuelpkgs) fuel-nightly;
+        vimPlugins = prev.vimPlugins // {inherit (fuelpkgs) sway-vim;};
+      };
+
       default = fuel;
     };
 
