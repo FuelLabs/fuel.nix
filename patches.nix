@@ -137,8 +137,14 @@
           pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
         ];
     };
-    # Attempt at solving this:
-    # https://github.com/mitchmindtree/fuel.nix/pull/17#issuecomment-1254844214
-    BINDGEN_CFLAGS = "-fno-aligned-allocation";
+  }
+
+  # Attempt at solving this:
+  # https://github.com/mitchmindtree/fuel.nix/pull/17#issuecomment-1254844214
+  {
+    condition = m: pkgs.lib.hasInfix "darwin" pkgs.system && m.pname == "fuel-core";
+    patch = m: {
+      NIX_CFLAGS_COMPILE = pkgs.lib.optionalString pkgs.stdenv.cc.isClang "-Wno-error=unused-private-field -faligned-allocation";
+    };
   }
 ]
