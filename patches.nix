@@ -13,7 +13,6 @@
     patch = m: {
       cargoLock.lockFile = "${m.src}/Cargo.lock";
       meta.homepage = m.src.gitRepoUrl;
-      nativeBuildInputs = [];
       rust = pkgs.rust-bin.stable."1.63.0".default;
     };
   }
@@ -55,7 +54,7 @@
     condition = m: m.pname == "fuel-core";
     patch = m: {
       nativeBuildInputs =
-        m.nativeBuildInputs
+        (m.nativeBuildInputs or [])
         ++ [
           pkgs.clang
           pkgs.pkg-config
@@ -79,10 +78,12 @@
   {
     condition = m: m.pname == "forc" || m.pname == "forc-client" || m.pname == "forc-lsp";
     patch = m: {
-      nativeBuildInputs = [
-        pkgs.perl # for openssl-sys
-        pkgs.pkg-config # for openssl-sys
-      ];
+      nativeBuildInputs =
+        (m.nativeBuildInputs or [])
+        ++ [
+          pkgs.perl # for openssl-sys
+          pkgs.pkg-config # for openssl-sys
+        ];
     };
   }
 
@@ -121,6 +122,18 @@
         then "sha256-WyGQWKLVtk+z0mahfve/0SyEW4u1oo3xQOUCYi9CKWM="
         else "sha256-xxFA97O1RX1rR9LGvU7z/4r/8b/VmeMksaoRYTgXcPo=";
       cargoLock = null;
+    };
+  }
+
+  # We generally appear to require the "Security" framework on darwin.
+  {
+    condition = m: pkgs.lib.hasInfix "darwin" pkgs.system;
+    patch = m: {
+      buildInputs =
+        (m.buildInputs or [])
+        ++ [
+          pkgs.darwin.apple_sdk.frameworks.Security
+        ];
     };
   }
 ]
