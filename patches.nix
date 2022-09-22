@@ -125,14 +125,16 @@
     };
   }
 
-  # We generally appear to require the "Security" framework on darwin.
+  # We generally appear to require these frameworks on darwin.
   {
     condition = m: pkgs.lib.hasInfix "darwin" pkgs.system;
     patch = m: {
       buildInputs =
         (m.buildInputs or [])
         ++ [
+          pkgs.darwin.apple_sdk.frameworks.CoreFoundation
           pkgs.darwin.apple_sdk.frameworks.Security
+          pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
         ];
     };
   }
