@@ -3,7 +3,8 @@
 A Nix flake for the Fuel Labs ecosystem. https://fuel.network/
 
 Each night at midnight (UTC) this repo is automatically updated with the latest
-stable and nightly releases of all fuel packages.
+stable and nightly releases of all fuel packages. Builds are tested and cached
+for both `x86_64-linux` and `x86_64-darwin` systems.
 
 ## System Requirements
 
@@ -141,8 +142,8 @@ for more details.
 
 ## Overlay
 
-A nixpkgs overlay is provided that allows for "merging" the set of packages
-provided by this flake with nixpkgs.
+Two nixpkgs overlays are provided (`fuel` and `fuel-nightly`) that allow for
+"merging" the set of packages provided by this flake with nixpkgs.
 
 Note that this makes the `sway-vim` plugin accessible via the `vimPlugins` set
 following the nixpkgs convention, e.g. `nixpkgs.vimPlugins.sway-vim`.
