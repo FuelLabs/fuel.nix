@@ -195,6 +195,7 @@
         buildInputs = [pkgs.grpc-tools];
         inherit (fuelpkgs.fuel-core) LIBCLANG_PATH;
         PROTOC = "${pkgs.grpc-tools}/bin/protoc";
+        NIX_CFLAGS_COMPILE = fuelpkgs.fuel-core.NIX_CFLAGS_COMPILE or "";
       };
 
       sway-dev = pkgs.mkShell {
@@ -210,7 +211,7 @@
           latestPublished = pkgs.lib.filterAttrs (n: v: isLatestPublished n) fuelpkgs;
         in
           pkgs.lib.mapAttrsToList (n: v: v) latestPublished;
-        inherit (fuel-core-dev) LIBCLANG_PATH PROTOC;
+        inherit (fuel-core-dev) LIBCLANG_PATH PROTOC NIX_CFLAGS_COMPILE;
       };
       default = fuel-dev;
     };
