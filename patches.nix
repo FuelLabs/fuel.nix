@@ -137,5 +137,8 @@
           pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
         ];
     };
+    # Attempt at solving this:
+    # https://github.com/mitchmindtree/fuel.nix/pull/17#issuecomment-1254844214
+    BINDGEN_CFLAGS = "-fno-aligned-allocation";
   }
 ]
