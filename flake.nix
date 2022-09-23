@@ -193,7 +193,7 @@
         name = "fuel-core-dev";
         inputsFrom = with fuelpkgs; [fuel-core fuel-gql-cli];
         buildInputs = [pkgs.grpc-tools];
-        inherit (fuelpkgs.fuel-core) LIBCLANG_PATH;
+        inherit (fuelpkgs.fuel-core) LIBCLANG_PATH ROCKSDB_LIB_DIR;
         PROTOC = "${pkgs.grpc-tools}/bin/protoc";
         NIX_CFLAGS_COMPILE = fuelpkgs.fuel-core.NIX_CFLAGS_COMPILE or "";
       };
@@ -211,7 +211,7 @@
           latestPublished = pkgs.lib.filterAttrs (n: v: isLatestPublished n) fuelpkgs;
         in
           pkgs.lib.mapAttrsToList (n: v: v) latestPublished;
-        inherit (fuel-core-dev) LIBCLANG_PATH PROTOC NIX_CFLAGS_COMPILE;
+        inherit (fuel-core-dev) LIBCLANG_PATH ROCKSDB_LIB_DIR PROTOC NIX_CFLAGS_COMPILE;
       };
       default = fuel-dev;
     };
