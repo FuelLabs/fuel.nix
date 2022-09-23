@@ -48,19 +48,17 @@
     };
   }
 
-  # The fuel-core crate requires clang and pkg-config, and that the
-  # `LIBCLANG_PATH` environment variable is set.
+  # The fuel-core crate requires clang for the rocksdb bindings generation.
+  # We also specify `ROCKSDB_LIB_DIR` in order to allow the rocksdb build
+  # script to use rocksdb as a dynamic library.
   {
     condition = m: m.pname == "fuel-core";
     patch = m: {
-      nativeBuildInputs =
-        (m.nativeBuildInputs or [])
-        ++ [
-          pkgs.clang
-          pkgs.pkg-config
-        ];
+      nativeBuildInputs = (m.nativeBuildInputs or []) ++ [pkgs.clang];
+      buildInputs = (m.buildInputs or []) ++ [pkgs.rocksdb];
       doCheck = false; # Already tested at repo, causes longer build times.
       LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
+      ROCKSDB_LIB_DIR = "${pkgs.rocksdb}/lib";
     };
   }
 
