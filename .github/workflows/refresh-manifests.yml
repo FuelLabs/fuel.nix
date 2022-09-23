@@ -53,7 +53,7 @@ jobs:
 
   refresh-cache:
     name: "Refresh cache for all platforms"
-    needs: cancel-previous-runs
+    needs: refresh-manifests
     strategy:
       matrix:
         package: [fuel, fuel-nightly, sway-vim]
