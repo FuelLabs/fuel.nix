@@ -191,26 +191,35 @@
     mkDevShells = pkgs: fuelpkgs: rec {
       fuel-core-dev = pkgs.mkShell {
         name = "fuel-core-dev";
-        inputsFrom = with fuelpkgs; [fuel-core fuel-gql-cli];
+        inputsFrom = with fuelpkgs; [
+          fuel-core-nightly
+          fuel-gql-cli-nightly
+        ];
         buildInputs = [pkgs.grpc-tools];
-        inherit (fuelpkgs.fuel-core) LIBCLANG_PATH ROCKSDB_LIB_DIR;
+        inherit (fuelpkgs.fuel-core-nightly) LIBCLANG_PATH ROCKSDB_LIB_DIR;
         PROTOC = "${pkgs.grpc-tools}/bin/protoc";
-        NIX_CFLAGS_COMPILE = fuelpkgs.fuel-core.NIX_CFLAGS_COMPILE or "";
+        NIX_CFLAGS_COMPILE = fuelpkgs.fuel-core-nightly.NIX_CFLAGS_COMPILE or "";
       };
 
       sway-dev = pkgs.mkShell {
         name = "sway-dev";
-        inputsFrom = with fuelpkgs; [forc forc-client forc-explore forc-fmt forc-lsp];
+        inputsFrom = with fuelpkgs; [
+          forc-nightly
+          forc-client-nightly
+          forc-explore-nightly
+          forc-fmt-nightly
+          forc-lsp-nightly
+        ];
         buildInputs = with fuelpkgs; [fuel-core fuel-gql-cli];
       };
 
       fuel-dev = pkgs.mkShell {
         name = "fuel-dev";
         inputsFrom = let
-          isLatestPublished = name: pkgs.lib.hasInfix "latest" name && !(pkgs.lib.hasInfix "nightly" name);
-          latestPublished = pkgs.lib.filterAttrs (n: v: isLatestPublished n) fuelpkgs;
+          isCurrentNightly = name: name != "fuel-nightly" && pkgs.lib.hasSuffix "nightly" name;
+          currentNightlies = pkgs.lib.filterAttrs (n: v: isCurrentNightly n) fuelpkgs;
         in
-          pkgs.lib.mapAttrsToList (n: v: v) latestPublished;
+          (pkgs.lib.mapAttrsToList (n: v: v) currentNightlies) ++ [fuel-core-dev sway-dev];
         inherit (fuel-core-dev) LIBCLANG_PATH ROCKSDB_LIB_DIR PROTOC NIX_CFLAGS_COMPILE;
       };
       default = fuel-dev;
