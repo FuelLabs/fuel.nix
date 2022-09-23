@@ -37,8 +37,18 @@ file (e.g.  `/etc/nix/nix.conf`):
 
 ```conf
 experimental-features = nix-command flakes
-substituters = https://mitchmindtree-fuellabs.cachix.org
-trusted-public-keys = mitchmindtree-fuellabs.cachix.org-1:UDUQvwjM3wRCZe1chrgqAehb3M0M5x9qjpEwJwPn7Ik=
+substituters = https://cache.nixos.org/ https://mitchmindtree-fuellabs.cachix.org
+trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= mitchmindtree-fuellabs.cachix.org-1:UDUQvwjM3wRCZe1chrgqAehb3M0M5x9qjpEwJwPn7Ik=
+```
+
+On non-NixOS Linux systems, be sure to make sure that your user is part of the
+`nixbld` group. Only this group has permissions to access the caches. You can
+check if your user is a part of the group with the `groups` command. You can add
+your user to the `nixbld` group with the following, replacing `user` with your
+username:
+
+```
+$ sudo usermod -a -G nixbld user
 ```
 
 ## Packages
