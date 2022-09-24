@@ -145,4 +145,13 @@
       NIX_CFLAGS_COMPILE = pkgs.lib.optionalString pkgs.stdenv.cc.isClang "-Wno-error=unused-private-field -faligned-allocation";
     };
   }
+
+  # `fuel-core` needs Rust 1.64 as of bcb86da09b6fdce09f13ef4181a0ca6461f8e2a8.
+  # This changes the Rust used for all pkgs to 1.64 from the day of the commit.
+  {
+    condition = m: m.date >= "2022-09-23";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.64.0".default;
+    };
+  }
 ]
