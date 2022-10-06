@@ -3,6 +3,17 @@
     A Nix flake for the Fuel Labs ecosystem.
   '';
 
+  nixConfig = {
+    extra-substituters = [
+      "https://cache.nixos.org"
+      "https://mitchmindtree-fuellabs.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "mitchmindtree-fuellabs.cachix.org-1:UDUQvwjM3wRCZe1chrgqAehb3M0M5x9qjpEwJwPn7Ik="
+    ];
+  };
+
   inputs = {
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
