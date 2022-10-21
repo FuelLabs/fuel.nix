@@ -154,4 +154,29 @@
       rust = pkgs.rust-bin.stable."1.64.0".default;
     };
   }
+
+  # Since this date, `forc-wallet` got some tests that require doing file
+  # operations that are unpermitted in Nix's sandbox during a build. These
+  # tests are run at `forc-wallet`'s repo CI, so it's fine to disable the check
+  # here.
+  {
+    condition = m: m.pname == "forc-wallet" && m.date >= "2022-10-10";
+    patch = m: {
+      doCheck = false; # Already tested at repo.
+    };
+  }
+
+  # At some point around this date, Sway LSP started requiring the CoreServices
+  # framework on Darwin due to a dependency update. Here we just make it
+  # available to all fuel packages going forward.
+  {
+    condition = m: pkgs.lib.hasInfix "darwin" pkgs.system && m.date >= "2022-10-10";
+    patch = m: {
+      buildInputs =
+        (m.buildInputs or [])
+        ++ [
+          pkgs.darwin.apple_sdk.frameworks.CoreServices
+        ];
+    };
+  }
 ]
