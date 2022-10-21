@@ -165,4 +165,18 @@
       doCheck = false; # Already tested at repo.
     };
   }
+
+  # At some point around this date, Sway LSP started requiring the CoreServices
+  # framework on Darwin due to a dependency update. Here we just make it
+  # available to all fuel packages going forward.
+  {
+    condition = m: pkgs.lib.hasInfix "darwin" pkgs.system && m.date >= "2022-10-10";
+    patch = m: {
+      buildInputs =
+        (m.buildInputs or [])
+        ++ [
+          pkgs.darwin.apple_sdk.frameworks.CoreServices
+        ];
+    };
+  }
 ]
