@@ -179,4 +179,14 @@
         ];
     };
   }
+
+  # Since this date, `forc` got some tests that require doing file operations
+  # that are unpermitted in Nix's sandbox during a build. These tests are run
+  # at `forc`'s repo CI, so it's fine to disable the check here.
+  {
+    condition = m: m.pname == "forc" && m.date >= "2022-11-01";
+    patch = m: {
+      doCheck = false; # Already tested at repo.
+    };
+  }
 ]
