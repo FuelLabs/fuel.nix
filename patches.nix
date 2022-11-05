@@ -74,7 +74,7 @@
   # Some `forc-pkg` and some crates that depend on it require openssl, so add
   # the required packages.
   {
-    condition = m: m.pname == "forc" || m.pname == "forc-client" || m.pname == "forc-lsp";
+    condition = m: pkgs.lib.any (n: m.pname == n) ["forc" "forc-client" "forc-lsp"];
     patch = m: {
       nativeBuildInputs =
         (m.nativeBuildInputs or [])
@@ -88,7 +88,7 @@
   # The forc plugins that reside in the Sway repo are in a dedicated
   # subdirectory.
   {
-    condition = m: m.pname == "forc-client" || m.pname == "forc-explore" || m.pname == "forc-fmt" || m.pname == "forc-lsp";
+    condition = m: m.pname == "forc-client" || m.pname == "forc-fmt" || m.pname == "forc-lsp";
     patch = m: {
       buildAndTestSubdir = "forc-plugins/${m.pname}";
     };
@@ -184,7 +184,7 @@
   # that are unpermitted in Nix's sandbox during a build. These tests are run
   # at `forc`'s repo CI, so it's fine to disable the check here.
   {
-    condition = m: m.pname == "forc" && m.date >= "2022-10-31";
+    condition = m: pkgs.lib.any (n: m.pname == n) ["forc" "forc-client" "forc-lsp"] && m.date >= "2022-10-31";
     patch = m: {
       doCheck = false; # Already tested at repo.
     };
