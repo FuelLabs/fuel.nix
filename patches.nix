@@ -184,7 +184,7 @@
   # that are unpermitted in Nix's sandbox during a build. These tests are run
   # at `forc`'s repo CI, so it's fine to disable the check here.
   {
-    condition = m: m.pname == "forc" && m.date >= "2022-11-01";
+    condition = m: m.pname == "forc" && m.date >= "2022-10-31";
     patch = m: {
       doCheck = false; # Already tested at repo.
     };
