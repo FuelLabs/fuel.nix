@@ -46,3 +46,6 @@ jobs:
           name: mitchmindtree-fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
+      - name: Build M1 packages
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: nix build --print-build-logs --no-update-lock-file .#packages.aarch64-darwin.${{ matrix.package }}
