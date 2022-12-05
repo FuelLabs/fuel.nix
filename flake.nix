@@ -201,6 +201,14 @@
         NIX_CFLAGS_COMPILE = fuelpkgs.fuel-core-nightly.NIX_CFLAGS_COMPILE or "";
       };
 
+      fuel-indexer-dev = pkgs.mkShell {
+        name = "fuel-indexer-dev";
+        inputsFrom = with fuelpkgs; [fuel-indexer-nightly];
+        buildInputs = with fuelpkgs; [fuel-core fuel-gql-cli];
+        inherit (fuelpkgs.fuel-indexer-nightly) SQLX_OFFLINE;
+        inherit (fuel-core-dev) LIBCLANG_PATH NIX_CFLAGS_COMPILE PROTOC ROCKSDB_LIB_DIR;
+      };
+
       sway-dev = pkgs.mkShell {
         name = "sway-dev";
         inputsFrom = with fuelpkgs;
@@ -222,8 +230,9 @@
           isCurrentNightly = name: name != "fuel-nightly" && pkgs.lib.hasSuffix "nightly" name;
           currentNightlies = pkgs.lib.filterAttrs (n: v: isCurrentNightly n) fuelpkgs;
         in
-          (pkgs.lib.mapAttrsToList (n: v: v) currentNightlies) ++ [fuel-core-dev sway-dev];
+          (pkgs.lib.mapAttrsToList (n: v: v) currentNightlies) ++ [fuel-core-dev fuel-indexer-dev sway-dev];
         inherit (fuel-core-dev) LIBCLANG_PATH ROCKSDB_LIB_DIR PROTOC NIX_CFLAGS_COMPILE;
+        inherit (fuel-indexer-dev) SQLX_OFFLINE;
       };
       default = fuel-dev;
     };
