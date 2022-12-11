@@ -44,6 +44,8 @@ jobs:
         run: nix build --print-build-logs --no-update-lock-file .#fuel
       - name: Build fuel-nightly
         run: nix build --print-build-logs --no-update-lock-file .#fuel-nightly
+      - name: Develop fuel-dev
+        run: nix develop --print-build-logs --no-update-lock-file .#fuel-dev
       - name: Push changes
         if: steps.commit.outcome == 'success'
         uses: ad-m/github-push-action@master
