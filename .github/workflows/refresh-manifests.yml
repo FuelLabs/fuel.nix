@@ -22,7 +22,7 @@ jobs:
           name: mitchmindtree-fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Refresh manifests
-        timeout-minutes: 5
+        timeout-minutes: 20
         run: nix run .#refresh-manifests
       - name: Check and commit changes
         id: commit
@@ -44,6 +44,8 @@ jobs:
         run: nix build --print-build-logs --no-update-lock-file .#fuel
       - name: Build fuel-nightly
         run: nix build --print-build-logs --no-update-lock-file .#fuel-nightly
+      - name: Develop fuel-dev
+        run: nix develop --print-build-logs --no-update-lock-file .#fuel-dev
       - name: Push changes
         if: steps.commit.outcome == 'success'
         uses: ad-m/github-push-action@master

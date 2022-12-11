@@ -203,13 +203,14 @@
 
       sway-dev = pkgs.mkShell {
         name = "sway-dev";
-        inputsFrom = with fuelpkgs; [
-          forc-nightly
-          forc-client-nightly
-          forc-explore-nightly
-          forc-fmt-nightly
-          forc-lsp-nightly
-        ];
+        inputsFrom = with fuelpkgs;
+          [
+            forc-nightly
+            forc-client-nightly
+            forc-fmt-nightly
+            forc-lsp-nightly
+          ]
+          ++ pkgs.lib.optional (builtins.hasAttr "forc-explore-nightly" fuelpkgs) fuelpkgs.forc-explore-nightly;
         buildInputs = with fuelpkgs; [fuel-core fuel-gql-cli];
       };
 
