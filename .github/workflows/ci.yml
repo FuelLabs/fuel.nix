@@ -42,6 +42,7 @@ jobs:
       - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
 
   nix-develop:
+    needs: nix-build
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
