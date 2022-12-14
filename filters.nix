@@ -7,6 +7,7 @@
   # old unused versions.
   (m: m.pname != "fuel-core" || pkgs.lib.versionAtLeast m.version "0.9.0")
   (m: m.pname != "fuel-gql-cli" || pkgs.lib.versionAtLeast m.version "0.9.0")
+  (m: m.pname != "fuel-indexer" || pkgs.lib.versionAtLeast m.version "0.1.8")
   (m: m.pname != "forc" || pkgs.lib.versionAtLeast m.version "0.19.0")
   (m: m.pname != "forc-client" || pkgs.lib.versionAtLeast m.version "0.19.0")
   (m: m.pname != "forc-explore" || pkgs.lib.versionAtLeast m.version "0.19.0")
