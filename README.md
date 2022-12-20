@@ -8,25 +8,17 @@ for both `x86_64-linux` and `x86_64-darwin` systems.
 
 ## System Requirements
 
-Requires a recent version of [Nix][nix-manual] with [the "flakes"
-feature][nix-flakes] enabled.
+Requires a recent version of [Nix][nix-manual] with the ["flakes"][nix-flakes]
+and "nix command" features available.
 
-We also recommend enabling the Fuel Labs Nix cache hosted by
-[cachix][fuellabs-cachix]. Otherwise, upon first use Nix will try to build all
-of the packages from scratch which can take a long time!
-
-On **NixOS**, we can enable the necessary features and our cache within our
-NixOS configuration (i.e. `/etc/nixos/configuration.nix`) like so:
+On **NixOS**, we can enable these features within our NixOS configuration (i.e.
+`/etc/nixos/configuration.nix`) like so:
 
 ```nix
 {
   nix = {
     settings = {
       experimental-features = ["nix-command" "flakes"];
-      substituters = ["https://mitchmindtree-fuellabs.cachix.org"];
-      trusted-public-keys = [
-        "mitchmindtree-fuellabs.cachix.org-1:UDUQvwjM3wRCZe1chrgqAehb3M0M5x9qjpEwJwPn7Ik="
-      ];
     };
   };
 }
@@ -37,19 +29,13 @@ file (e.g.  `/etc/nix/nix.conf`):
 
 ```conf
 experimental-features = nix-command flakes
-substituters = https://cache.nixos.org/ https://mitchmindtree-fuellabs.cachix.org
-trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= mitchmindtree-fuellabs.cachix.org-1:UDUQvwjM3wRCZe1chrgqAehb3M0M5x9qjpEwJwPn7Ik=
 ```
 
-On non-NixOS Linux systems, be sure to make sure that your user is part of the
-`nixbld` group. Only this group has permissions to access the caches. You can
-check if your user is a part of the group with the `groups` command. You can add
-your user to the `nixbld` group with the following, replacing `user` with your
-username:
-
-```
-$ sudo usermod -a -G nixbld user
-```
+On first use of the fuel.nix flake, Nix will ask if you'd like to let the flake
+specify values for `extra-substituters` and `extra-trusted-public-keys`. It is
+recommended to accept these values as they enable the official nixos and
+[fuellabs][fuellabs-cachix] caches. Otherwise, upon first use Nix will try to
+build all of the packages from scratch, which can take a long time!
 
 ## Packages
 
