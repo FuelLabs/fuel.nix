@@ -31,8 +31,8 @@ declare -A pkg_fuel_core=(
     [name]="fuel-core"
     [repo]="${fuel_repos[fuel-core]}"
 )
-declare -A pkg_fuel_gql_cli=(
-    [name]="fuel-gql-cli"
+declare -A pkg_fuel_core_client=(
+    [name]="fuel-core-client"
     [repo]="${fuel_repos[fuel-core]}"
 )
 declare -A pkg_forc=(
@@ -208,7 +208,7 @@ function refresh {
 }
 
 refresh pkg_fuel_core
-refresh pkg_fuel_gql_cli
+refresh pkg_fuel_core_client
 refresh pkg_forc
 refresh pkg_forc_client
 refresh pkg_forc_explore

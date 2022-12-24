@@ -189,4 +189,21 @@
       doCheck = false; # Already tested at repo.
     };
   }
+
+  # As of 2022-12-17 the fuel-core exe was moved into the `bin` subdirectory.
+  {
+    condition = m: m.pname == "fuel-core" && m.date >= "2022-12-17";
+    patch = m: {
+      buildAndTestSubdir = "bin/fuel-core";
+    };
+  }
+
+  # As of 2022-12-17 the fuel-core-client exe was renamed and moved into the `bin`
+  # subdirectory.
+  {
+    condition = m: m.pname == "fuel-core-client";
+    patch = m: {
+      buildAndTestSubdir = "bin/fuel-core-client";
+    };
+  }
 ]
