@@ -1,16 +1,18 @@
 # Only package manifests that satisfy the following manually defined list of
 # conditions will be used to generate packages. Feel free to update this to
 # ignore certain problematic or impossible-to-build packages!
-{pkgs}: [
+{pkgs}:
+with pkgs.lib; [
   # Specify some minimum versions that we want to support, to save ourselves
   # having to build everything since the dawn of time and from having to patch
   # old unused versions.
-  (m: m.pname != "fuel-core" || pkgs.lib.versionAtLeast m.version "0.9.0")
-  (m: m.pname != "fuel-gql-cli" || pkgs.lib.versionAtLeast m.version "0.9.0")
-  (m: m.pname != "forc" || pkgs.lib.versionAtLeast m.version "0.19.0")
-  (m: m.pname != "forc-client" || pkgs.lib.versionAtLeast m.version "0.19.0")
-  (m: m.pname != "forc-explore" || pkgs.lib.versionAtLeast m.version "0.19.0")
-  (m: m.pname != "forc-fmt" || pkgs.lib.versionAtLeast m.version "0.19.0")
-  (m: m.pname != "forc-lsp" || pkgs.lib.versionAtLeast m.version "0.19.0")
-  (m: m.pname != "forc-wallet" || pkgs.lib.versionAtLeast m.version "0.1.0")
+  (m: m.pname != "fuel-core" || versionAtLeast m.version "0.9.0")
+  (m: m.pname != "fuel-core-client" || (versionAtLeast m.version "0.14.2" && m.date >= "2022-12-17"))
+  (m: m.pname != "fuel-gql-cli" || (versionAtLeast m.version "0.9.0" && m.date < "2022-12-17"))
+  (m: m.pname != "forc" || versionAtLeast m.version "0.19.0")
+  (m: m.pname != "forc-client" || versionAtLeast m.version "0.19.0")
+  (m: m.pname != "forc-explore" || versionAtLeast m.version "0.19.0")
+  (m: m.pname != "forc-fmt" || versionAtLeast m.version "0.19.0")
+  (m: m.pname != "forc-lsp" || versionAtLeast m.version "0.19.0")
+  (m: m.pname != "forc-wallet" || versionAtLeast m.version "0.1.0")
 ]
