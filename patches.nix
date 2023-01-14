@@ -206,4 +206,23 @@
       buildAndTestSubdir = "bin/fuel-core-client";
     };
   }
+
+  # From around version 0.33.0 (roughly 2023-01-14), the Sway repo had a
+  # workspace-level patch for `mdbook` that pointed to a git repo. This patch
+  # provides that git repo's output hash to ensure deterministic builds for
+  # commits within that range.
+  {
+    condition = m:
+      m.src.gitRepoUrl
+      == "https://github.com/fuellabs/sway"
+      && pkgs.lib.versionAtLeast m.version "0.33.0"
+      && (m.date >= "2023-01-14" || m.src.rev == "a0be5f2cbe0bf7a6d008a2210920da9d4ff5dbae");
+    patch = m: {
+      cargoLock.outputHashes =
+        (m.cargoLock.outputHashes or {})
+        // {
+          "ethabi-18.0.0" = "sha256-N5bjuJoGYzcnfQg5pe79joUI2gOPAd9tcSvrBOYv5rc=";
+        };
+    };
+  }
 ]
