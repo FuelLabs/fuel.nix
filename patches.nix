@@ -218,16 +218,16 @@
     };
   }
 
-  # From around version 0.33.0 (roughly 2023-01-14), the Sway repo had a
-  # workspace-level patch for `mdbook` that pointed to a git repo. This patch
-  # provides that git repo's output hash to ensure deterministic builds for
-  # commits within that range.
+  # For a short while around version 0.33.0 (roughly 2023-01-14 to 2023-01-18),
+  # the Sway repo had a git dependency on the ethabi-18.0.0 crate. This was
+  # removed in favour of using our own crate.
   {
     condition = m:
       m.src.gitRepoUrl
       == "https://github.com/fuellabs/sway"
       && pkgs.lib.versionAtLeast m.version "0.33.0"
-      && (m.date >= "2023-01-14" || m.src.rev == "a0be5f2cbe0bf7a6d008a2210920da9d4ff5dbae");
+      && (m.date >= "2023-01-14" || m.src.rev == "a0be5f2cbe0bf7a6d008a2210920da9d4ff5dbae")
+      && m.date < "2023-01-18";
     patch = m: {
       cargoLock.outputHashes =
         (m.cargoLock.outputHashes or {})
