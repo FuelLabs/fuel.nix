@@ -191,8 +191,14 @@
   }
 
   # As of 2022-12-17 the fuel-core exe was moved into the `bin` subdirectory.
+  # Version 0.15.3 (rev 49e4305fea691bbf293c606334e7b282a54393b3) retains the
+  # old directory structure.
   {
-    condition = m: m.pname == "fuel-core" && m.date >= "2022-12-17";
+    condition = m:
+      m.pname
+      == "fuel-core"
+      && m.date >= "2022-12-17"
+      && m.src.rev != "49e4305fea691bbf293c606334e7b282a54393b3";
     patch = m: {
       buildAndTestSubdir = "bin/fuel-core";
     };
@@ -200,10 +206,15 @@
 
   # As of 2022-12-17 the fuel-core-client exe was renamed and moved into the `bin`
   # subdirectory.
+  # Version 0.15.3 (rev 49e4305fea691bbf293c606334e7b282a54393b3) retains the
+  # old directory structure.
   {
     condition = m: m.pname == "fuel-core-client";
     patch = m: {
-      buildAndTestSubdir = "bin/fuel-core-client";
+      buildAndTestSubdir =
+        if m.src.rev == "49e4305fea691bbf293c606334e7b282a54393b3"
+        then "fuel-client"
+        else "bin/fuel-core-client";
     };
   }
 
