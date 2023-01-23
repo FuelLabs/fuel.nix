@@ -236,4 +236,15 @@
         };
     };
   }
+
+  # `fuel-storage` needs Rust 1.65 as of
+  # cc11d3184c78401436d984e660748c9a9ed3df88 due to its use of generic
+  # associated types. This changes the Rust used for all pkgs to 1.65 from the
+  # day of the commit.
+  {
+    condition = m: m.date >= "2023-01-13";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.65.0".default;
+    };
+  }
 ]
