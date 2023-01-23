@@ -191,8 +191,14 @@
   }
 
   # As of 2022-12-17 the fuel-core exe was moved into the `bin` subdirectory.
+  # Version 0.15.3 (rev 49e4305fea691bbf293c606334e7b282a54393b3) retains the
+  # old directory structure.
   {
-    condition = m: m.pname == "fuel-core" && m.date >= "2022-12-17";
+    condition = m:
+      m.pname
+      == "fuel-core"
+      && m.date >= "2022-12-17"
+      && m.src.rev != "49e4305fea691bbf293c606334e7b282a54393b3";
     patch = m: {
       buildAndTestSubdir = "bin/fuel-core";
     };
@@ -200,29 +206,45 @@
 
   # As of 2022-12-17 the fuel-core-client exe was renamed and moved into the `bin`
   # subdirectory.
+  # Version 0.15.3 (rev 49e4305fea691bbf293c606334e7b282a54393b3) retains the
+  # old directory structure.
   {
     condition = m: m.pname == "fuel-core-client";
     patch = m: {
-      buildAndTestSubdir = "bin/fuel-core-client";
+      buildAndTestSubdir =
+        if m.src.rev == "49e4305fea691bbf293c606334e7b282a54393b3"
+        then "fuel-client"
+        else "bin/fuel-core-client";
     };
   }
 
-  # From around version 0.33.0 (roughly 2023-01-14), the Sway repo had a
-  # workspace-level patch for `mdbook` that pointed to a git repo. This patch
-  # provides that git repo's output hash to ensure deterministic builds for
-  # commits within that range.
+  # For a short while around version 0.33.0 (roughly 2023-01-14 to 2023-01-18),
+  # the Sway repo had a git dependency on the ethabi-18.0.0 crate. This was
+  # removed in favour of using our own crate.
   {
     condition = m:
       m.src.gitRepoUrl
       == "https://github.com/fuellabs/sway"
       && pkgs.lib.versionAtLeast m.version "0.33.0"
-      && (m.date >= "2023-01-14" || m.src.rev == "a0be5f2cbe0bf7a6d008a2210920da9d4ff5dbae");
+      && (m.date >= "2023-01-14" || m.src.rev == "a0be5f2cbe0bf7a6d008a2210920da9d4ff5dbae")
+      && m.date < "2023-01-18";
     patch = m: {
       cargoLock.outputHashes =
         (m.cargoLock.outputHashes or {})
         // {
           "ethabi-18.0.0" = "sha256-N5bjuJoGYzcnfQg5pe79joUI2gOPAd9tcSvrBOYv5rc=";
         };
+    };
+  }
+
+  # `fuel-storage` needs Rust 1.65 as of
+  # cc11d3184c78401436d984e660748c9a9ed3df88 due to its use of generic
+  # associated types. This changes the Rust used for all pkgs to 1.65 from the
+  # day of the commit.
+  {
+    condition = m: m.date >= "2023-01-13";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.65.0".default;
     };
   }
 ]
