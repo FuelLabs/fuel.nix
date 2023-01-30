@@ -1,7 +1,15 @@
 # This file contains a list of manually defined manifest patches.
 # These are used to update or transform manifests to suit the specific needs of each package.
 # Patches are applied if their condition is met in the order they are defined in this list.
-{pkgs}: [
+{pkgs}: let
+  forc-plugins = [
+    "forc-client"
+    "forc-doc"
+    "forc-fmt"
+    "forc-lsp"
+    "forc-tx"
+  ];
+in [
   # By default, most packages have their `Cargo.lock` file in the repo root.
   # We also specify a base, minimum Rust version. This version should never
   # change in order to avoid invalidating the cache for all previously built
@@ -74,7 +82,7 @@
   # Some `forc-pkg` and some crates that depend on it require openssl, so add
   # the required packages.
   {
-    condition = m: pkgs.lib.any (n: m.pname == n) ["forc" "forc-client" "forc-fmt" "forc-lsp"];
+    condition = m: pkgs.lib.any (n: m.pname == n) (["forc"] ++ forc-plugins);
     patch = m: {
       nativeBuildInputs =
         (m.nativeBuildInputs or [])
@@ -88,7 +96,7 @@
   # The forc plugins that reside in the Sway repo are in a dedicated
   # subdirectory.
   {
-    condition = m: m.pname == "forc-client" || m.pname == "forc-fmt" || m.pname == "forc-lsp";
+    condition = m: pkgs.lib.any (n: m.pname == n) forc-plugins;
     patch = m: {
       buildAndTestSubdir = "forc-plugins/${m.pname}";
     };
@@ -184,7 +192,7 @@
   # that are unpermitted in Nix's sandbox during a build. These tests are run
   # at `forc`'s repo CI, so it's fine to disable the check here.
   {
-    condition = m: pkgs.lib.any (n: m.pname == n) ["forc" "forc-client" "forc-fmt" "forc-lsp"] && m.date >= "2022-10-31";
+    condition = m: pkgs.lib.any (n: m.pname == n) (["forc"] ++ forc-plugins) && m.date >= "2022-10-31";
     patch = m: {
       doCheck = false; # Already tested at repo.
     };

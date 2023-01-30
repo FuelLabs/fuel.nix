@@ -207,8 +207,10 @@
           [
             forc-nightly
             forc-client-nightly
+            forc-doc-nightly
             forc-fmt-nightly
             forc-lsp-nightly
+            forc-tx-nightly
           ]
           ++ pkgs.lib.optional (builtins.hasAttr "forc-explore-nightly" fuelpkgs) fuelpkgs.forc-explore-nightly;
         buildInputs = with fuelpkgs; [fuel-core fuel-gql-cli];

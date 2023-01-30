@@ -11,8 +11,10 @@ with pkgs.lib; [
   (m: m.pname != "fuel-gql-cli" || (versionAtLeast m.version "0.9.0" && m.date < "2022-12-17"))
   (m: m.pname != "forc" || versionAtLeast m.version "0.19.0")
   (m: m.pname != "forc-client" || versionAtLeast m.version "0.19.0")
+  (m: m.pname != "forc-doc" || versionAtLeast m.version "0.29.0")
   (m: m.pname != "forc-explore" || versionAtLeast m.version "0.19.0")
   (m: m.pname != "forc-fmt" || versionAtLeast m.version "0.19.0")
   (m: m.pname != "forc-lsp" || versionAtLeast m.version "0.19.0")
+  (m: m.pname != "forc-tx" || versionAtLeast m.version "0.33.1")
   (m: m.pname != "forc-wallet" || versionAtLeast m.version "0.1.0")
 ]
