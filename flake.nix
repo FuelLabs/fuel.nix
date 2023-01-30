@@ -203,8 +203,8 @@
 
       fuel-indexer-dev = pkgs.mkShell {
         name = "fuel-indexer-dev";
-        inputsFrom = with fuelpkgs; [fuel-indexer-nightly];
-        buildInputs = with fuelpkgs; [fuel-core fuel-gql-cli];
+        inputsFrom = with fuelpkgs; [forc-index-nightly fuel-indexer-nightly];
+        buildInputs = with fuelpkgs; [fuel-core fuel-core-client];
         inherit (fuelpkgs.fuel-indexer-nightly) SQLX_OFFLINE;
         inherit (fuel-core-dev) LIBCLANG_PATH NIX_CFLAGS_COMPILE PROTOC ROCKSDB_LIB_DIR;
       };
