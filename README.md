@@ -58,13 +58,17 @@ Includes the following packages:
 | Package | Description |
 | --- | --- |
 | [`fuel-core`][fuel-core-repo] | The Fuel VM node client. |
-| [`fuel-gql-cli`][fuel-core-repo] | A Fuel VM transaction client. |
+| [`fuel-core-client`][fuel-core-repo] | A Fuel VM transaction client. |
 | [`forc`][sway-repo] | The Fuel Orchestrator. Compiler, packaging and plugin support. |
 | [`forc-client`][sway-repo] | Provides the `forc deploy` and `forc run` commands. |
+| [`forc-doc`][sway-repo] | Sway API documentation generator. |
 | [`forc-explore`][sway-repo] | Runs the Fuel Explorer. |
 | [`forc-fmt`][sway-repo] | The Sway code formatter. |
+| [`forc-index`][fuel-indexer-repo] | A forc plugin for working with the indexer. |
 | [`forc-lsp`][sway-repo] | The Sway Language Server Protocol implementation. |
+| [`forc-tx`][sway-repo] | Construct transactions with a CLI. |
 | [`forc-wallet`][forc-wallet-repo] | A Fuel Wallet CLI implementation. |
+| [`fuel-indexer`][fuel-indexer-repo] | An indexer for the Fuel blockchain. |
 | [`sway-vim`][sway-vim-repo] | The Sway Vim plugin. |
 | `fuel` | All of the above tools under a single package. |
 
@@ -130,6 +134,7 @@ the various fuel projects yourself.
 | --- | --- |
 | `fuel-core-dev` | A shell for working on the `fuel-core` repo. |
 | `sway-dev` | A shell for working on the `sway` repo. |
+| `fuel-indexer-dev` | A shell for working on the `fuel-indexer` repo. |
 | `fuel-dev` | A shell ready for working with on any Fuel repo. |
 
 You can enter a temporary dev shell like so:
@@ -174,6 +179,7 @@ inspired by nixpkgs' `rustPlatform`.*
 [cachix-docs]: https://docs.cachix.org/
 [forc-wallet-repo]: https://github.com/fuellabs/forc-wallet
 [fuel-core-repo]: https://github.com/fuellabs/fuel-core
+[fuel-indexer-repo]: https://github.com/fuellabs/fuel-indexer
 [fuellabs-cachix]: https://app.cachix.org/cache/mitchmindtree-fuellabs
 [nix-flakes]: https://nixos.wiki/wiki/Flakes
 [nix-manual]: https://nixos.org/manual/nix/stable/
