@@ -256,11 +256,16 @@ in [
     };
   }
 
-  # The fuel-indexer crate build requires postgresql and sqlx-cli.
+  # The fuel-indexer crates generally require postgresql and sqlx-cli.
+  # They're normally placed under `packages` directory with the exception of
+  # forc plugins.
   {
-    condition = m: m.pname == "fuel-indexer";
+    condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/fuel-indexer";
     patch = m: {
       nativeBuildInputs = (m.nativeBuildInputs or []) ++ [pkgs.pkg-config];
+      buildAndTestSubdir = if pkgs.lib.hasPrefix "forc-" m.pname
+        then "plugins/forc-index"
+        else "packages/${m.pname}";
       buildInputs =
         (m.buildInputs or [])
         ++ [
