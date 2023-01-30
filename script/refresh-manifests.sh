@@ -22,19 +22,12 @@ declare -A fuel_repos=(
     [forc-explorer]="https://github.com/fuellabs/forc-explorer"
     [forc-wallet]="https://github.com/fuellabs/forc-wallet"
     [fuel-core]="https://github.com/fuellabs/fuel-core"
+    [fuel-indexer]="https://github.com/fuellabs/fuel-indexer"
     [sway]="https://github.com/fuellabs/sway"
     [sway-vim]="https://github.com/fuellabs/sway.vim"
 )
 
 # The set of packages.
-declare -A pkg_fuel_core=(
-    [name]="fuel-core"
-    [repo]="${fuel_repos[fuel-core]}"
-)
-declare -A pkg_fuel_core_client=(
-    [name]="fuel-core-client"
-    [repo]="${fuel_repos[fuel-core]}"
-)
 declare -A pkg_forc=(
     [name]="forc"
     [repo]="${fuel_repos[sway]}"
@@ -55,6 +48,10 @@ declare -A pkg_forc_fmt=(
     [name]="forc-fmt"
     [repo]="${fuel_repos[sway]}"
 )
+declare -A pkg_forc_index=(
+    [name]="forc-index"
+    [repo]="${fuel_repos[fuel-indexer]}"
+)
 declare -A pkg_forc_lsp=(
     [name]="forc-lsp"
     [repo]="${fuel_repos[sway]}"
@@ -66,6 +63,18 @@ declare -A pkg_forc_tx=(
 declare -A pkg_forc_wallet=(
     [name]="forc-wallet"
     [repo]="${fuel_repos[forc-wallet]}"
+)
+declare -A pkg_fuel_core=(
+    [name]="fuel-core"
+    [repo]="${fuel_repos[fuel-core]}"
+)
+declare -A pkg_fuel_core_client=(
+    [name]="fuel-core-client"
+    [repo]="${fuel_repos[fuel-core]}"
+)
+declare -A pkg_fuel_indexer=(
+    [name]="fuel-indexer"
+    [repo]="${fuel_repos[fuel-indexer]}"
 )
 
 # Create a temporary directory for cloning repositories.
@@ -215,13 +224,15 @@ function refresh {
     refresh_nightlies fpkg
 }
 
-refresh pkg_fuel_core
-refresh pkg_fuel_core_client
 refresh pkg_forc
 refresh pkg_forc_client
 refresh pkg_forc_doc
 refresh pkg_forc_explore
 refresh pkg_forc_fmt
+refresh pkg_forc_index
 refresh pkg_forc_lsp
 refresh pkg_forc_tx
 refresh pkg_forc_wallet
+refresh pkg_fuel_core
+refresh pkg_fuel_core_client
+refresh pkg_fuel_indexer

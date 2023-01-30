@@ -255,4 +255,27 @@ in [
       rust = pkgs.rust-bin.stable."1.65.0".default;
     };
   }
+
+  # The fuel-indexer crates generally require postgresql and sqlx-cli.
+  # They're normally placed under `packages` directory with the exception of
+  # forc plugins.
+  {
+    condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/fuel-indexer";
+    patch = m: {
+      nativeBuildInputs = (m.nativeBuildInputs or []) ++ [pkgs.pkg-config];
+      buildAndTestSubdir =
+        if pkgs.lib.hasPrefix "forc-" m.pname
+        then "plugins/${m.pname}"
+        else "packages/${m.pname}";
+      buildInputs =
+        (m.buildInputs or [])
+        ++ [
+          pkgs.postgresql
+          pkgs.sqlx-cli
+        ];
+      doCheck = false; # Already tested at repo.
+      LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
+      SQLX_OFFLINE = true;
+    };
+  }
 ]
