@@ -48,6 +48,10 @@ declare -A pkg_forc_fmt=(
     [name]="forc-fmt"
     [repo]="${fuel_repos[sway]}"
 )
+declare -A pkg_forc_index=(
+    [name]="forc-index"
+    [repo]="${fuel_repos[fuel-indexer]}"
+)
 declare -A pkg_forc_lsp=(
     [name]="forc-lsp"
     [repo]="${fuel_repos[sway]}"
@@ -225,6 +229,7 @@ refresh pkg_forc_client
 refresh pkg_forc_doc
 refresh pkg_forc_explore
 refresh pkg_forc_fmt
+refresh pkg_forc_index
 refresh pkg_forc_lsp
 refresh pkg_forc_tx
 refresh pkg_forc_wallet
