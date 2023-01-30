@@ -43,6 +43,10 @@ declare -A pkg_forc_client=(
     [name]="forc-client"
     [repo]="${fuel_repos[sway]}"
 )
+declare -A pkg_forc_doc=(
+    [name]="forc-doc"
+    [repo]="${fuel_repos[sway]}"
+)
 declare -A pkg_forc_explore=(
     [name]="forc-explore"
     [repo]="${fuel_repos[forc-explorer]}"
@@ -53,6 +57,10 @@ declare -A pkg_forc_fmt=(
 )
 declare -A pkg_forc_lsp=(
     [name]="forc-lsp"
+    [repo]="${fuel_repos[sway]}"
+)
+declare -A pkg_forc_tx=(
+    [name]="forc-tx"
     [repo]="${fuel_repos[sway]}"
 )
 declare -A pkg_forc_wallet=(
@@ -211,7 +219,9 @@ refresh pkg_fuel_core
 refresh pkg_fuel_core_client
 refresh pkg_forc
 refresh pkg_forc_client
+refresh pkg_forc_doc
 refresh pkg_forc_explore
 refresh pkg_forc_fmt
 refresh pkg_forc_lsp
+refresh pkg_forc_tx
 refresh pkg_forc_wallet
