@@ -264,7 +264,7 @@ in [
     patch = m: {
       nativeBuildInputs = (m.nativeBuildInputs or []) ++ [pkgs.pkg-config];
       buildAndTestSubdir = if pkgs.lib.hasPrefix "forc-" m.pname
-        then "plugins/forc-index"
+        then "plugins/${m.pname}"
         else "packages/${m.pname}";
       buildInputs =
         (m.buildInputs or [])
