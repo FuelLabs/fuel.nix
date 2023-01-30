@@ -263,7 +263,8 @@ in [
     condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/fuel-indexer";
     patch = m: {
       nativeBuildInputs = (m.nativeBuildInputs or []) ++ [pkgs.pkg-config];
-      buildAndTestSubdir = if pkgs.lib.hasPrefix "forc-" m.pname
+      buildAndTestSubdir =
+        if pkgs.lib.hasPrefix "forc-" m.pname
         then "plugins/${m.pname}"
         else "packages/${m.pname}";
       buildInputs =
