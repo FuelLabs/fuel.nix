@@ -103,10 +103,11 @@
       milestones = let
         filterPkg = revs: m: builtins.any (rev: rev == m.src.rev) (builtins.attrValues revs);
         filterPublished = revs: builtins.filter (filterPkg revs) published.prepared;
-        mapPkg = mname: m: m // { pname = "${m.pname}" + "-" + "${mname}"; };
+        mapPkg = mname: m: m // {pname = "${m.pname}" + "-" + "${mname}";};
         milestonePkgs = name: revs: map (mapPkg name) (filterPublished revs);
         mapMilestone = name: revs: pkgs.lib.nameValuePair name (milestonePkgs name revs);
-      in pkgs.lib.mapAttrs' mapMilestone mstones;
+      in
+        pkgs.lib.mapAttrs' mapMilestone mstones;
 
       # Construct the default packages as aliases of the latest versions.
       defaults = pkgs.lib.mapAttrs' (n: v: pkgs.lib.nameValuePair (pkgs.lib.removeSuffix "-latest" n) v) latest.published;
@@ -153,18 +154,20 @@
         };
       };
       packagesMilestoneGroups = pkgs.lib.mapAttrs' packagesMilestoneGroup packagesMilestones;
-      packagesGroups = rec {
-        fuel-latest = pkgs.symlinkJoin {
-          name = "fuel-latest";
-          paths = pkgs.lib.attrValues packagesPublishedLatest;
-        };
-        fuel-nightly = pkgs.symlinkJoin {
-          name = "fuel-nightly";
-          paths = pkgs.lib.attrValues packagesNightlyLatest;
-        };
-        fuel = fuel-latest;
-        default = fuel;
-      } // packagesMilestoneGroups;
+      packagesGroups =
+        rec {
+          fuel-latest = pkgs.symlinkJoin {
+            name = "fuel-latest";
+            paths = pkgs.lib.attrValues packagesPublishedLatest;
+          };
+          fuel-nightly = pkgs.symlinkJoin {
+            name = "fuel-nightly";
+            paths = pkgs.lib.attrValues packagesNightlyLatest;
+          };
+          fuel = fuel-latest;
+          default = fuel;
+        }
+        // packagesMilestoneGroups;
       packagesOther = {
         refresh-manifests = pkgs.writeShellApplication {
           name = "refresh-manifests";
