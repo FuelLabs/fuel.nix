@@ -85,6 +85,15 @@ To run the latest nightly for a package, add `-nightly` to the end, e.g.
 nix run github:fuellabs/fuel.nix#forc-nightly
 ```
 
+Similarly, run the version of a package from a milestone with `-<milestone>`, e.g.
+
+```
+nix run github:fuellabs/fuel.nix#forc-lsp-beta-2
+```
+```
+nix run github:fuellabs/fuel.nix#forc-wallet-beta-1
+```
+
 To enter a temporary shell with all of the fuel packages available on `$PATH`,
 you can use the following:
 
@@ -111,6 +120,14 @@ $ exit
 $ nix shell github:fuellabs/fuel.nix#fuel-nightly
 
 # All latest nightly `fuel` packages on `PATH`.
+
+$ exit
+
+# No fuel packages on `PATH`
+
+$ nix shell github:fuellabs/fuel.nix#fuel-beta-2
+
+# All beta-2 milestone `fuel` packages on `PATH`.
 ```
 
 
