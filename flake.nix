@@ -37,6 +37,7 @@
       # Load the manually defined filters and patches.
       filters = import ./filters.nix {inherit pkgs;};
       patches = import ./patches.nix {inherit pkgs;};
+      mstones = import ./milestones.nix;
 
       # Returns true if the given manifest passes all our filters.
       filter = m: pkgs.lib.all (f: f m) filters;
@@ -98,6 +99,15 @@
         nightly = pkgs.lib.mapAttrs' mapNightly foldNightly;
       };
 
+      # Construct the milestone package lists, e.g. `{ beta-1 = [...]; beta-2 = [...]; }`.
+      milestones = let
+        filterPkg = revs: m: builtins.any (rev: rev == m.src.rev) (builtins.attrValues revs);
+        filterPublished = revs: builtins.filter (filterPkg revs) published.prepared;
+        mapPkg = mname: m: m // { pname = "${m.pname}" + "-" + "${mname}"; };
+        milestonePkgs = name: revs: map (mapPkg name) (filterPublished revs);
+        mapMilestone = name: revs: pkgs.lib.nameValuePair name (milestonePkgs name revs);
+      in pkgs.lib.mapAttrs' mapMilestone mstones;
+
       # Construct the default packages as aliases of the latest versions.
       defaults = pkgs.lib.mapAttrs' (n: v: pkgs.lib.nameValuePair (pkgs.lib.removeSuffix "-latest" n) v) latest.published;
     };
@@ -114,6 +124,7 @@
         };
       in
         rust-platform.buildRustPackage manifest;
+      buildRustPackages = manifests: pkgs.lib.mapAttrs (n: m: buildRustPackage m) manifests;
       packageAttr = manifest: {
         name = packageName manifest;
         value = buildRustPackage manifest;
@@ -122,11 +133,26 @@
         name = packageNameNightly manifest;
         value = buildRustPackage manifest;
       };
+      packageAttrMilestone = manifest: {
+        name = manifest.pname;
+        value = buildRustPackage manifest;
+      };
       packagesPublished = builtins.listToAttrs (map packageAttr manifests.published.prepared);
       packagesNightly = builtins.listToAttrs (map packageAttrNightly manifests.nightly.prepared);
-      packagesPublishedLatest = pkgs.lib.mapAttrs (n: m: buildRustPackage m) manifests.latest.published;
-      packagesNightlyLatest = pkgs.lib.mapAttrs (n: m: buildRustPackage m) manifests.latest.nightly;
-      packagesDefault = pkgs.lib.mapAttrs (n: m: buildRustPackage m) manifests.defaults;
+      packagesPublishedLatest = buildRustPackages manifests.latest.published;
+      packagesNightlyLatest = buildRustPackages manifests.latest.nightly;
+      packagesDefault = buildRustPackages manifests.defaults;
+      packagesMilestone = manifests: builtins.listToAttrs (map packageAttrMilestone manifests);
+      packagesMilestones = pkgs.lib.mapAttrs' (mn: mms: pkgs.lib.nameValuePair mn (packagesMilestone mms)) manifests.milestones;
+      packagesMilestonesAll = pkgs.lib.concatMapAttrs (_: pkgs: pkgs) packagesMilestones;
+      packagesMilestoneGroup = mstone: packages: rec {
+        name = "fuel-" + mstone;
+        value = pkgs.symlinkJoin {
+          inherit name;
+          paths = pkgs.lib.attrValues packages;
+        };
+      };
+      packagesMilestoneGroups = pkgs.lib.mapAttrs' packagesMilestoneGroup packagesMilestones;
       packagesGroups = rec {
         fuel-latest = pkgs.symlinkJoin {
           name = "fuel-latest";
@@ -138,7 +164,7 @@
         };
         fuel = fuel-latest;
         default = fuel;
-      };
+      } // packagesMilestoneGroups;
       packagesOther = {
         refresh-manifests = pkgs.writeShellApplication {
           name = "refresh-manifests";
@@ -167,6 +193,7 @@
       // packagesPublishedLatest
       // packagesNightlyLatest
       // packagesDefault
+      // packagesMilestonesAll
       // packagesGroups
       // packagesOther;
 
