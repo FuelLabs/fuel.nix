@@ -64,9 +64,16 @@ in [
     patch = m: {
       nativeBuildInputs = (m.nativeBuildInputs or []) ++ [pkgs.clang];
       buildInputs = (m.buildInputs or []) ++ [pkgs.rocksdb];
-      doCheck = false; # Already tested at repo, causes longer build times.
       LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
       ROCKSDB_LIB_DIR = "${pkgs.rocksdb}/lib";
+    };
+  }
+
+  # Fuel-core tests run at their repo - no need to repeat them here.
+  {
+    condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/fuel-core";
+    patch = m: {
+      doCheck = false; # Already tested at repo, causes longer build times.
     };
   }
 
@@ -118,7 +125,7 @@ in [
   # A patch for a `fuel-core` and `fuel-gql-cli` nightly whose committed
   # `Cargo.lock` file was out of date.
   {
-    condition = m: (m.pname == "fuel-core" || m.pname == "fuel-gql-cli") && m.version == "0.10.1" && m.date == "2022-09-07";
+    condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/fuel-core" && m.version == "0.10.1" && m.date == "2022-09-07";
     patch = m: {
       cargoPatches = [
         ./patch/fuel-core-0.10.1-nightly-2022-09-08-update-lock.patch
@@ -276,6 +283,16 @@ in [
       doCheck = false; # Already tested at repo.
       LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
       SQLX_OFFLINE = true;
+    };
+  }
+
+  # `fuel-core` crates need Rust 1.67 as of
+  # `580b2212bd5fa9870c9fef11e0ad72f373925e78` due to use of `checked_ilog` in
+  # `fuel-vm` 0.25.3.
+  {
+    condition = m: m.date >= "2023-02-03" || m.src.rev == "580b2212bd5fa9870c9fef11e0ad72f373925e78";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.67.0".default;
     };
   }
 ]
