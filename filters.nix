@@ -19,4 +19,5 @@ with pkgs.lib; [
   (m: m.pname != "fuel-core-client" || (versionAtLeast m.version "0.14.2" && m.date >= "2022-12-17"))
   (m: m.pname != "fuel-gql-cli" || (versionAtLeast m.version "0.9.0" && m.date < "2022-12-17"))
   (m: m.pname != "fuel-indexer" || versionAtLeast m.version "0.1.8")
+  (m: m.pname != "fuelup" || versionAtLeast m.version "0.1.0")
 ]

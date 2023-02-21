@@ -70,6 +70,7 @@ Includes the following packages:
 | [`forc-wallet`][forc-wallet-repo] | A Fuel Wallet CLI implementation. |
 | [`fuel-indexer`][fuel-indexer-repo] | An indexer for the Fuel blockchain. |
 | [`sway-vim`][sway-vim-repo] | The Sway Vim plugin. |
+| [`fuelup`][fuelup-repo] | The fuelup toolchain manager. Unnecessary if using fuel.nix |
 | `fuel` | All of the above tools under a single package. |
 
 If you have Nix installed with the "flakes" feature enabled, you can run any of
@@ -198,6 +199,7 @@ inspired by nixpkgs' `rustPlatform`.*
 [fuel-core-repo]: https://github.com/fuellabs/fuel-core
 [fuel-indexer-repo]: https://github.com/fuellabs/fuel-indexer
 [fuellabs-cachix]: https://app.cachix.org/cache/mitchmindtree-fuellabs
+[fuelup]: https://github.com/fuellabs/fuelup
 [nix-flakes]: https://nixos.wiki/wiki/Flakes
 [nix-manual]: https://nixos.org/manual/nix/stable/
 [rust-overlay-repo]: https://github.com/oxalica/rust-overlay

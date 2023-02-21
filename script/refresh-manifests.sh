@@ -23,6 +23,7 @@ declare -A fuel_repos=(
     [forc-wallet]="https://github.com/fuellabs/forc-wallet"
     [fuel-core]="https://github.com/fuellabs/fuel-core"
     [fuel-indexer]="https://github.com/fuellabs/fuel-indexer"
+    [fuelup]="https://github.com/fuellabs/fuelup"
     [sway]="https://github.com/fuellabs/sway"
     [sway-vim]="https://github.com/fuellabs/sway.vim"
 )
@@ -75,6 +76,10 @@ declare -A pkg_fuel_core_client=(
 declare -A pkg_fuel_indexer=(
     [name]="fuel-indexer"
     [repo]="${fuel_repos[fuel-indexer]}"
+)
+declare -A pkg_fuelup=(
+    [name]="fuelup"
+    [repo]="${fuel_repos[fuelup]}"
 )
 
 # Create a temporary directory for cloning repositories.
@@ -236,3 +241,4 @@ refresh pkg_forc_wallet
 refresh pkg_fuel_core
 refresh pkg_fuel_core_client
 refresh pkg_fuel_indexer
+refresh pkg_fuelup

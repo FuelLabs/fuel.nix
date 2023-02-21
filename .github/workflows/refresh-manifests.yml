@@ -58,7 +58,7 @@ jobs:
     needs: refresh-manifests
     strategy:
       matrix:
-        package: [fuel, fuel-beta-1, fuel-beta-2, fuel-beta-3, fuel-nightly, sway-vim]
+        package: [fuel, fuel-beta-1, fuel-beta-2, fuel-beta-3, fuel-nightly, fuelup, sway-vim]
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:

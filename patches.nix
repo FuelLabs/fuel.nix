@@ -69,9 +69,10 @@ in [
     };
   }
 
-  # Fuel-core tests run at their repo - no need to repeat them here.
+  # Fuel-core and fuelup tests run at their respective repos - no need to
+  # repeat them here.
   {
-    condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/fuel-core";
+    condition = m: pkgs.lib.any (url: m.src.gitRepoUrl == url) ["https://github.com/fuellabs/fuel-core" "https://github.com/fuellabs/fuelup"];
     patch = m: {
       doCheck = false; # Already tested at repo, causes longer build times.
     };
