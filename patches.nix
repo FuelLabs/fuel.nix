@@ -295,4 +295,12 @@ in [
       rust = pkgs.rust-bin.stable."1.67.0".default;
     };
   }
+
+  # As of ~2023-02-15, the fuel-indexer crates appear to require openssl.
+  {
+    condition = m: m.date >= "2023-02-15" && m.src.gitRepoUrl == "https://github.com/fuellabs/fuel-indexer";
+    patch = m: {
+      buildInputs = (m.buildInputs or []) ++ [pkgs.openssl];
+    };
+  }
 ]
