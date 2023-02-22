@@ -303,4 +303,20 @@ in [
       buildInputs = (m.buildInputs or []) ++ [pkgs.openssl];
     };
   }
+
+  # As of 2023-02-22, the indexer repo uses a branch of fuels for wasm support.
+  {
+    condition = m:
+      m.src.gitRepoUrl
+      == "https://github.com/fuellabs/fuel-indexer"
+      && pkgs.lib.versionAtLeast m.version "0.3.0"
+      && (m.date >= "2022-02-22" || m.src.rev == "30aab5fb7ab94d58a96dc9053426afc22c5bf68d");
+    patch = m: {
+      cargoLock.outputHashes = {
+        "fuels-0.36.1" = "sha256-e1j98Nnb9rv7uLqv2X/fGMKL+bmIAD1z1v+Q5uan/Kc=";
+        "fuels-core-0.36.1" = "sha256-e1j98Nnb9rv7uLqv2X/fGMKL+bmIAD1z1v+Q5uan/Kc=";
+        "fuels-signers-0.36.1" = "sha256-e1j98Nnb9rv7uLqv2X/fGMKL+bmIAD1z1v+Q5uan/Kc=";
+      };
+    };
+  }
 ]
