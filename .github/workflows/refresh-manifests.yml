@@ -22,7 +22,7 @@ jobs:
           name: mitchmindtree-fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Refresh manifests
-        timeout-minutes: 20
+        timeout-minutes: 60
         run: nix run .#refresh-manifests
       - name: Check and commit changes
         id: commit
