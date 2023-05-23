@@ -19,7 +19,7 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - uses: cachix/cachix-action@v12
         with:
-          name: mitchmindtree-fuellabs
+          name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Refresh manifests
         timeout-minutes: 60
@@ -68,6 +68,6 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - uses: cachix/cachix-action@v12
         with:
-          name: mitchmindtree-fuellabs
+          name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
