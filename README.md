@@ -23,9 +23,9 @@ NixOS configuration (i.e. `/etc/nixos/configuration.nix`) like so:
   nix = {
     settings = {
       experimental-features = ["nix-command" "flakes"];
-      substituters = ["https://mitchmindtree-fuellabs.cachix.org"];
+      substituters = ["https://fuellabs.cachix.org"];
       trusted-public-keys = [
-        "mitchmindtree-fuellabs.cachix.org-1:UDUQvwjM3wRCZe1chrgqAehb3M0M5x9qjpEwJwPn7Ik="
+        "fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8="
       ];
     };
   };
@@ -37,8 +37,8 @@ file (e.g.  `/etc/nix/nix.conf`):
 
 ```conf
 experimental-features = nix-command flakes
-substituters = https://cache.nixos.org/ https://mitchmindtree-fuellabs.cachix.org
-trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= mitchmindtree-fuellabs.cachix.org-1:UDUQvwjM3wRCZe1chrgqAehb3M0M5x9qjpEwJwPn7Ik=
+substituters = https://cache.nixos.org/ https://fuellabs.cachix.org
+trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY= fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8=
 ```
 
 On non-NixOS Linux systems, be sure to make sure that your user is part of the
@@ -197,7 +197,7 @@ inspired by nixpkgs' `rustPlatform`.*
 [forc-wallet-repo]: https://github.com/fuellabs/forc-wallet
 [fuel-core-repo]: https://github.com/fuellabs/fuel-core
 [fuel-indexer-repo]: https://github.com/fuellabs/fuel-indexer
-[fuellabs-cachix]: https://app.cachix.org/cache/mitchmindtree-fuellabs
+[fuellabs-cachix]: https://app.cachix.org/cache/fuellabs
 [nix-flakes]: https://nixos.wiki/wiki/Flakes
 [nix-manual]: https://nixos.org/manual/nix/stable/
 [rust-overlay-repo]: https://github.com/oxalica/rust-overlay
