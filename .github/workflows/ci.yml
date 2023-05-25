@@ -47,7 +47,7 @@ jobs:
           else
             system="${{ matrix.arch }}-darwin"
           fi
-          nix build --print-build-logs --no-update-lock-file --system $system .#${{ matrix.package }}
+          nix build --print-build-logs --no-update-lock-file --system $system --extra-extra-platforms $system .#${{ matrix.package }}
 
   nix-develop:
     needs: nix-build
