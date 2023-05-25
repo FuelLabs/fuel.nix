@@ -26,6 +26,7 @@ jobs:
 
   nix-build:
     strategy:
+      fail-fast: false
       matrix:
         package: [fuel, fuel-beta-1, fuel-beta-2, fuel-beta-3, fuel-nightly, sway-vim]
         arch: ["x86_64", "aarch64"]
