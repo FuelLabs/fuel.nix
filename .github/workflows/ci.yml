@@ -28,6 +28,7 @@ jobs:
     strategy:
       matrix:
         package: [fuel, fuel-beta-1, fuel-beta-2, fuel-beta-3, fuel-nightly, sway-vim]
+        arch: ["x86_64", "aarch64"]
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -39,7 +40,13 @@ jobs:
         with:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
+      - run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            system="${{ matrix.arch }}-linux"
+          else
+            system="${{ matrix.arch }}-darwin"
+          fi
+          nix build --print-build-logs --no-update-lock-file --system $system .#${{ matrix.package }}
 
   nix-develop:
     needs: nix-build
