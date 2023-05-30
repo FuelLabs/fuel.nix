@@ -127,7 +127,7 @@ docs](https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-profile.html)
 To specify a specific version, append the semver or nightly date to the end:
 
 ```
-nix run github:fuellabs/fuel.nix#forc-fmt-0.24.1
+nix run github:fuellabs/fuel.nix#forc-fmt-0-24-1
 ```
 ```
 nix run github:fuellabs/fuel.nix#forc-fmt-0-24-3-nightly-2022-09-14
