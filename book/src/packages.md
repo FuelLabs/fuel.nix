@@ -83,17 +83,6 @@ $ nix shell github:fuellabs/fuel.nix#fuel-beta-3
 
 ## Installing Packages
 
-> **NOTE:** Currently there's a bug where the `nix profile` command does not
-> work after initial installation due to a missing directory.
-> See [**this issue**](https://github.com/DeterminateSystems/nix-installer/issues/477).
->
-> As a temporary workaround, we must add the missing directory like so before
-> trying the following `nix profile` commands:
-> ```console
-> $ sudo mkdir /nix/var/nix/profiles/per-user/$USER
-> $ sudo chown $USER /nix/var/nix/profiles/per-user/$USER
-> ```
-
 To install fuel packages persistently for the current user:
 
 ```console
@@ -122,7 +111,15 @@ nix profile remove 3
 
 where `3` is the index of the package when running `nix profile list`.
 
-For more options around managing nix user profiles, see [the docs](https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-profile.html).
+For more options around managing nix user profiles, see [the
+docs](https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-profile.html).
+
+> **NOTE:** If a previous version of Nix was installed on the system, the
+> `nix profile` command may not work due to an old symlink being present in $HOME.
+> See [**this issue**](https://github.com/DeterminateSystems/nix-installer/issues/477).
+> If you encounter this issue, you can remedy it by deleting the `~/.nix-profile`
+> symlink so that the `nix profile` commands can recreate it with the correct
+> path.
 
 
 ## Specifying Versions
