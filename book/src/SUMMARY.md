@@ -14,4 +14,3 @@
     - [Providing Milestones](./contributing/internals/providing-milestones.md)
   - [Adding Packages](./contributing/adding-packages.md)
   - [Updating Packages](./contributing/updating-packages.md)
-  - [Adding Milestones](./contributing/adding-milestones.md)

@@ -19,8 +19,7 @@ At a very high level, **fuel.nix** does the following:
 
 Click on the links above to dive into more details on each step.
 
-Alternatively, jump ahead:
+Alternatively, for a quick look at adding or updating packages:
 
 - [**Adding Packages**](./adding-packages.html)
 - [**Updating Packages**](./updating-packages.html)
-- [**Adding Milestones**](./milestones.html)
