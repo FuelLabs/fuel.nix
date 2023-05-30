@@ -72,6 +72,10 @@ We can do so by adding a condition to the list of filters:
   # ...
 ```
 
+See the [Filtering
+Manifests](./internals/providing-packages.html#filtering-manifests) section for
+more details.
+
 ## Updating `./patches.nix`
 
 If necessary, add a custom patch for the new package including any necessary
@@ -89,6 +93,10 @@ unique attributes, environment variables, etc:
       };
     }
 ```
+
+For more details on how to apply manifest patches, see the
+[Patching Manifests](./internals/providing-packages.html#patching-manifests)
+section.
 
 ## Updating `./milestones.nix`
 
