@@ -28,3 +28,12 @@ While [providing packages](./providing-packages.html), milestones are used to
 provide a unique output for each package along with a dedicated package set.
 E.g. the above `beta-2` milestone is used to provide `fuel-core-beta-2` and
 `forc-beta-2` package aliases, as well as the extra `fuel-beta-2` package set.
+
+## CI
+
+To ensure we maintain availability of milestone binaries in the cache, we build
+each of the milestones under the CI workflow.
+
+Currently, the milestones are manually specified. As a result, they'll need
+to be updated upon adding new milestones, or removed when they're no longer
+officially supported.
