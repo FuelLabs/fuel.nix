@@ -29,7 +29,17 @@ provide a unique output for each package along with a dedicated package set.
 E.g. the above `beta-2` milestone is used to provide `fuel-core-beta-2` and
 `forc-beta-2` package aliases, as well as the extra `fuel-beta-2` package set.
 
-## CI
+# Adding milestones
+
+### Choosing Commits
+
+When selecting commits from each repository for a new milestone, it can be
+a good idea to do so from the top-down. I.e. First select a commit for the
+Sway repo, then select commits for repos with dependencies (e.g. fuel-core)
+by checking the versions that are tested under the Sway commit's integration
+testing.
+
+### CI
 
 To ensure we maintain availability of milestone binaries in the cache, we build
 each of the milestones under the CI workflow.
