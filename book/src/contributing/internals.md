@@ -23,3 +23,4 @@ Alternatively, for a quick look at adding or updating packages:
 
 - [**Adding Packages**](./adding-packages.html)
 - [**Updating Packages**](./updating-packages.html)
+- [**Updating Flake Inputs**](./updating-flake-inputs.html)

@@ -15,3 +15,4 @@
     - [Providing Milestones](./contributing/internals/providing-milestones.md)
   - [Adding Packages](./contributing/adding-packages.md)
   - [Updating Packages](./contributing/updating-packages.md)
+  - [Updating Flake Inputs](./contributing/updating-flake-inputs.md)
