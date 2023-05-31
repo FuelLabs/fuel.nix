@@ -26,6 +26,11 @@ Sway language server implementation
 nix develop github:fuellabs/fuel.nix#forc-lsp
 ```
 
-Note that currently the vim plugin still needs to be installed separately. See
+Currently the vim plugin still needs to be installed separately. See
 [the Overlays chapter](./overlays.html) and the [Nix Vim wiki](https://nixos.wiki/wiki/Vim)
 for more details.
+
+> **Note:** While these `devShell`s might be useful to get started on developing
+fuel packages, ideally each upstream package would provide its own `devShell`
+so that it may iterate on its own shell with more freedom (without editing these
+downstream `devShell`s).
