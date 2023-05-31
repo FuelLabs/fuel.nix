@@ -98,6 +98,10 @@ For more details on how to apply manifest patches, see the
 [Patching Manifests](./internals/providing-packages.html#patching-manifests)
 section.
 
+> **Tip:** Check the new package's upstream CI to get an idea of what system
+> dependencies, build inputs and environment setup might be required for the
+> patch.
+
 ## Updating `./milestones.nix`
 
 If the new package is provided from a new repository, ensure the new repository
