@@ -304,12 +304,12 @@ in [
     };
   }
 
-  # Try adding `CoreFoundation` to `nativeBuildInputs` to address recent CI error.
+  # Try adding `CoreFoundation` to `propagatedBuildInputs` to address recent CI error.
   {
     condition = m: m.date >= "2023-05-27" && pkgs.lib.hasInfix "darwin" pkgs.system;
     patch = m: {
-      nativeBuildInputs =
-        (m.nativeBuildInputs or [])
+      propagatedBuildInputs =
+        (m.propagatedBuildInputs or [])
         ++ [
           pkgs.darwin.apple_sdk.frameworks.CoreFoundation
         ];
