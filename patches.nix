@@ -303,4 +303,16 @@ in [
       buildInputs = (m.buildInputs or []) ++ [pkgs.openssl];
     };
   }
+
+  # Try adding `CoreFoundation` to `nativeBuildInputs` to address recent CI error.
+  {
+    condition = m: pkgs.lib.hasInfix "darwin" pkgs.system;
+    patch = m: {
+      nativeBuildInputs =
+        (m.nativeBuildInputs or [])
+        ++ [
+          pkgs.darwin.apple_sdk.frameworks.CoreFoundation
+        ];
+    };
+  }
 ]
