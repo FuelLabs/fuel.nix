@@ -303,16 +303,4 @@ in [
       buildInputs = (m.buildInputs or []) ++ [pkgs.openssl];
     };
   }
-
-  # Try adding `CoreFoundation` to `propagatedBuildInputs` to address recent CI error.
-  {
-    condition = m: m.date >= "2023-05-27" && pkgs.lib.hasInfix "darwin" pkgs.system;
-    patch = m: {
-      propagatedBuildInputs =
-        (m.propagatedBuildInputs or [])
-        ++ [
-          pkgs.darwin.apple_sdk.frameworks.CoreFoundation
-        ];
-    };
-  }
 ]
