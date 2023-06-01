@@ -306,7 +306,7 @@ in [
 
   # Try adding `CoreFoundation` to `nativeBuildInputs` to address recent CI error.
   {
-    condition = m: pkgs.lib.hasInfix "darwin" pkgs.system;
+    condition = m: m.date >= "2023-05-27" && pkgs.lib.hasInfix "darwin" pkgs.system;
     patch = m: {
       nativeBuildInputs =
         (m.nativeBuildInputs or [])
