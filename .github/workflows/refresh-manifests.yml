@@ -6,14 +6,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  refresh-manifests:
-    name: "Refresh manifests and sync channels"
+  refresh-and-upload-manifests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.0.2
-        with:
-          persist-credentials: false
-          ref: master
+      - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v20
         with:
           nix_path: nixpkgs=channel:nixos-unstable
@@ -21,48 +17,36 @@ jobs:
         with:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - name: Refresh manifests
-        timeout-minutes: 60
-        run: nix run .#refresh-manifests
-      - name: Check and commit changes
-        id: commit
-        continue-on-error: true
+      - run: nix run .#refresh-manifests
+        timeout-minutes: 120
+      - name: validate changed nix files
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add manifests
-          git commit -m "manifest: update"
-      - name: Validate nix files changed
-        if: steps.commit.outcome == 'success'
-        run: |
-          files=( $(git diff --name-only HEAD HEAD^ '*.nix') )
+          files=( $(git diff --name-only '*.nix') )
           echo "${#files[*]} nix files changed: ${files[*]}"
           if [[ "${#files[*]}" -ne 0 ]]; then
             nix-instantiate --parse "${files[@]}" >/dev/null
           fi
-      - name: Build fuel
-        run: nix build --print-build-logs --no-update-lock-file .#fuel
-      - name: Build fuel-nightly
-        run: nix build --print-build-logs --no-update-lock-file .#fuel-nightly
-      - name: Develop fuel-dev
-        run: nix develop --print-build-logs --no-update-lock-file .#fuel-dev
-      - name: Push changes
-        if: steps.commit.outcome == 'success'
-        uses: ad-m/github-push-action@master
+      - uses: actions/upload-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: master
+          name: manifests
+          path: manifests/
 
-  refresh-cache:
-    name: "Refresh cache for all platforms"
-    needs: refresh-manifests
+  download-manifests-and-nix-build:
+    needs: refresh-and-upload-manifests
     strategy:
+      fail-fast: false
       matrix:
-        package: [fuel, fuel-beta-1, fuel-beta-2, fuel-beta-3, fuel-nightly, sway-vim]
+        package: [fuel, fuel-beta-1, fuel-beta-2, fuel-beta-3, fuel-nightly]
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v2.4.0
+      - uses: actions/checkout@v3
+      - run: rm -r manifests
+      - uses: actions/download-artifact@v3
+        with:
+          name: manifests
+      - name: stage manifests for nix build
+        run: git add manifests
       - uses: cachix/install-nix-action@v20
         with:
           nix_path: nixpkgs=channel:nixos-unstable
@@ -71,3 +55,27 @@ jobs:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
+
+  download-manifests-and-commit:
+    needs: [refresh-and-upload-manifests, download-manifests-and-build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+          ref: master
+      - run: rm -r ./manifests
+      - uses: actions/download-artifact@v3
+        with:
+          name: manifests
+      - name: Check and commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add manifests
+          git commit -m "manifest: update"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: master
