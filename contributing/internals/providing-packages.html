@@ -1,0 +1,345 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Providing Packages - fuel.nix</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../welcome.html"><strong aria-hidden="true">1.</strong> Welcome</a></li><li class="chapter-item expanded "><a href="../../quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li class="chapter-item expanded "><a href="../../nix-setup.html"><strong aria-hidden="true">3.</strong> Nix Setup</a></li><li class="chapter-item expanded "><a href="../../packages.html"><strong aria-hidden="true">4.</strong> Packages</a></li><li class="chapter-item expanded "><a href="../../nix-power-users.html"><strong aria-hidden="true">5.</strong> Nix Power Users</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../nix-power-users/dev-shells.html"><strong aria-hidden="true">5.1.</strong> Dev Shells</a></li><li class="chapter-item expanded "><a href="../../nix-power-users/overlays.html"><strong aria-hidden="true">5.2.</strong> Overlays</a></li><li class="chapter-item expanded "><a href="../../nix-power-users/editor-plugins.html"><strong aria-hidden="true">5.3.</strong> Editor Plugins</a></li></ol></li><li class="chapter-item expanded "><a href="../../contributing.html"><strong aria-hidden="true">6.</strong> Contributing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../contributing/internals.html"><strong aria-hidden="true">6.1.</strong> Internals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../contributing/internals/generating-manifests.html"><strong aria-hidden="true">6.1.1.</strong> Generating Manifests</a></li><li class="chapter-item expanded "><a href="../../contributing/internals/providing-packages.html" class="active"><strong aria-hidden="true">6.1.2.</strong> Providing Packages</a></li><li class="chapter-item expanded "><a href="../../contributing/internals/providing-milestones.html"><strong aria-hidden="true">6.1.3.</strong> Providing Milestones</a></li></ol></li><li class="chapter-item expanded "><a href="../../contributing/adding-packages.html"><strong aria-hidden="true">6.2.</strong> Adding Packages</a></li><li class="chapter-item expanded "><a href="../../contributing/updating-packages.html"><strong aria-hidden="true">6.3.</strong> Updating Packages</a></li><li class="chapter-item expanded "><a href="../../contributing/updating-flake-inputs.html"><strong aria-hidden="true">6.4.</strong> Updating Flake Inputs</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">fuel.nix</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="providing-packages"><a class="header" href="#providing-packages">Providing Packages</a></h1>
+<p><strong>fuel.nix</strong> provides packages as <a href="https://nixos.wiki/wiki/Flakes">Nix flake <code>package</code> outputs</a>.</p>
+<h1 id="overview"><a class="header" href="#overview">Overview</a></h1>
+<p>The way in which <strong>fuel.nix</strong> creates package outputs is as follows:</p>
+<ol>
+<li>Load all manifests from the <code>./manifests/</code> directory (see <a href="./generating-manifests.html">Generating
+Manifests</a>).</li>
+<li>Filter out manifests for package versions that are known to be broken, or
+untested versions that are older than <strong>fuel.nix</strong> itself, by applying the
+list of conditions in <code>./filters.nix</code>.</li>
+<li>Patch the remaining manifests with their necessary build inputs (e.g.
+openssl, rust, etc) and environment variables based on the list of patches in
+<code>./patches.nix</code>.</li>
+<li>Split manifests into <code>published</code> (e.g. <code>forc-0-28-0</code>) and <code>nightly</code> (e.g.
+<code>fuel-core-0-18-0-nightly-2023-05-04</code>) sets based on their file suffix.</li>
+<li>Pass the resulting sets of manifests to <code>mkPackages</code> and use the
+<a href="https://github.com/NixOS/nixpkgs/blob/58c85835512b0db938600b6fe13cc3e3dc4b364e/doc/languages-frameworks/rust.section.md"><code>buildRustPackage</code></a> function to build a unique package
+for each.</li>
+<li>Create special packages for each package <em>set</em> using
+<a href="https://nixos.org/manual/nixpkgs/stable/#trivial-builder-symlinkJoin"><code>symlinkJoin</code></a>, e.g. <code>fuel-latest</code> (aliased to <code>fuel</code>) and
+<code>fuel-nightly</code>.</li>
+</ol>
+<p>The following shares some more details on each stage.</p>
+<h1 id="filtering-manifests"><a class="header" href="#filtering-manifests">Filtering Manifests</a></h1>
+<p>After loading all manifests into a list by reading them from the
+<code>./manifests/</code> directory, we first apply the filters to cull versions that are
+known to be broken or that are too old.</p>
+<p>Filters are a list of conditions loaded from the <code>./filters.nix</code> file. Only
+manifests that satisfy all of these conditions will be used to provide
+packages.</p>
+<p>Conditions are functions where given a manifest <code>m</code>, return whether or not the
+manifest should be included.</p>
+<p>The following is an example of one of the conditions in <code>./filters.nix</code>:</p>
+<pre><code class="language-nix">  (m: m.pname != &quot;forc&quot; || versionAtLeast m.version &quot;0.19.0&quot;)
+</code></pre>
+<p>This condition implies that only <code>forc</code> versions that are at least <code>0.19.0</code>
+or greater will be included. This means <code>nix build .#forc-0-19-0</code> should work,
+though <code>nix build .#forc-0-17-0</code> will not.</p>
+<h1 id="patching-manifests"><a class="header" href="#patching-manifests">Patching Manifests</a></h1>
+<p>After filtering out unnecessary or known-broken manifests, we build up the
+remaining manifests by applying the list of patches loaded from <code>./patches.nix</code>.</p>
+<p>Each patch includes:</p>
+<ol>
+<li>A <code>condition</code> that must be met for the patch to be applied and</li>
+<li>A <code>patch</code> function that provides the extra attributes that should be merged
+into the existing manifest.</li>
+</ol>
+<p>All patches are applied to all manifests in the order in which they are declared
+in the <code>patches.nix</code> list, provided that they meet the patch's condition.</p>
+<h3 id="using-patches-to-fix-manifests"><a class="header" href="#using-patches-to-fix-manifests">Using Patches to Fix Manifests</a></h3>
+<p>The following is an example taken from <code>patches.nix</code> that applies a fix for a
+known broken <code>forc-wallet</code> version:</p>
+<pre><code class="language-nix">  # A patch for some `forc-wallet` nightlies whose committed `Cargo.lock` file
+  # was out of date.
+  {
+    condition = m: m.pname == &quot;forc-wallet&quot; &amp;&amp; m.version == &quot;0.1.0&quot; &amp;&amp; m.date &lt; &quot;2022-09-04&quot;;
+    patch = m: {
+      cargoPatches = [
+        ./patch/forc-wallet-0.1.0-update-lock.patch
+      ];
+      cargoHash = &quot;sha256-LXQaPcpf/n1RRFTQXAP6PexfEI67U2Z5OOW5DzNJvX8=&quot;;
+      cargoLock = null;
+    };
+  }
+</code></pre>
+<p>As the condition suggests, the patch is only applied to <code>forc-wallet</code> manifests
+with a version equal to <code>0.1.0</code> and whose commit date precedes 2022-09-04.</p>
+<h3 id="using-patches-to-extend-manifests"><a class="header" href="#using-patches-to-extend-manifests">Using Patches to Extend Manifests</a></h3>
+<p>Patches are not only used to <em>fix</em> existing manifests, but also to build up
+commonly required attributes in a simple manner. For example, the following
+patch is the first patch in the list:</p>
+<pre><code class="language-nix">  # By default, most packages have their `Cargo.lock` file in the repo root.
+  # We also specify a base, minimum Rust version. This version should never
+  # change in order to avoid invalidating the cache for all previously built
+  # packages. Instead, if a new version of a fuel package requires a newer
+  # version of Rust, we should specify the necessary condition in a new patch
+  # to ensure only newer packages use the newer version of Rust.
+  {
+    condition = m: true;
+    patch = m: {
+      cargoLock.lockFile = &quot;${m.src}/Cargo.lock&quot;;
+      meta.homepage = m.src.gitRepoUrl;
+      rust = pkgs.rust-bin.stable.&quot;1.63.0&quot;.default;
+    };
+  }
+</code></pre>
+<p>As the condition implies, this patch is currently applied to <em>all</em> manifests.
+The patch function provides some commonly useful attributes for building Rust
+packages, i.e. the common location for the lock file, the default version of
+Rust, and some package metadata about where the repository is located.</p>
+<blockquote>
+<p><strong>Note:</strong> This condition may need to be changed in the future when aiming to
+support distributing non-Rust Fuel projects from <code>fuel.nix</code>.</p>
+</blockquote>
+<h3 id="adding-or-changing-patches"><a class="header" href="#adding-or-changing-patches">Adding or Changing Patches</a></h3>
+<p>In general, it is better to add new patches with conditions that only apply to
+newer packages when accounting for newly introduced dependencies or changes to
+a package's build environment.</p>
+<p>This approach ensures we don't accidentally break older versions of packages,
+and allows us to isolate each change clearly with its own entry in the list.</p>
+<p>Here's a patch that was added to account for an update in the Rust version used:</p>
+<pre><code class="language-nix">  # `fuel-core` needs Rust 1.64 as of bcb86da09b6fdce09f13ef4181a0ca6461f8e2a8.
+  # This changes the Rust used for all pkgs to 1.64 from the day of the commit.
+  {
+    condition = m: m.date &gt;= &quot;2022-09-23&quot;;
+    patch = m: {
+      rust = pkgs.rust-bin.stable.&quot;1.64.0&quot;.default;
+    };
+  }
+</code></pre>
+<p>It avoids breaking older versions by only applying the patch to manifests whose
+commits after dated after 2022-09-23.</p>
+<h3 id="overriding-attributes"><a class="header" href="#overriding-attributes">Overriding Attributes</a></h3>
+<p>The example above also demonstrates how attributes can be overridden. In the
+previous patch example above, the <code>rust</code> attribute was set to version <code>1.63.0</code>,
+however the patch above overrides this attribute for all manifests created on or
+after 2023-09-23, setting the version to <code>1.64.0</code>.</p>
+<p>Multiple Rust version changes can be found throughout <code>patches.nix</code> that
+override the version following a particular date.</p>
+<h1 id="building-packages"><a class="header" href="#building-packages">Building Packages</a></h1>
+<p>Now that we have our final sets of manifests, we can build our flake's package
+outputs from them.</p>
+<p>This involves mapping the manifests we constructed with the <code>buildRustPackage</code>
+function provided by the Rust platform. This is all performed within the flake's
+<code>mkPackages</code> function.</p>
+<p>Package outputs are created for the published and nightly releases of each
+individual package (e.g. <code>forc-0-28-0</code>, <code>fuel-core-0-18-0-nightly-2023-05-04</code>).</p>
+<blockquote>
+<p><strong>Note:</strong> The use of hyphens for delineating semver versions rather than
+periods! This can be a common gotcha when trying to use packages. E.g. <code>nix run .#forc-0.18.0</code> is invalid, but <code>nix run .#forc-0-18-0</code> is valid.</p>
+</blockquote>
+<h3 id="package-sets"><a class="header" href="#package-sets">Package Sets</a></h3>
+<p>Unique packages are also created for each of the common package <em>sets</em>. These
+can be thought of as packages that provide multiple other packges at once.</p>
+<p>Most notably, we provide:</p>
+<ul>
+<li><strong><code>fuel</code></strong> (aliased from <code>fuel-latest</code>) - Provides the latest semver version
+of every Fuel tool.</li>
+<li><strong><code>fuel-nightly</code></strong> - Provides the latest nightly version of every Fuel tool.</li>
+</ul>
+<p>Sets are also provided for each milestone, however this is covered in the
+<a href="./providing-milestones.html">Providing Milestones</a> chapter.</p>
+<h3 id="other-packages"><a class="header" href="#other-packages">Other Packages</a></h3>
+<p>While <code>mkPackages</code> mostly focuses on generating package outputs for all of
+Fuel's Rust packages, it also provides a couple of &quot;hand-written&quot; packages:</p>
+<ol>
+<li><code>refresh-manifests</code> - This is a small package for the script used to refresh
+the manifests under the <code>./manifests/</code> directory.</li>
+<li><code>sway-vim</code> - A Vim plugin derivation for NixOS or Nix home-manager users who
+want to configure Vim in their Nix configuration.</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../contributing/internals/generating-manifests.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../../contributing/internals/providing-milestones.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../contributing/internals/generating-manifests.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../../contributing/internals/providing-milestones.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

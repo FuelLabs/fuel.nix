@@ -1,0 +1,252 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Updating Flake Inputs - fuel.nix</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../welcome.html"><strong aria-hidden="true">1.</strong> Welcome</a></li><li class="chapter-item expanded "><a href="../quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li class="chapter-item expanded "><a href="../nix-setup.html"><strong aria-hidden="true">3.</strong> Nix Setup</a></li><li class="chapter-item expanded "><a href="../packages.html"><strong aria-hidden="true">4.</strong> Packages</a></li><li class="chapter-item expanded "><a href="../nix-power-users.html"><strong aria-hidden="true">5.</strong> Nix Power Users</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix-power-users/dev-shells.html"><strong aria-hidden="true">5.1.</strong> Dev Shells</a></li><li class="chapter-item expanded "><a href="../nix-power-users/overlays.html"><strong aria-hidden="true">5.2.</strong> Overlays</a></li><li class="chapter-item expanded "><a href="../nix-power-users/editor-plugins.html"><strong aria-hidden="true">5.3.</strong> Editor Plugins</a></li></ol></li><li class="chapter-item expanded "><a href="../contributing.html"><strong aria-hidden="true">6.</strong> Contributing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contributing/internals.html"><strong aria-hidden="true">6.1.</strong> Internals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contributing/internals/generating-manifests.html"><strong aria-hidden="true">6.1.1.</strong> Generating Manifests</a></li><li class="chapter-item expanded "><a href="../contributing/internals/providing-packages.html"><strong aria-hidden="true">6.1.2.</strong> Providing Packages</a></li><li class="chapter-item expanded "><a href="../contributing/internals/providing-milestones.html"><strong aria-hidden="true">6.1.3.</strong> Providing Milestones</a></li></ol></li><li class="chapter-item expanded "><a href="../contributing/adding-packages.html"><strong aria-hidden="true">6.2.</strong> Adding Packages</a></li><li class="chapter-item expanded "><a href="../contributing/updating-packages.html"><strong aria-hidden="true">6.3.</strong> Updating Packages</a></li><li class="chapter-item expanded "><a href="../contributing/updating-flake-inputs.html" class="active"><strong aria-hidden="true">6.4.</strong> Updating Flake Inputs</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">fuel.nix</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="updating-flake-inputs"><a class="header" href="#updating-flake-inputs">Updating Flake Inputs</a></h1>
+<p>Nix flakes can be thought of as a collection of pure functions that produce a
+plan for how to provide packages, devShells and other outputs.</p>
+<p>Any external inputs to these functions must be declared as a part of the flake
+inputs. Apart from these, only files available within the flake's repository (or
+<a href="https://nixos.org/manual/nixpkgs/stable/#chap-pkgs-fetchers">fetchers</a> that can
+verify reproducibility of the fetched content using a hash) may be used to
+construct flake outputs.</p>
+<p>Here's what <strong>fuel.nix</strong>'s flake inputs look like today:</p>
+<pre><code class="language-nix">  inputs = {
+    nixpkgs = {
+      url = &quot;github:NixOS/nixpkgs/nixos-unstable&quot;;
+    };
+    rust-overlay = {
+      url = &quot;github:oxalica/rust-overlay/master&quot;;
+      inputs.nixpkgs.follows = &quot;nixpkgs&quot;;
+    };
+    sway-vim-src = {
+      url = &quot;github:fuellabs/sway.vim&quot;;
+      flake = false;
+    };
+    utils = {
+      url = &quot;github:numtide/flake-utils&quot;;
+    };
+  };
+</code></pre>
+<p>Our inputs include:</p>
+<ul>
+<li><code>nixpkgs</code> - The main nix package repository, providing most packages you could
+imagine.</li>
+<li><code>rust-overlay</code> - A nixpkgs overlay for providing more fine-grained control
+over selecting Rust versions, choosing components, etc. It can be thought of as
+a nix-esque version of rustup.</li>
+<li><code>sway-vim-src</code> - Unlike the other fuel packages, we only provide the latest
+version of the sway-vim plugin. This input provides the repo for the plugin.</li>
+<li><code>utils</code> - Some flake utility functions that make it a little easier to provide
+outputs for multiple different systems.</li>
+</ul>
+<h2 id="updating-inputs"><a class="header" href="#updating-inputs">Updating Inputs</a></h2>
+<p>Inputs are <strong>locked</strong> to a set of commits via the <code>flake.lock</code> file.
+Occasionally it might be necessary to update nixpkgs or rust-overlay in order
+to get access to some new version of Rust, a new openssl version with a security
+patch, etc.</p>
+<p>To update <em>all</em> inputs:</p>
+<pre><code class="language-console">nix flake update
+</code></pre>
+<p>To update a single input:</p>
+<pre><code class="language-console">nix flake lock --update-input nixpkgs
+</code></pre>
+<p>After updating, be sure to commit the changes to the lock file (CI should fail
+if you forget). It's best to update inputs in a dedicated PR, as doing so may
+have implications on the way package's are built.</p>
+<h3 id="cache-implications"><a class="header" href="#cache-implications">Cache Implications</a></h3>
+<p>It's worth keeping in mind that updating inputs will result in new derivations
+for existing packages in the case that existing packages use something provided
+by the updated input that might have changed. As a result, it's better to update
+<code>nixpkgs</code> only as necessary.</p>
+<p>A possible future solution to this might be to update nixpkgs versions in
+the same way that we update Rust versions, i.e. using <code>patches.nix</code>. This may
+require a bit of a refactor of <code>patches.nix</code> (e.g. fetch nixpkgs at pinned
+commits internally using <a href="https://nixos.org/manual/nixpkgs/stable/#fetchfromgithub"><code>fetchFromGitHub</code></a>, rather than passing in <code>pkgs</code> as an
+input), and would likely still require at least one version of nixpkgs as an
+input in order to provide useful nix functions via <code>lib</code> outside of the package
+outputs.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../contributing/updating-packages.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../contributing/updating-packages.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
