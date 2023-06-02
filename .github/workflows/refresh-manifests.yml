@@ -58,7 +58,7 @@ jobs:
       - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
 
   download-manifests-and-commit:
-    needs: [refresh-and-upload-manifests, download-manifests-and-build]
+    needs: [refresh-and-upload-manifests, download-manifests-and-nix-build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
