@@ -18,15 +18,15 @@ jobs:
         with:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - run: nix run .#refresh-manifests
-        timeout-minutes: 120
-      - name: validate changed nix files
-        run: |
-          files=( $(git diff --name-only '*.nix') )
-          echo "${#files[*]} nix files changed: ${files[*]}"
-          if [[ "${#files[*]}" -ne 0 ]]; then
-            nix-instantiate --parse "${files[@]}" >/dev/null
-          fi
+      # - run: nix run .#refresh-manifests
+      #   timeout-minutes: 120
+      # - name: validate changed nix files
+      #   run: |
+      #     files=( $(git diff --name-only '*.nix') )
+      #     echo "${#files[*]} nix files changed: ${files[*]}"
+      #     if [[ "${#files[*]}" -ne 0 ]]; then
+      #       nix-instantiate --parse "${files[@]}" >/dev/null
+      #     fi
       - uses: actions/upload-artifact@v3
         with:
           name: manifests
@@ -46,8 +46,10 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: manifests
+          path: manifests/
       - name: stage manifests for nix build
-        run: git add manifests
+        run: git add -v manifests
+      - run: nix flake show
       - uses: cachix/install-nix-action@v20
         with:
           nix_path: nixpkgs=channel:nixos-unstable
