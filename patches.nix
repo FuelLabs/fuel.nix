@@ -303,4 +303,12 @@ in [
       buildInputs = (m.buildInputs or []) ++ [pkgs.openssl];
     };
   }
+
+  # `forc-client` requires Rust 1.68 as of 0.40.1.
+  {
+    condition = m: m.date >= "2023-05-30";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.68.0".default;
+    };
+  }
 ]
