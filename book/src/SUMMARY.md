@@ -1,0 +1,18 @@
+# Summary
+
+- [Welcome](./welcome.md)
+- [Quick Start](./quick-start.md)
+- [Nix Setup](./nix-setup.md)
+- [Packages](./packages.md)
+- [Nix Power Users](./nix-power-users.md)
+  - [Dev Shells](./nix-power-users/dev-shells.md)
+  - [Overlays](./nix-power-users/overlays.md)
+  - [Editor Plugins](./nix-power-users/editor-plugins.md)
+- [Contributing](./contributing.md)
+  - [Internals](./contributing/internals.md)
+    - [Generating Manifests](./contributing/internals/generating-manifests.md)
+    - [Providing Packages](./contributing/internals/providing-packages.md)
+    - [Providing Milestones](./contributing/internals/providing-milestones.md)
+  - [Adding Packages](./contributing/adding-packages.md)
+  - [Updating Packages](./contributing/updating-packages.md)
+  - [Updating Flake Inputs](./contributing/updating-flake-inputs.md)

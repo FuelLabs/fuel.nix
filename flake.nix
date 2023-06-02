@@ -219,6 +219,11 @@
     };
 
     mkDevShells = pkgs: fuelpkgs: rec {
+      book-dev = pkgs.mkShell {
+        name = "book-dev";
+        buildInputs = [pkgs.mdbook];
+      };
+
       fuel-core-dev = pkgs.mkShell {
         name = "fuel-core-dev";
         inputsFrom = with fuelpkgs; [
@@ -264,6 +269,7 @@
         inherit (fuel-core-dev) LIBCLANG_PATH ROCKSDB_LIB_DIR PROTOC NIX_CFLAGS_COMPILE;
         inherit (fuel-indexer-dev) SQLX_OFFLINE;
       };
+
       default = fuel-dev;
     };
 
