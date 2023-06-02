@@ -18,15 +18,15 @@ jobs:
         with:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      # - run: nix run .#refresh-manifests
-      #   timeout-minutes: 120
-      # - name: validate changed nix files
-      #   run: |
-      #     files=( $(git diff --name-only '*.nix') )
-      #     echo "${#files[*]} nix files changed: ${files[*]}"
-      #     if [[ "${#files[*]}" -ne 0 ]]; then
-      #       nix-instantiate --parse "${files[@]}" >/dev/null
-      #     fi
+      - run: nix run .#refresh-manifests
+        timeout-minutes: 120
+      - name: validate changed nix files
+        run: |
+          files=( $(git diff --name-only '*.nix') )
+          echo "${#files[*]} nix files changed: ${files[*]}"
+          if [[ "${#files[*]}" -ne 0 ]]; then
+            nix-instantiate --parse "${files[@]}" >/dev/null
+          fi
       - uses: actions/upload-artifact@v3
         with:
           name: manifests
@@ -56,7 +56,6 @@ jobs:
         with:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - run: nix flake show
       - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
 
   download-manifests-and-commit:
@@ -71,6 +70,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: manifests
+          path: manifests/
       - name: Check and commit changes
         run: |
           git config --local user.email "action@github.com"
