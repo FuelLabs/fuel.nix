@@ -190,7 +190,7 @@ in [
       buildInputs =
         (m.buildInputs or [])
         ++ [
-          pkgs.darwin.apple_sdk.frameworks.CoreServices
+          pkgs.darwin.apple_sdk_11_0.frameworks.CoreServices
         ];
     };
   }
