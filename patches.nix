@@ -94,6 +94,7 @@ in [
       nativeBuildInputs =
         (m.nativeBuildInputs or [])
         ++ [
+	  pkgs.libgit2
           pkgs.perl # for openssl-sys
           pkgs.pkg-config # for openssl-sys
         ];
