@@ -96,7 +96,7 @@ in [
         ++ [
           pkgs.perl # for openssl-sys
           pkgs.pkg-config # for openssl-sys
-	  pkgs.libssh2
+          pkgs.libssh2
         ];
     };
   }

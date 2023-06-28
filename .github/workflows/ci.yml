@@ -28,8 +28,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [fuel, fuel-beta-1, fuel-beta-2, fuel-beta-3, fuel-nightly, sway-vim]
-        os: [ubuntu-latest, macos-latest]
+        package: [forc]
+        os: [ubuntu-latest, macos-13]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2.4.0
@@ -46,7 +46,7 @@ jobs:
     needs: nix-build
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-13]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2.4.0
