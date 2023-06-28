@@ -94,7 +94,6 @@ in [
       nativeBuildInputs =
         (m.nativeBuildInputs or [])
         ++ [
-          pkgs.libgit2
           pkgs.perl # for openssl-sys
           pkgs.pkg-config # for openssl-sys
         ];
@@ -149,6 +148,9 @@ in [
           pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
           pkgs.darwin.apple_sdk_11_0.frameworks.Security
           pkgs.darwin.apple_sdk_11_0.frameworks.SystemConfiguration
+          pkgs.darwin.apple_sdk.frameworks.CoreFoundation
+          pkgs.darwin.apple_sdk.frameworks.Security
+          pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
         ];
     };
   }
