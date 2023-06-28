@@ -99,7 +99,6 @@ in [
           pkgs.libssh2 # for git2-rs
           pkgs.libgit2 # for git2-rs
         ];
-      CARGO_FEATURE_VENDORED = 1;
     };
   }
 
