@@ -96,8 +96,10 @@ in [
         ++ [
           pkgs.perl # for openssl-sys
           pkgs.pkg-config # for openssl-sys
-          pkgs.libssh2
+          pkgs.libssh2 # for git2-rs
+          pkgs.libgit2 # for git2-rs
         ];
+      CARGO_FEATURE_VENDORED = 1;
     };
   }
 
@@ -146,9 +148,9 @@ in [
       buildInputs =
         (m.buildInputs or [])
         ++ [
-          pkgs.darwin.apple_sdk.frameworks.CoreFoundation
-          pkgs.darwin.apple_sdk.frameworks.Security
-          pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
+          pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
+          pkgs.darwin.apple_sdk_11_0.frameworks.Security
+          pkgs.darwin.apple_sdk_11_0.frameworks.SystemConfiguration
         ];
     };
   }
@@ -191,7 +193,7 @@ in [
       buildInputs =
         (m.buildInputs or [])
         ++ [
-          pkgs.darwin.apple_sdk.frameworks.CoreServices
+          pkgs.darwin.apple_sdk_11_0.frameworks.CoreServices
         ];
     };
   }
