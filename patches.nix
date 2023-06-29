@@ -97,7 +97,9 @@ in [
           pkgs.perl # for openssl-sys
           pkgs.pkg-config # for openssl-sys
           pkgs.libssh2 # for git2-rs
-          pkgs.libgit2 # for git2-rs
+          pkgs.libgit2-1
+          .5
+          .1 # for git2-rs
         ];
     };
   }
