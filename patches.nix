@@ -311,4 +311,17 @@ in [
       rust = pkgs.rust-bin.stable."1.68.0".default;
     };
   }
+  # As of ~2023-05-30, `forc` requires apple sdk 11 for darwin builds.
+  {
+    condition = m: pkgs.lib.hasInfix "darwin" pkgs.system && m.date >= "2023-05-30";
+    patch = m: {
+      buildInputs =
+        (m.buildInputs or [])
+        ++ [
+          pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
+          pkgs.darwin.apple_sdk_11_0.frameworks.Security
+          pkgs.darwin.apple_sdk_11_0.frameworks.SystemConfiguration
+        ];
+    };
+  }
 ]
