@@ -9,6 +9,14 @@
     "forc-lsp"
     "forc-tx"
   ];
+  libgit2 = pkgs.libgit2.overrideAttrs (old: {
+    src = pkgs.fetchFromGitHub {
+      owner = "libgit2";
+      repo = "libgit2";
+      rev = "v1.5.1";
+      sha256 = "sha256-KzBMwpqn6wUFhgB3KDclBS0BvZSVcasM5AG/y+L91xM=";
+    };
+  });
 in [
   # By default, most packages have their `Cargo.lock` file in the repo root.
   # We also specify a base, minimum Rust version. This version should never
@@ -97,9 +105,7 @@ in [
           pkgs.perl # for openssl-sys
           pkgs.pkg-config # for openssl-sys
           pkgs.libssh2 # for git2-rs
-          pkgs.libgit2-1
-          .5
-          .1 # for git2-rs
+          libgit2
         ];
     };
   }
