@@ -9,11 +9,11 @@
     "forc-lsp"
     "forc-tx"
   ];
-  libgit2 = pkgs.libgit2.overrideAttrs (old: {
+  libgit2-1_5_1 = pkgs.libgit2.overrideAttrs (old: {
     src = pkgs.fetchFromGitHub {
       owner = "libgit2";
       repo = "libgit2";
-      rev = "v1.5.1";
+      rev = "42e5db98b963ae503229c63e44e06e439df50e56";
       sha256 = "sha256-KzBMwpqn6wUFhgB3KDclBS0BvZSVcasM5AG/y+L91xM=";
     };
   });
@@ -105,7 +105,7 @@ in [
           pkgs.perl # for openssl-sys
           pkgs.pkg-config # for openssl-sys
           pkgs.libssh2 # for git2-rs
-          libgit2
+          libgit2-1_5_1
         ];
     };
   }
