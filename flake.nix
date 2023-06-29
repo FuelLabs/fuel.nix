@@ -5,7 +5,8 @@
 
   inputs = {
     nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-unstable";
+      # Until fuel binaries bump their git2-rs version, build with libgit2-1.5.1 and pin nixpkgs to the correct revision
+      url = "github:NixOS/nixpkgs?branch=nixos-unstable?rev=8ad5e8132c5dcf977e308e7bf5517cc6cc0bf7d8";
     };
     rust-overlay = {
       url = "github:oxalica/rust-overlay/master";
