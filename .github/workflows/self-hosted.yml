@@ -1,0 +1,18 @@
+name: self-hosted-test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  self-hosted-test:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - name: Run a hello world script
+        run: |
+        echo Hello World!
+        sleep 10
+        echo Goodbye!
