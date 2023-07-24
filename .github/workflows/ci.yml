@@ -44,9 +44,9 @@ jobs:
 
   nix-develop:
     needs: nix-build
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, nix-build-macos-arm]
+    # strategy:
+    #   matrix:
+    #     os: [ubuntu-latest, macos-latest, nix-build-macos-arm]
     # runs-on: ${{ matrix.os }}
     runs-on: self-hosted
     steps:
