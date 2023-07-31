@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   self-hosted-test:
-    runs-on: [self-hosted, macos-arm, main-runner]
+    runs-on: [self-hosted, macos-arm]
     steps:
       - run: echo Hello world!
 
