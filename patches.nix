@@ -311,4 +311,11 @@ in [
       rust = pkgs.rust-bin.stable."1.68.0".default;
     };
   }
+  # `forc-wallet` requires Rust 1.70 as of ~2023-07-20
+  {
+    condition = m: m.date >= "2023-07-20";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.70.0".default;
+    };
+  }
 ]
