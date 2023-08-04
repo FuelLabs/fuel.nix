@@ -311,4 +311,12 @@ in [
       rust = pkgs.rust-bin.stable."1.68.0".default;
     };
   }
+
+  # `forc` requires Rust 1.70 as of ~2023-07-01
+  {
+    condition = m: m.date >= "2023-07-01";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.70.0".default;
+    };
+  }
 ]
