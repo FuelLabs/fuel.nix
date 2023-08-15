@@ -13,7 +13,6 @@ jobs:
       - uses: cachix/install-nix-action@v22
         with:
           nix_path: nixpkgs=channel:nixos-unstable
-          extra_nix_config: trusted-users = root runner josh kayagokalp
       - name: build
         run: nix develop --print-build-logs --no-update-lock-file .#book-dev --command mdbook build book
       - name: deploy
