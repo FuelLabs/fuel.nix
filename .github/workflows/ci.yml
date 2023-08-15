@@ -50,7 +50,7 @@ jobs:
         with:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-          installCommand: nix profile --quiet -j8 -iA cachix -f https://cachix.org/api/v1/install
+          installCommand: nix profile --quiet -j8 -i cachix -f https://cachix.org/api/v1/install
       - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
 
   nix-develop:
