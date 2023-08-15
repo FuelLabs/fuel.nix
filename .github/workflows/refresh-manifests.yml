@@ -17,6 +17,7 @@ jobs:
         with:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          installCommand: nix profile install nixpkgs#cachix
       - run: nix run .#refresh-manifests
         timeout-minutes: 120
       - name: validate changed nix files
@@ -64,6 +65,7 @@ jobs:
         with:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          installCommand: nix profile install nixpkgs#cachix
       - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
 
   download-manifests-and-commit:
