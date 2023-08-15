@@ -15,9 +15,9 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - if: matrix.os == 'macos-arm'
         run: |
-          echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf
-          sudo launchctl stop org.nixos.nix-daemon
-          sudo launchctl start org.nixos.nix-daemon
+          echo "trusted-users = root $USER" | tee -a /etc/nix/nix.conf
+          launchctl stop org.nixos.nix-daemon
+          launchctl start org.nixos.nix-daemon
       - uses: cachix/cachix-action@v12
         with:
           name: fuellabs
@@ -68,9 +68,9 @@ jobs:
           nix_path: nixpkgs=channel:nixos-unstable
       - if: matrix.os == 'macos-arm'
         run: |
-          echo "trusted-users = root $USER" | sudo tee -a /etc/nix/nix.conf
-          sudo launchctl stop org.nixos.nix-daemon
-          sudo launchctl start org.nixos.nix-daemon
+          echo "trusted-users = root $USER" | tee -a /etc/nix/nix.conf
+          launchctl stop org.nixos.nix-daemon
+          launchctl start org.nixos.nix-daemon
       - uses: cachix/cachix-action@v12
         with:
           name: fuellabs
