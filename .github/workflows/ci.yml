@@ -43,6 +43,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2.4.0
+      - if: matrix.os == 'macos-arm'
+        run: rm -rf /nix && /etc/nix/nix.conf
       - uses: cachix/install-nix-action@v22
         with:
           nix_path: nixpkgs=channel:nixos-unstable
