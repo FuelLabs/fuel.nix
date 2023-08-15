@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env zsh
 set -euo pipefail
 
 # Borrowed from https://github.com/cachix/cachix-action/blob/master/dist/main/push-paths.sh
