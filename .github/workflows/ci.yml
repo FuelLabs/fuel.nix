@@ -52,6 +52,9 @@ jobs:
         with:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+      # Copy the nix store to a tmp directory for later comparison.
+      - if: matrix.os == 'macos-arm'
+        run: ./script/list-nix-store.sh > /tmp/store-path-pre-build
       - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
       # Since we skipped the cachix action, we must manually update the cachix cache.
       - if: matrix.os == 'macos-arm'
