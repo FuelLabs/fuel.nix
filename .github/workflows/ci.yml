@@ -58,6 +58,8 @@ jobs:
       - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
       # Since we skipped the cachix action, we must manually update the cachix cache.
       - if: matrix.os == 'macos-arm'
+        env:
+          CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
         run: ./script/cachix-push-paths.sh
 
   nix-develop:
