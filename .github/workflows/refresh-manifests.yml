@@ -43,7 +43,7 @@ jobs:
             fuel-beta-2,
             fuel-beta-3,
             fuel-beta-4-rc,
-            fuel-beta-4-rc.2,
+            fuel-beta-4-rc-2,
             fuel-nightly,
           ]
         os: [ubuntu-latest, macos-latest, macos-arm]
