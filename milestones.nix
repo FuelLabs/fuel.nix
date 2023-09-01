@@ -52,7 +52,7 @@
   
   # Commits sourced from:
   # https://raw.githubusercontent.com/FuelLabs/fuelup/gh-pages/channel-fuel-beta-4.toml
-  beta-4-rc = {
+  beta-4 = {
     forc-explorer = "4bb7392eed085ee3a6795b98ea25392b3f41ade8";
     forc-wallet = "7aea7749d716fbe807680b06935e3698a0cbd324";
     fuel-core = "704848a7b2164033b01e3c6c56c8a87772b81000";
