@@ -49,4 +49,14 @@
     fuel-indexer = "94ee6d6b345c50e5016d5e6b1efa7dbe4e750b45";
     sway = "04a597093e7441898933dd412b8e4dc6ac860cd3";
   };
+
+  # Commits sourced from:
+  # https://raw.githubusercontent.com/FuelLabs/fuelup/gh-pages/channel-fuel-beta-4.toml
+  beta-4 = {
+    forc-explorer = "4bb7392eed085ee3a6795b98ea25392b3f41ade8";
+    forc-wallet = "7aea7749d716fbe807680b06935e3698a0cbd324";
+    fuel-core = "704848a7b2164033b01e3c6c56c8a87772b81000";
+    fuel-indexer = "fab101632573eff2b478277917b6c560965556ce";
+    sway = "92dc9f361a9508a940c0d0708130f26fa044f6b3";
+  };
 }
