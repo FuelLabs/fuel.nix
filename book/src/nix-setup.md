@@ -65,17 +65,46 @@ update your nixos configuration with the following:
 }
 ```
 
+## Trouble Shooting
+
+### Nix command not available
+
+The daemon that makes nix available to your shell is not run automatically after installation. You'll need to either manually start it in your shell instance with `nix daemon` or open a new instance of your shell. If it persists, log out, log back in and open a new terminal.
+
+### Nix isn't using the Fuel cache
+
+In some cases, usually in existing nix installations, nix may have trouble finding or using the cache. This could happen for a few reasons:
+
+#### Confirm you are a trusted user:
+
+The user the request is coming from may not be a trusted user, in which case some permissions may be missing to use parts of the configuration.
+There is a great example of this in the Nix discourse which can be found [here][trusted-users] that also provides a solution if you want certain features available to untrusted users.
+
+#### The `extra-substitutors` section is overlooked:
+
+`extra-substitutors` appends additional caches to those already specified by `substitutors`, and will silently ignore them when they are attempted to be used by unprivileged users. If the output of `nix show-config` does not show the Fuel cache in `extra-substitutors` after [confirming you are a trusted user](#confirm-you-are-a-trusted-user), you may need to restart your shell. If this still does not solve the issue, try adding the Fuel cachix link to `substitutors` instead, separating any existing substitutors by whitespace.
+
+#### Negative caching:
+
+If you ran into any of the previous problems, which made your system build a derivation from source, you may experience [negative caching][negative-caching] in which case you'll need to [reset the lookup cache][reset-lookup-cache] that nix uses to check if a cache doesn't exist.
+
+If a problem persists after trying the above please [open an issue][open-an-issue].
+
 ## Uninstall Everything
 
 If you installed Nix using the Determinate Systems nix-installer tool as
 described in this guide, you can uninstall Nix along with all nix-installed
-packages  with the following:
+packages with the following:
 
 ```console
 /nix/nix-installer uninstall
-``` 
+```
 
 [fuel-labs-cache]: https://app.cachix.org/cache/fuellabs
 [nix-flakes]: https://nixos.wiki/wiki/Flakes
 [nix-command]: https://nixos.wiki/wiki/Nix_command
 [nix-installer]: https://github.com/DeterminateSystems/nix-installer
+[trusted-users]: https://discourse.nixos.org/t/nix-flake-and-trusted-users/8882
+[negative-caching]: https://en.wikipedia.org/wiki/Negative_cache
+[reset-lookup-cache]: https://nix.dev/recipes/faq#how-do-i-force-nix-to-re-check-whether-something-exists-at-a-binary-cache
+[open-an-issue]: https://github.com/FuelLabs/fuel.nix/issues/new
