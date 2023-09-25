@@ -1,7 +1,7 @@
 # Summary
 
 - [Welcome](./index.md)
-- [Quick Start](./quick-start.md)
+- [Quickstart](./quickstart.md)
 - [Nix Setup](./nix-setup.md)
 - [Packages](./packages.md)
 - [Nix Power Users](./nix-power-users.md)

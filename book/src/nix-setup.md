@@ -11,7 +11,7 @@ uninstall Nix and its installed packages if necessary.
 
 ## Install Nix
 
-To recap our [Quick Start](./quick-start.html), we can install Nix with the
+To recap our [Quickstart](./quickstart.html), we can install Nix with the
 following command:
 
 ```console

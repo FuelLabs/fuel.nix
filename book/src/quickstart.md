@@ -1,4 +1,4 @@
-# Quick Start
+# Quickstart
 
 Let's install both Nix and the latest full suite of Fuel tools in just two
 commands.
@@ -14,7 +14,7 @@ curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix/
 
 > **Note:** For more details on Nix installation or how to configure an existing
 > Nix or NixOS installation, see the detailed
-> [**Nix Setup**](./nix-setup.html) chapter.
+> [**Nix Setup**][nix setup] chapter.
 
 ## Install Fuel
 
@@ -32,11 +32,25 @@ of other tools from the Fuel Labs cache into the local `/nix/store` cache and
 Let's check installation worked:
 
 ```console
-$ fuel-core --version
-fuel-core 0.18.1
+fuel-core --version
+```
 
-$ forc --version
-forc 0.39.0
+Should return:
+
+```console
+> fuel-core 0.18.1
+```
+
+In the case of forc:
+
+```console
+forc --version
+```
+
+Should return:
+
+```console
+> forc 0.39.0
 ```
 
 > **Note:** If you have previously installed Fuel tools using `cargo`, `fuelup`
@@ -60,11 +74,14 @@ were never installed.
 To find out how to install tools persistently for the current user, how to
 install different toolchain channels (nightly, beta-3, etc), how to install
 individual components, along with a whole suite of other options, see [**the
-Packages chapter**](./packages.html).
+Packages chapter**](./packages.md).
 
 For more details on installing Nix or configuring an existing Nix or NixOS
-installation, see [**the Nix Setup chapter**](./nix-setup.html).
+installation, see [**the Nix Setup chapter**][nix setup].
 
 If you are content with the installation, see the
-[**Documentation Portal**](https://docs.fuel.network/)
+**[Documentation Portal]**
 for more details on how to build with Fuel!
+
+[nix setup]: ./nix-setup.md
+[Documentation Portal]: https://docs.fuel.network/
