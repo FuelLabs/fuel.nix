@@ -1,6 +1,6 @@
 # Summary
 
-- [Welcome](./welcome.md)
+- [Welcome](./index.md)
 - [Quick Start](./quick-start.md)
 - [Nix Setup](./nix-setup.md)
 - [Packages](./packages.md)
