@@ -65,6 +65,6 @@ Packages chapter**](./packages.html).
 For more details on installing Nix or configuring an existing Nix or NixOS
 installation, see [**the Nix Setup chapter**](./nix-setup.html).
 
-If you are content with the installation, see
-[**The Documentation Portal**](https://www.notion.so/fuellabs/Documentation-Portal-V1-0-Beta)
+If you are content with the installation, see the
+[**Documentation Portal**](https://docs.fuel.network/)
 for more details on how to build with Fuel!
