@@ -73,7 +73,7 @@ We can do so by adding a condition to the list of filters:
 ```
 
 See the [Filtering
-Manifests](./internals/providing-packages.html#filtering-manifests) section for
+Manifests](./internals/providing-packages.md#filtering-manifests) section for
 more details.
 
 ## Updating `./patches.nix`
@@ -95,7 +95,7 @@ unique attributes, environment variables, etc:
 ```
 
 For more details on how to apply manifest patches, see the
-[Patching Manifests](./internals/providing-packages.html#patching-manifests)
+[Patching Manifests](./internals/providing-packages.md#patching-manifests)
 section.
 
 > **Tip:** Check the new package's upstream CI to get an idea of what system

@@ -40,7 +40,7 @@ Similarly, run the version of a package from a milestone with `-<milestone>`, e.
 nix run github:fuellabs/fuel.nix#forc-lsp-beta-3
 ```
 ```
-nix run github:fuellabs/fuel.nix#forc-wallet-beta-1
+nix run github:fuellabs/fuel.nix#forc-wallet-beta-4
 ```
 
 ## Temporary Shells
@@ -112,11 +112,11 @@ nix profile remove 3
 where `3` is the index of the package when running `nix profile list`.
 
 For more options around managing nix user profiles, see [the
-docs](https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-profile.html).
+docs][nix-docs].
 
 > **NOTE:** If a previous version of Nix was installed on the system, the
 > `nix profile` command may not work due to an old symlink being present in $HOME.
-> See [**this issue**](https://github.com/DeterminateSystems/nix-installer/issues/477).
+> See [**this issue**][nix-profile-issue].
 > If you encounter this issue, you can remedy it by deleting the `~/.nix-profile`
 > symlink so that the `nix profile` commands can recreate it with the correct
 > path.
@@ -141,3 +141,5 @@ nix run github:fuellabs/fuel.nix#forc-fmt-0-24-3-nightly-2022-09-14
 [fuel-indexer-repo]: https://github.com/fuellabs/fuel-indexer
 [sway-repo]: https://github.com/fuellabs/sway
 [sway-vim-repo]: https://github.com/fuellabs/sway.vim
+[nix-docs]: https://nixos.org/manual/nix/stable/command-ref/new-cli/nix3-profile.html
+[nix-profile-issue]: https://github.com/DeterminateSystems/nix-installer/issues/477

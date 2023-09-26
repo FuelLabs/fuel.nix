@@ -27,7 +27,7 @@ nix develop github:fuellabs/fuel.nix#forc-lsp
 ```
 
 Currently the vim plugin still needs to be installed separately. See
-[the Overlays chapter](./overlays.html) and the [Nix Vim wiki](https://nixos.wiki/wiki/Vim)
+[the Overlays chapter](./overlays.md) and the [Nix Vim wiki](https://nixos.wiki/wiki/Vim)
 for more details.
 
 > **Note:** While these `devShell`s might be useful to get started on developing

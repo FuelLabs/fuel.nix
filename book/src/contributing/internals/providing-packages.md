@@ -7,7 +7,7 @@
 The way in which **fuel.nix** creates package outputs is as follows:
 
 1. Load all manifests from the `./manifests/` directory (see [Generating
-   Manifests](./generating-manifests.html)).
+   Manifests](./generating-manifests.md)).
 2. Filter out manifests for package versions that are known to be broken, or
    untested versions that are older than **fuel.nix** itself, by applying the
    list of conditions in `./filters.nix`.
@@ -179,7 +179,7 @@ Most notably, we provide:
 - **`fuel-nightly`** - Provides the latest nightly version of every Fuel tool.
 
 Sets are also provided for each milestone, however this is covered in the
-[Providing Milestones](./providing-milestones.html) chapter.
+[Providing Milestones](./providing-milestones.md) chapter.
 
 ### Other Packages
 

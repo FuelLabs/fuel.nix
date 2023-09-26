@@ -8,5 +8,5 @@ versions, we can make the necessary changes for new versions by adding a new
 patch to `./patches.nix`.
 
 See the [Patching
-Manifests](./internals/providing-packages.html#patching-manifests) section for
+Manifests](./internals/providing-packages.md#patching-manifests) section for
 details.

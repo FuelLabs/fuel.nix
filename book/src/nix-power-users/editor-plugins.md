@@ -1,6 +1,6 @@
 # Editor Plugins
 
-Currently this flake and [its overlay](./overlays.html) only provide the
+Currently this flake and [its overlay](./overlays.md) only provide the
 `sway-vim` Vim plugin.
 
 Contributions adding support for other editors/IDE plugins are more than

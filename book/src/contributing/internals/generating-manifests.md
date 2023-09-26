@@ -51,7 +51,7 @@ to run.
 The script begins by declaring all FuelLabs repositories that we care about,
 followed by each unique package and which repository it is associated with.
 To declare new packages, see the
-[Adding Packages](./contributing/adding-packages.html) chapter.
+[Adding Packages](../adding-packages.md) chapter.
 
 The script aims to be idempotent, i.e. even if you were to delete the entire
 `./manifests` directory and all its manifests, running the script again should

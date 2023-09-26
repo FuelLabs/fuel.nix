@@ -24,7 +24,7 @@ Here's what the `beta-2` milestone looks like:
   };
 ```
 
-While [providing packages](./providing-packages.html), milestones are used to
+While [providing packages](./providing-packages.md), milestones are used to
 provide a unique output for each package along with a dedicated package set.
 E.g. the above `beta-2` milestone is used to provide `fuel-core-beta-2` and
 `forc-beta-2` package aliases, as well as the extra `fuel-beta-2` package set.

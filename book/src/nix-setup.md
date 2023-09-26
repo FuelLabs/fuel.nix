@@ -1,6 +1,6 @@
 # Nix Setup
 
-[**Nix**](https://nixos.org/) is a package manager with a focus on
+**[Nix]** is a package manager with a focus on
 reproducibility and reliability. Fuel Labs leverages Nix to provide a simple
 way to natively install the ecosystem tooling along with any necessary system
 dependencies and environment setup.
@@ -11,17 +11,17 @@ uninstall Nix and its installed packages if necessary.
 
 ## Install Nix
 
-To recap our [Quickstart](./quickstart.html), we can install Nix with the
+To recap our [Quickstart](./quickstart.md), we can install Nix with the
 following command:
 
 ```console
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix/tag/v0.9.0 | sh -s -- install --extra-conf "extra-substituters = https://fuellabs.cachix.org" --extra-conf "extra-trusted-public-keys = fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8="
 ```
 
-This uses the [`nix-installer` tool by Determinate Systems](nix-installer) to
-install Nix with the [**flakes**](nix-flakes) and [**nix-command**](nix-command)
+This uses the [`nix-installer` tool by Determinate Systems][nix-installer] to
+install Nix with the [**flakes**][nix-flakes] and [**nix-command**][nix-command]
 features enabled, and provides `--extra-conf` flags that enable [the Fuel Labs
-binary cache](fuel-labs-cache).
+binary cache][fuel-labs-cache].
 
 > **Note:** Without a binary cache, Nix will build everything from source on
 > first use. This can take a long time! The fuel.nix repo CI builds all channels
@@ -100,6 +100,7 @@ packages with the following:
 /nix/nix-installer uninstall
 ```
 
+[Nix]: https://nixos.org/
 [fuel-labs-cache]: https://app.cachix.org/cache/fuellabs
 [nix-flakes]: https://nixos.wiki/wiki/Flakes
 [nix-command]: https://nixos.wiki/wiki/Nix_command
