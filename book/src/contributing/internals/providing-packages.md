@@ -2,7 +2,7 @@
 
 **fuel.nix** provides packages as [Nix flake `package` outputs][nix-flakes].
 
-# Overview
+## Overview
 
 The way in which **fuel.nix** creates package outputs is as follows:
 
@@ -25,7 +25,7 @@ The way in which **fuel.nix** creates package outputs is as follows:
 
 The following shares some more details on each stage.
 
-# Filtering Manifests
+## Filtering Manifests
 
 After loading all manifests into a list by reading them from the
 `./manifests/` directory, we first apply the filters to cull versions that are
@@ -48,7 +48,7 @@ This condition implies that only `forc` versions that are at least `0.19.0`
 or greater will be included. This means `nix build .#forc-0-19-0` should work,
 though `nix build .#forc-0-17-0` will not.
 
-# Patching Manifests
+## Patching Manifests
 
 After filtering out unnecessary or known-broken manifests, we build up the
 remaining manifests by applying the list of patches loaded from `./patches.nix`.
@@ -151,7 +151,7 @@ after 2023-09-23, setting the version to `1.64.0`.
 Multiple Rust version changes can be found throughout `patches.nix` that
 override the version following a particular date.
 
-# Building Packages
+## Building Packages
 
 Now that we have our final sets of manifests, we can build our flake's package
 outputs from them.
@@ -190,7 +190,6 @@ Fuel's Rust packages, it also provides a couple of "hand-written" packages:
    the manifests under the `./manifests/` directory.
 2. `sway-vim` - A Vim plugin derivation for NixOS or Nix home-manager users who
    want to configure Vim in their Nix configuration.
-
 
 [nix-flakes]: https://nixos.wiki/wiki/Flakes
 [build-rust-package]: https://github.com/NixOS/nixpkgs/blob/58c85835512b0db938600b6fe13cc3e3dc4b364e/doc/languages-frameworks/rust.section.md

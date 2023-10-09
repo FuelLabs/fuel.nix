@@ -14,7 +14,7 @@ the various fuel projects yourself.
 
 You can enter a temporary dev shell like so:
 
-```
+```console
 nix develop github:fuellabs/fuel.nix#fuel-dev
 ```
 
@@ -22,7 +22,7 @@ Note that you can also enter a dev shell for individual packages. E.g. the
 following enters a dev shell with the required environment for working on the
 Sway language server implementation
 
-```
+```console
 nix develop github:fuellabs/fuel.nix#forc-lsp
 ```
 

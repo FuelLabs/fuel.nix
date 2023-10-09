@@ -1,6 +1,5 @@
 # Packages
 
-
 The `fuel.nix` flake provides the following packages:
 
 | Package | Description |
@@ -24,22 +23,23 @@ The `fuel.nix` flake provides the following packages:
 
 You can run any of the above programs without installing them like so:
 
-```
+```console
 nix run github:fuellabs/fuel.nix#fuel-core
 ```
 
 To run the latest nightly for a package, add `-nightly` to the end, e.g.
 
-```
+```console
 nix run github:fuellabs/fuel.nix#forc-nightly
 ```
 
 Similarly, run the version of a package from a milestone with `-<milestone>`, e.g.
 
-```
+```console
 nix run github:fuellabs/fuel.nix#forc-lsp-beta-3
 ```
-```
+
+```console
 nix run github:fuellabs/fuel.nix#forc-wallet-beta-4
 ```
 
@@ -48,7 +48,7 @@ nix run github:fuellabs/fuel.nix#forc-wallet-beta-4
 To enter a temporary shell with all of the fuel packages available on `$PATH`,
 you can use the following:
 
-```
+```console
 nix shell github:fuellabs/fuel.nix#fuel
 ```
 
@@ -59,7 +59,7 @@ environments and to avoid endlessly polluting your `PATH` with different
 versions. E.g. in the following, we trivially switch between a stable fuel
 toolchain and nightly toolchain:
 
-```sh
+```console
 $ nix shell github:fuellabs/fuel.nix#fuel
 
 # All latest stable `fuel` packages on `PATH`.
@@ -121,15 +121,15 @@ docs][nix-docs].
 > symlink so that the `nix profile` commands can recreate it with the correct
 > path.
 
-
 ## Specifying Versions
 
 To specify a specific version, append the semver or nightly date to the end:
 
-```
+```console
 nix run github:fuellabs/fuel.nix#forc-fmt-0-24-1
 ```
-```
+
+```console
 nix run github:fuellabs/fuel.nix#forc-fmt-0-24-3-nightly-2022-09-14
 ```
 

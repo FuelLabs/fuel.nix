@@ -40,7 +40,7 @@ If you're an existing Nix user you can enable the necessary features along
 with the Fuel Labs binary cache with the following additions to your Nix
 configuration (`/etc/nix/nix.conf`):
 
-```
+```configuration
 experimental-features = nix-command flakes
 extra-substituters = https://fuellabs.cachix.org
 extra-trusted-public-keys = fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8=
@@ -75,16 +75,16 @@ The daemon that makes nix available to your shell is not run automatically after
 
 In some cases, usually in existing nix installations, nix may have trouble finding or using the cache. This could happen for a few reasons:
 
-#### Confirm you are a trusted user:
+#### Confirm you are a trusted user
 
 The user the request is coming from may not be a trusted user, in which case some permissions may be missing to use parts of the configuration.
 There is a great example of this in the Nix discourse which can be found [here][trusted-users] that also provides a solution if you want certain features available to untrusted users.
 
-#### The `extra-substitutors` section is overlooked:
+#### The `extra-substitutors` section is overlooked
 
 `extra-substitutors` appends additional caches to those already specified by `substitutors`, and will silently ignore them when they are attempted to be used by unprivileged users. If the output of `nix show-config` does not show the Fuel cache in `extra-substitutors` after [confirming you are a trusted user](#confirm-you-are-a-trusted-user), you may need to restart your shell. If this still does not solve the issue, try adding the Fuel cachix link to `substitutors` instead, separating any existing substitutors by whitespace.
 
-#### Negative caching:
+#### Negative caching
 
 If you ran into any of the previous problems, which made your system build a derivation from source, you may experience [negative caching][negative-caching] in which case you'll need to [reset the lookup cache][reset-lookup-cache] that nix uses to check if a cache doesn't exist.
 
