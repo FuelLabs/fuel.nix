@@ -12,4 +12,4 @@ jobs:
   test:
     uses: FuelLabs/github-actions/.github/workflows/mdbook-docs.yml@master
     with:
-      docs-src-path: 'docs/book/src'
+      docs-src-path: 'book/src'
