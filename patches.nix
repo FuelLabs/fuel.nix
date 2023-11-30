@@ -319,4 +319,12 @@ in [
       rust = pkgs.rust-bin.stable."1.70.0".default;
     };
   }
+
+  # `fuel-tx` requires Rust 1.73 as of ~2023-11-29 due to use of `div_ceil`.
+  {
+    condition = m: m.date >= "2023-11-29";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.73.0".default;
+    };
+  }
 ]
