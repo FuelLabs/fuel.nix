@@ -31,7 +31,7 @@ The installer will first present an installation plan before prompting
 to continue. Feel free to review or prompt for further explanation before
 proceeding with installation.
 
-After continuing, Nix installation should complete within a few seconds. Be sure
+After continuing, Nix installation should be completed within a few seconds. Be sure
 to open a new terminal before using `nix`.
 
 ## Configuring an Existing Nix Installation
@@ -69,7 +69,7 @@ update your nixos configuration with the following:
 
 ### Nix command not available
 
-The daemon that makes nix available to your shell is not run automatically after installation. You'll need to either manually start it in your shell instance with `nix daemon` or open a new instance of your shell. If it persists, log out, log back in and open a new terminal.
+The daemon that makes nix available to your shell does not run automatically after installation. You'll need to either manually start it in your shell instance with `nix daemon` or open a new instance of your shell. If it persists, log out, log back in and open a new terminal.
 
 ### Nix isn't using the Fuel cache
 
