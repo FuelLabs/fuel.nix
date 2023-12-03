@@ -41,7 +41,7 @@ testing.
 
 ### CI
 
-To ensure we maintain availability of milestone binaries in the cache, we build
+To ensure we maintain the availability of milestone binaries in the cache, we build
 each of the milestones under the CI workflow.
 
 Currently, the milestones are manually specified. As a result, they'll need
