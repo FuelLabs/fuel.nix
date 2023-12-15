@@ -22,21 +22,22 @@ After installing Nix, open a new terminal and install the stable Fuel toolchain
 in a temporary shell with the following:
 
 ```console
-nix shell github:fuellabs/fuel.nix#fuel
+nix shell github:fuellabs/fuel.nix#beta-4
 ```
 
-This will download the latest semver release of `fuel-core`, `forc`, and a suite
-of other tools from the Fuel Labs cache into the local `/nix/store` cache and
-"install" them to `PATH` for the duration of the current shell.
+This will download the latest release of `fuel-core`, `forc`, compatible with
+beta-4 network and a suite of other tools from the Fuel Labs cache into the
+local `/nix/store` cache and "install" them to `PATH` for the duration of the
+current shell.
 
 Let's check installation worked:
 
 ```console
 $ fuel-core --version
-fuel-core 0.18.1
+fuel-core 0.20.5
 
 $ forc --version
-forc 0.39.0
+forc 0.46.1
 ```
 
 > **Note:** If you have previously installed Fuel tools using `cargo`, `fuelup`
