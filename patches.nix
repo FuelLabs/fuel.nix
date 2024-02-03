@@ -327,4 +327,13 @@ in [
       rust = pkgs.rust-bin.stable."1.73.0".default;
     };
   }
+
+  # `forc-client` requires Rust 1.74 as of
+  # 3fcb76cfb2ad4e4d1987f7f978aa594fd0ce02c5 due to use of `fuels-core v0.54.0`.
+  {
+    condition = m: m.date >= "2024-01-04";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.74.0".default;
+    };
+  }
 ]
