@@ -47,6 +47,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
+      - uses: jlumbroso/free-disk-space@main
       - run: rm -r manifests
       - uses: actions/download-artifact@v3
         with:
