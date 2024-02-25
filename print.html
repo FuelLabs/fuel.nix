@@ -194,18 +194,18 @@ Nix or NixOS installation, see the detailed
 <h2 id="install-fuel"><a class="header" href="#install-fuel">Install Fuel</a></h2>
 <p>After installing Nix, open a new terminal and install the stable Fuel toolchain
 in a temporary shell with the following:</p>
-<pre><code class="language-console">nix shell github:fuellabs/fuel.nix#beta-4
+<pre><code class="language-console">nix shell github:fuellabs/fuel.nix#fuel-beta-5
 </code></pre>
 <p>This will download the latest release of <code>fuel-core</code>, <code>forc</code>, compatible with
-beta-4 network and a suite of other tools from the Fuel Labs cache into the
+beta-5 network and a suite of other tools from the Fuel Labs cache into the
 local <code>/nix/store</code> cache and &quot;install&quot; them to <code>PATH</code> for the duration of the
 current shell.</p>
 <p>Let's check installation worked:</p>
 <pre><code class="language-console">$ fuel-core --version
-fuel-core 0.20.5
+fuel-core 0.22.0
 
 $ forc --version
-forc 0.46.1
+forc 0.49.2
 </code></pre>
 <blockquote>
 <p><strong>Note:</strong> If you have previously installed Fuel tools using <code>cargo</code>, <code>fuelup</code>
