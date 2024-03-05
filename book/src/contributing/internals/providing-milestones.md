@@ -5,8 +5,7 @@
 Milestones provide a way of pinning a significant set of hand-picked commits
 across the Fuel ecosystem under a single named release.
 
-Milestones are provided by the `./milestones.nix` file. As of writing this,
-the file includes milestones for `beta-1`, `beta-2` and `beta-3`.
+Milestones are provided by the `./milestones.nix` file.
 
 Each milestone is a mapping from a name to a set of repository commits, each of
 which is used to select the set of package manifests used to generate package

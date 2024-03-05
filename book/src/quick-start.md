@@ -59,7 +59,7 @@ were never installed.
 ## Diving Deeper
 
 To find out how to install tools persistently for the current user, how to
-install different toolchain channels (nightly, beta-3, etc), how to install
+install different toolchain channels (nightly, beta-5, etc), how to install
 individual components, along with a whole suite of other options, see [**the
 Packages chapter**](./packages.html).
 

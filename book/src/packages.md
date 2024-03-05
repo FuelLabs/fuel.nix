@@ -37,10 +37,10 @@ nix run github:fuellabs/fuel.nix#forc-nightly
 Similarly, run the version of a package from a milestone with `-<milestone>`, e.g.
 
 ```
-nix run github:fuellabs/fuel.nix#forc-lsp-beta-3
+nix run github:fuellabs/fuel.nix#forc-lsp-beta-5
 ```
 ```
-nix run github:fuellabs/fuel.nix#forc-wallet-beta-1
+nix run github:fuellabs/fuel.nix#forc-wallet-beta-5
 ```
 
 ## Temporary Shells
@@ -76,9 +76,9 @@ $ exit
 
 # No fuel packages on `PATH`
 
-$ nix shell github:fuellabs/fuel.nix#fuel-beta-3
+$ nix shell github:fuellabs/fuel.nix#fuel-beta-5
 
-# All beta-3 milestone `fuel` packages on `PATH`.
+# All beta-5 milestone `fuel` packages on `PATH`.
 ```
 
 ## Installing Packages
