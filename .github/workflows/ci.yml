@@ -31,7 +31,6 @@ jobs:
         package:
           [
             fuel,
-            fuel-beta-3,
             fuel-beta-4,
             fuel-beta-5,
             fuel-nightly,
