@@ -36,7 +36,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [fuel, fuel-beta-1, fuel-beta-2, fuel-beta-3, fuel-beta-4-rc, fuel-nightly]
+        package: [fuel, fuel-beta-1, fuel-beta-2, fuel-beta-3, fuel-beta-4, fuel-beta-5, fuel-nightly]
         os: [ubuntu-latest, macos-latest, macos-latest-xlarge]
     runs-on: ${{ matrix.os }}
     steps:
