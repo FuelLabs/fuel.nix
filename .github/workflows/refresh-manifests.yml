@@ -91,7 +91,7 @@ jobs:
       ]
     runs-on: ubuntu-latest
     steps:
-        uses: ravsamhq/notify-slack-action@v1
+      - uses: ravsamhq/notify-slack-action@v1
         with:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
