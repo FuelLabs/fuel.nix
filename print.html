@@ -221,7 +221,7 @@ in your <code>PATH</code>.</p>
 were never installed.</p>
 <h2 id="diving-deeper"><a class="header" href="#diving-deeper">Diving Deeper</a></h2>
 <p>To find out how to install tools persistently for the current user, how to
-install different toolchain channels (nightly, beta-3, etc), how to install
+install different toolchain channels (nightly, beta-5, etc), how to install
 individual components, along with a whole suite of other options, see <a href="./packages.html"><strong>the
 Packages chapter</strong></a>.</p>
 <p>For more details on installing Nix or configuring an existing Nix or NixOS
@@ -325,9 +325,9 @@ packages with the following:</p>
 <pre><code>nix run github:fuellabs/fuel.nix#forc-nightly
 </code></pre>
 <p>Similarly, run the version of a package from a milestone with <code>-&lt;milestone&gt;</code>, e.g.</p>
-<pre><code>nix run github:fuellabs/fuel.nix#forc-lsp-beta-3
+<pre><code>nix run github:fuellabs/fuel.nix#forc-lsp-beta-5
 </code></pre>
-<pre><code>nix run github:fuellabs/fuel.nix#forc-wallet-beta-1
+<pre><code>nix run github:fuellabs/fuel.nix#forc-wallet-beta-5
 </code></pre>
 <h2 id="temporary-shells"><a class="header" href="#temporary-shells">Temporary Shells</a></h2>
 <p>To enter a temporary shell with all of the fuel packages available on <code>$PATH</code>,
@@ -355,9 +355,9 @@ $ exit
 
 # No fuel packages on `PATH`
 
-$ nix shell github:fuellabs/fuel.nix#fuel-beta-3
+$ nix shell github:fuellabs/fuel.nix#fuel-beta-5
 
-# All beta-3 milestone `fuel` packages on `PATH`.
+# All beta-5 milestone `fuel` packages on `PATH`.
 </code></pre>
 <h2 id="installing-packages"><a class="header" href="#installing-packages">Installing Packages</a></h2>
 <p>To install fuel packages persistently for the current user:</p>
@@ -456,7 +456,7 @@ filtering (<code>filters.nix</code>) and patching (<code>patches.nix</code>) all
 provide package <strong>sets</strong> for the latest semver releases and nightlies e.g.
 (<code>fuel-latest</code>, <code>fuel-nightly</code>).</li>
 <li><a href="contributing/./internals/providing-milestones.html"><strong>Provide a special set of &quot;milestone&quot; packages</strong></a>
-(e.g. <code>forc-wallet-beta-2</code>) and package sets (e.g. <code>fuel-beta-3</code>) by finding
+(e.g. <code>forc-wallet-beta-5</code>) and package sets (e.g. <code>fuel-beta-5</code>) by finding
 packages that match the commits specified in <code>milestones.nix</code>.</li>
 <li><strong>Provide <code>devShell</code>s</strong> to assist working on the fuel repos by collecting all
 of the inputs to their associated packages and inheriting their environment
@@ -676,8 +676,7 @@ want to configure Vim in their Nix configuration.</li>
 <p><strong>fuel.nix</strong> allows for declaring &quot;milestones&quot;.</p>
 <p>Milestones provide a way of pinning a significant set of hand-picked commits
 across the Fuel ecosystem under a single named release.</p>
-<p>Milestones are provided by the <code>./milestones.nix</code> file. As of writing this,
-the file includes milestones for <code>beta-1</code>, <code>beta-2</code> and <code>beta-3</code>.</p>
+<p>Milestones are provided by the <code>./milestones.nix</code> file.</p>
 <p>Each milestone is a mapping from a name to a set of repository commits, each of
 which is used to select the set of package manifests used to generate package
 outputs for the milestone.</p>
