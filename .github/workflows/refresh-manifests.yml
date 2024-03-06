@@ -72,6 +72,8 @@ jobs:
           path: manifests/
       - name: Check and commit changes
         run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"        
           git add manifests
           git commit -m "manifest: update"
       - name: Push changes
