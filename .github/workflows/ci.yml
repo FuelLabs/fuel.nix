@@ -79,7 +79,7 @@ jobs:
       - run: nix develop --print-build-logs --no-update-lock-file .#book-dev --command mdbook build book
 
   notify-slack-on-failure:
-    if: failure()
+    if: failure() && github.ref == 'refs/heads/master'
     needs:
       [
         nix-fmt-check,
