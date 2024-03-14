@@ -336,4 +336,13 @@ in [
       rust = pkgs.rust-bin.stable."1.74.0".default;
     };
   }
+
+  # `sway-core` requires Rust 1.76 as of
+  # c18797fd04f210d6f2f25415536685e63cbd1cc5 due to use of `std::hash::DefaultHasher`.
+  {
+    condition = m: m.date >= "2024-03-11";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.76.0".default;
+    };
+  }
 ]
