@@ -90,7 +90,9 @@
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="../welcome.html"><strong aria-hidden="true">1.</strong> Welcome</a></li><li class="chapter-item expanded "><a href="../quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li class="chapter-item expanded "><a href="../nix-setup.html"><strong aria-hidden="true">3.</strong> Nix Setup</a></li><li class="chapter-item expanded "><a href="../packages.html"><strong aria-hidden="true">4.</strong> Packages</a></li><li class="chapter-item expanded "><a href="../nix-power-users.html"><strong aria-hidden="true">5.</strong> Nix Power Users</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix-power-users/dev-shells.html"><strong aria-hidden="true">5.1.</strong> Dev Shells</a></li><li class="chapter-item expanded "><a href="../nix-power-users/overlays.html"><strong aria-hidden="true">5.2.</strong> Overlays</a></li><li class="chapter-item expanded "><a href="../nix-power-users/editor-plugins.html"><strong aria-hidden="true">5.3.</strong> Editor Plugins</a></li></ol></li><li class="chapter-item expanded "><a href="../contributing.html"><strong aria-hidden="true">6.</strong> Contributing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contributing/internals.html"><strong aria-hidden="true">6.1.</strong> Internals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contributing/internals/generating-manifests.html"><strong aria-hidden="true">6.1.1.</strong> Generating Manifests</a></li><li class="chapter-item expanded "><a href="../contributing/internals/providing-packages.html"><strong aria-hidden="true">6.1.2.</strong> Providing Packages</a></li><li class="chapter-item expanded "><a href="../contributing/internals/providing-milestones.html"><strong aria-hidden="true">6.1.3.</strong> Providing Milestones</a></li></ol></li><li class="chapter-item expanded "><a href="../contributing/adding-packages.html" class="active"><strong aria-hidden="true">6.2.</strong> Adding Packages</a></li><li class="chapter-item expanded "><a href="../contributing/updating-packages.html"><strong aria-hidden="true">6.3.</strong> Updating Packages</a></li><li class="chapter-item expanded "><a href="../contributing/updating-flake-inputs.html"><strong aria-hidden="true">6.4.</strong> Updating Flake Inputs</a></li></ol></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -179,27 +181,27 @@
 set of repositories:</p>
 <pre><code class="language-sh"># The set of fuel repositories.
 declare -A fuel_repos=(
-    [forc-explorer]=&quot;https://github.com/fuellabs/forc-explorer&quot;
-    [forc-wallet]=&quot;https://github.com/fuellabs/forc-wallet&quot;
-    [fuel-core]=&quot;https://github.com/fuellabs/fuel-core&quot;
-    [fuel-indexer]=&quot;https://github.com/fuellabs/fuel-indexer&quot;
-    [sway]=&quot;https://github.com/fuellabs/sway&quot;
-    [sway-vim]=&quot;https://github.com/fuellabs/sway.vim&quot;
+    [forc-explorer]="https://github.com/fuellabs/forc-explorer"
+    [forc-wallet]="https://github.com/fuellabs/forc-wallet"
+    [fuel-core]="https://github.com/fuellabs/fuel-core"
+    [fuel-indexer]="https://github.com/fuellabs/fuel-indexer"
+    [sway]="https://github.com/fuellabs/sway"
+    [sway-vim]="https://github.com/fuellabs/sway.vim"
 )
 </code></pre>
 <p>Next, add a dedicated package declaration:</p>
 <pre><code class="language-sh"># The set of packages.
 declare -A pkg_forc=(
-    [name]=&quot;forc&quot;
-    [repo]=&quot;${fuel_repos[sway]}&quot;
+    [name]="forc"
+    [repo]="${fuel_repos[sway]}"
 )
 declare -A pkg_forc_client=(
-    [name]=&quot;forc-client&quot;
-    [repo]=&quot;${fuel_repos[sway]}&quot;
+    [name]="forc-client"
+    [repo]="${fuel_repos[sway]}"
 )
 declare -A pkg_forc_doc=(
-    [name]=&quot;forc-doc&quot;
-    [repo]=&quot;${fuel_repos[sway]}&quot;
+    [name]="forc-doc"
+    [repo]="${fuel_repos[sway]}"
 )
 # ...
 </code></pre>
@@ -223,8 +225,8 @@ the nightly <code>refresh-manifests</code> CI action.</p>
 <p>It's often useful to filter out older versions that will never be tested by the
 flake's CI.</p>
 <p>We can do so by adding a condition to the list of filters:</p>
-<pre><code class="language-nix">  (m: m.pname != &quot;forc&quot; || versionAtLeast m.version &quot;0.19.0&quot;)
-  (m: m.pname != &quot;forc-client&quot; || versionAtLeast m.version &quot;0.19.0&quot;)
+<pre><code class="language-nix">  (m: m.pname != "forc" || versionAtLeast m.version "0.19.0")
+  (m: m.pname != "forc-client" || versionAtLeast m.version "0.19.0")
   # ...
 </code></pre>
 <p>See the <a href="./internals/providing-packages.html#filtering-manifests">Filtering
@@ -234,9 +236,9 @@ more details.</p>
 <p>If necessary, add a custom patch for the new package including any necessary
 unique attributes, environment variables, etc:</p>
 <pre><code class="language-nix">    {
-      condition = m: m.pname == &quot;forc-client&quot;;
+      condition = m: m.pname == "forc-client";
       patch = m: {
-        buildAndTestSubdir = &quot;forc-plugins/${m.pname}&quot;;
+        buildAndTestSubdir = "forc-plugins/${m.pname}";
         nativeBuildInputs = [
           pkgs.perl # for openssl-sys
           pkgs.pkg-config # for openssl-sys

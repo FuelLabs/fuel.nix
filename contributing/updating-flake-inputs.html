@@ -90,7 +90,9 @@
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="../welcome.html"><strong aria-hidden="true">1.</strong> Welcome</a></li><li class="chapter-item expanded "><a href="../quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li class="chapter-item expanded "><a href="../nix-setup.html"><strong aria-hidden="true">3.</strong> Nix Setup</a></li><li class="chapter-item expanded "><a href="../packages.html"><strong aria-hidden="true">4.</strong> Packages</a></li><li class="chapter-item expanded "><a href="../nix-power-users.html"><strong aria-hidden="true">5.</strong> Nix Power Users</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../nix-power-users/dev-shells.html"><strong aria-hidden="true">5.1.</strong> Dev Shells</a></li><li class="chapter-item expanded "><a href="../nix-power-users/overlays.html"><strong aria-hidden="true">5.2.</strong> Overlays</a></li><li class="chapter-item expanded "><a href="../nix-power-users/editor-plugins.html"><strong aria-hidden="true">5.3.</strong> Editor Plugins</a></li></ol></li><li class="chapter-item expanded "><a href="../contributing.html"><strong aria-hidden="true">6.</strong> Contributing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contributing/internals.html"><strong aria-hidden="true">6.1.</strong> Internals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../contributing/internals/generating-manifests.html"><strong aria-hidden="true">6.1.1.</strong> Generating Manifests</a></li><li class="chapter-item expanded "><a href="../contributing/internals/providing-packages.html"><strong aria-hidden="true">6.1.2.</strong> Providing Packages</a></li><li class="chapter-item expanded "><a href="../contributing/internals/providing-milestones.html"><strong aria-hidden="true">6.1.3.</strong> Providing Milestones</a></li></ol></li><li class="chapter-item expanded "><a href="../contributing/adding-packages.html"><strong aria-hidden="true">6.2.</strong> Adding Packages</a></li><li class="chapter-item expanded "><a href="../contributing/updating-packages.html"><strong aria-hidden="true">6.3.</strong> Updating Packages</a></li><li class="chapter-item expanded "><a href="../contributing/updating-flake-inputs.html" class="active"><strong aria-hidden="true">6.4.</strong> Updating Flake Inputs</a></li></ol></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -182,18 +184,18 @@ construct flake outputs.</p>
 <p>Here's what <strong>fuel.nix</strong>'s flake inputs look like today:</p>
 <pre><code class="language-nix">  inputs = {
     nixpkgs = {
-      url = &quot;github:NixOS/nixpkgs/nixos-unstable&quot;;
+      url = "github:NixOS/nixpkgs/nixos-unstable";
     };
     rust-overlay = {
-      url = &quot;github:oxalica/rust-overlay/master&quot;;
-      inputs.nixpkgs.follows = &quot;nixpkgs&quot;;
+      url = "github:oxalica/rust-overlay/master";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     sway-vim-src = {
-      url = &quot;github:fuellabs/sway.vim&quot;;
+      url = "github:fuellabs/sway.vim";
       flake = false;
     };
     utils = {
-      url = &quot;github:numtide/flake-utils&quot;;
+      url = "github:numtide/flake-utils";
     };
   };
 </code></pre>

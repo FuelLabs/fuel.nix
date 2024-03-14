@@ -91,7 +91,9 @@
             <div class="sidebar-scrollbox">
                 <ol class="chapter"><li class="chapter-item expanded "><a href="welcome.html"><strong aria-hidden="true">1.</strong> Welcome</a></li><li class="chapter-item expanded "><a href="quick-start.html"><strong aria-hidden="true">2.</strong> Quick Start</a></li><li class="chapter-item expanded "><a href="nix-setup.html"><strong aria-hidden="true">3.</strong> Nix Setup</a></li><li class="chapter-item expanded "><a href="packages.html"><strong aria-hidden="true">4.</strong> Packages</a></li><li class="chapter-item expanded "><a href="nix-power-users.html"><strong aria-hidden="true">5.</strong> Nix Power Users</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="nix-power-users/dev-shells.html"><strong aria-hidden="true">5.1.</strong> Dev Shells</a></li><li class="chapter-item expanded "><a href="nix-power-users/overlays.html"><strong aria-hidden="true">5.2.</strong> Overlays</a></li><li class="chapter-item expanded "><a href="nix-power-users/editor-plugins.html"><strong aria-hidden="true">5.3.</strong> Editor Plugins</a></li></ol></li><li class="chapter-item expanded "><a href="contributing.html"><strong aria-hidden="true">6.</strong> Contributing</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contributing/internals.html"><strong aria-hidden="true">6.1.</strong> Internals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="contributing/internals/generating-manifests.html"><strong aria-hidden="true">6.1.1.</strong> Generating Manifests</a></li><li class="chapter-item expanded "><a href="contributing/internals/providing-packages.html"><strong aria-hidden="true">6.1.2.</strong> Providing Packages</a></li><li class="chapter-item expanded "><a href="contributing/internals/providing-milestones.html"><strong aria-hidden="true">6.1.3.</strong> Providing Milestones</a></li></ol></li><li class="chapter-item expanded "><a href="contributing/adding-packages.html"><strong aria-hidden="true">6.2.</strong> Adding Packages</a></li><li class="chapter-item expanded "><a href="contributing/updating-packages.html"><strong aria-hidden="true">6.3.</strong> Updating Packages</a></li><li class="chapter-item expanded "><a href="contributing/updating-flake-inputs.html"><strong aria-hidden="true">6.4.</strong> Updating Flake Inputs</a></li></ol></li></ol>
             </div>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
         </nav>
 
         <!-- Track and set sidebar scroll position -->
@@ -184,7 +186,7 @@ commands.</p>
 <h2 id="install-nix"><a class="header" href="#install-nix">Install Nix</a></h2>
 <p>Nix is a package manager with a focus on reproducibility and reliability. We can
 install it and enable the Fuel Labs binary cache with the following:</p>
-<pre><code class="language-console">curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix/tag/v0.9.0 | sh -s -- install --extra-conf &quot;extra-substituters = https://fuellabs.cachix.org&quot; --extra-conf &quot;extra-trusted-public-keys = fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8=&quot;
+<pre><code class="language-console">curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix/tag/v0.9.0 | sh -s -- install --extra-conf "extra-substituters = https://fuellabs.cachix.org" --extra-conf "extra-trusted-public-keys = fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8="
 </code></pre>
 <blockquote>
 <p><strong>Note:</strong> For more details on Nix installation or how to configure an existing
@@ -198,7 +200,7 @@ in a temporary shell with the following:</p>
 </code></pre>
 <p>This will download the latest release of <code>fuel-core</code>, <code>forc</code>, compatible with
 beta-5 network and a suite of other tools from the Fuel Labs cache into the
-local <code>/nix/store</code> cache and &quot;install&quot; them to <code>PATH</code> for the duration of the
+local <code>/nix/store</code> cache and "install" them to <code>PATH</code> for the duration of the
 current shell.</p>
 <p>Let's check installation worked:</p>
 <pre><code class="language-console">$ fuel-core --version
@@ -240,7 +242,7 @@ uninstall Nix and its installed packages if necessary.</p>
 <h2 id="install-nix-1"><a class="header" href="#install-nix-1">Install Nix</a></h2>
 <p>To recap our <a href="./quick-start.html">Quick Start</a>, we can install Nix with the
 following command:</p>
-<pre><code class="language-console">curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix/tag/v0.9.0 | sh -s -- install --extra-conf &quot;extra-substituters = https://fuellabs.cachix.org&quot; --extra-conf &quot;extra-trusted-public-keys = fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8=&quot;
+<pre><code class="language-console">curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix/tag/v0.9.0 | sh -s -- install --extra-conf "extra-substituters = https://fuellabs.cachix.org" --extra-conf "extra-trusted-public-keys = fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8="
 </code></pre>
 <p>This uses the <a href="nix-installer"><code>nix-installer</code> tool by Determinate Systems</a> to
 install Nix with the <a href="nix-flakes"><strong>flakes</strong></a> and <a href="nix-command"><strong>nix-command</strong></a>
@@ -270,10 +272,10 @@ update your nixos configuration with the following:</p>
 <pre><code class="language-nix">{
   nix = {
     settings = {
-      experimental-features = [&quot;nix-command&quot; &quot;flakes&quot;];
-      extra-substituters = [&quot;https://fuellabs.cachix.org&quot;];
+      experimental-features = ["nix-command" "flakes"];
+      extra-substituters = ["https://fuellabs.cachix.org"];
       extra-trusted-public-keys = [
-        &quot;fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8=&quot;
+        "fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8="
       ];
     };
   };
@@ -431,7 +433,7 @@ downstream <code>devShell</code>s).</p>
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="overlays"><a class="header" href="#overlays">Overlays</a></h1>
 <p>Two nixpkgs <a href="https://nixos.wiki/wiki/Overlays">overlays</a> are provided (<code>fuel</code> and <code>fuel-nightly</code>) that allow for
-&quot;merging&quot; the set of packages provided by this flake with nixpkgs.</p>
+"merging" the set of packages provided by this flake with nixpkgs.</p>
 <p>Note that this makes the <code>sway-vim</code> plugin accessible via the <code>vimPlugins</code> set
 following the nixpkgs convention, e.g. <code>nixpkgs.vimPlugins.sway-vim</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="editor-plugins"><a class="header" href="#editor-plugins">Editor Plugins</a></h1>
@@ -447,7 +449,7 @@ to contribute!</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="internals"><a class="header" href="#internals">Internals</a></h1>
 <p>At a very high level, <strong>fuel.nix</strong> does the following:</p>
 <ol>
-<li><a href="contributing/./internals/generating-manifests.html"><strong>Generate unique &quot;manifests&quot; for each version of each package</strong></a>
+<li><a href="contributing/./internals/generating-manifests.html"><strong>Generate unique "manifests" for each version of each package</strong></a>
 every night at 00:00 UTC under the <code>./manifests</code> directory using a CI action
 that runs the <code>./scripts/refresh-manifests.sh</code> script.</li>
 <li><a href="contributing/./internals/providing-packages.html"><strong>Provide <code>package</code> flake outputs</strong></a>
@@ -455,7 +457,7 @@ that runs the <code>./scripts/refresh-manifests.sh</code> script.</li>
 filtering (<code>filters.nix</code>) and patching (<code>patches.nix</code>) all manifests. Also
 provide package <strong>sets</strong> for the latest semver releases and nightlies e.g.
 (<code>fuel-latest</code>, <code>fuel-nightly</code>).</li>
-<li><a href="contributing/./internals/providing-milestones.html"><strong>Provide a special set of &quot;milestone&quot; packages</strong></a>
+<li><a href="contributing/./internals/providing-milestones.html"><strong>Provide a special set of "milestone" packages</strong></a>
 (e.g. <code>forc-wallet-beta-5</code>) and package sets (e.g. <code>fuel-beta-5</code>) by finding
 packages that match the commits specified in <code>milestones.nix</code>.</li>
 <li><strong>Provide <code>devShell</code>s</strong> to assist working on the fuel repos by collecting all
@@ -470,18 +472,18 @@ variables.</li>
 <li><a href="contributing/./updating-flake-inputs.html"><strong>Updating Flake Inputs</strong></a></li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="generating-manifests"><a class="header" href="#generating-manifests">Generating Manifests</a></h1>
-<p>In <strong>fuel.nix</strong>, &quot;Manifests&quot; are small nix files that declare some unique
+<p>In <strong>fuel.nix</strong>, "Manifests" are small nix files that declare some unique
 properties for a particular version of a particular package. These manifests
 are used by <code>flake.nix</code> to provide all of the fuel packages in a declarative,
 reproducible manner.</p>
 <p>Here's an example of what a manifest looks like:</p>
 <pre><code class="language-nix">{
-  pname = &quot;fuel-core&quot;;
-  version = &quot;0.18.0&quot;;
-  date = &quot;2023-04-27&quot;;
-  url = &quot;https://github.com/fuellabs/fuel-core&quot;;
-  rev = &quot;19f12eab187928cf15289193c710f63417343d33&quot;;
-  sha256 = &quot;sha256-FD9GbSxPhXAWrl40I9lzmEHQ4R2FD3ECYKmipfRPhlU=&quot;;
+  pname = "fuel-core";
+  version = "0.18.0";
+  date = "2023-04-27";
+  url = "https://github.com/fuellabs/fuel-core";
+  rev = "19f12eab187928cf15289193c710f63417343d33";
+  sha256 = "sha256-FD9GbSxPhXAWrl40I9lzmEHQ4R2FD3ECYKmipfRPhlU=";
 }
 </code></pre>
 <h2 id="refreshing-manifests-on-ci"><a class="header" href="#refreshing-manifests-on-ci">Refreshing Manifests on CI</a></h2>
@@ -554,7 +556,7 @@ packages.</p>
 <p>Conditions are functions where given a manifest <code>m</code>, return whether or not the
 manifest should be included.</p>
 <p>The following is an example of one of the conditions in <code>./filters.nix</code>:</p>
-<pre><code class="language-nix">  (m: m.pname != &quot;forc&quot; || versionAtLeast m.version &quot;0.19.0&quot;)
+<pre><code class="language-nix">  (m: m.pname != "forc" || versionAtLeast m.version "0.19.0")
 </code></pre>
 <p>This condition implies that only <code>forc</code> versions that are at least <code>0.19.0</code>
 or greater will be included. This means <code>nix build .#forc-0-19-0</code> should work,
@@ -576,12 +578,12 @@ known broken <code>forc-wallet</code> version:</p>
 <pre><code class="language-nix">  # A patch for some `forc-wallet` nightlies whose committed `Cargo.lock` file
   # was out of date.
   {
-    condition = m: m.pname == &quot;forc-wallet&quot; &amp;&amp; m.version == &quot;0.1.0&quot; &amp;&amp; m.date &lt; &quot;2022-09-04&quot;;
+    condition = m: m.pname == "forc-wallet" &amp;&amp; m.version == "0.1.0" &amp;&amp; m.date &lt; "2022-09-04";
     patch = m: {
       cargoPatches = [
         ./patch/forc-wallet-0.1.0-update-lock.patch
       ];
-      cargoHash = &quot;sha256-LXQaPcpf/n1RRFTQXAP6PexfEI67U2Z5OOW5DzNJvX8=&quot;;
+      cargoHash = "sha256-LXQaPcpf/n1RRFTQXAP6PexfEI67U2Z5OOW5DzNJvX8=";
       cargoLock = null;
     };
   }
@@ -601,9 +603,9 @@ patch is the first patch in the list:</p>
   {
     condition = m: true;
     patch = m: {
-      cargoLock.lockFile = &quot;${m.src}/Cargo.lock&quot;;
+      cargoLock.lockFile = "${m.src}/Cargo.lock";
       meta.homepage = m.src.gitRepoUrl;
-      rust = pkgs.rust-bin.stable.&quot;1.63.0&quot;.default;
+      rust = pkgs.rust-bin.stable."1.63.0".default;
     };
   }
 </code></pre>
@@ -625,9 +627,9 @@ and allows us to isolate each change clearly with its own entry in the list.</p>
 <pre><code class="language-nix">  # `fuel-core` needs Rust 1.64 as of bcb86da09b6fdce09f13ef4181a0ca6461f8e2a8.
   # This changes the Rust used for all pkgs to 1.64 from the day of the commit.
   {
-    condition = m: m.date &gt;= &quot;2022-09-23&quot;;
+    condition = m: m.date &gt;= "2022-09-23";
     patch = m: {
-      rust = pkgs.rust-bin.stable.&quot;1.64.0&quot;.default;
+      rust = pkgs.rust-bin.stable."1.64.0".default;
     };
   }
 </code></pre>
@@ -665,7 +667,7 @@ of every Fuel tool.</li>
 <a href="contributing/internals/./providing-milestones.html">Providing Milestones</a> chapter.</p>
 <h3 id="other-packages"><a class="header" href="#other-packages">Other Packages</a></h3>
 <p>While <code>mkPackages</code> mostly focuses on generating package outputs for all of
-Fuel's Rust packages, it also provides a couple of &quot;hand-written&quot; packages:</p>
+Fuel's Rust packages, it also provides a couple of "hand-written" packages:</p>
 <ol>
 <li><code>refresh-manifests</code> - This is a small package for the script used to refresh
 the manifests under the <code>./manifests/</code> directory.</li>
@@ -673,7 +675,7 @@ the manifests under the <code>./manifests/</code> directory.</li>
 want to configure Vim in their Nix configuration.</li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="providing-milestones"><a class="header" href="#providing-milestones">Providing Milestones</a></h1>
-<p><strong>fuel.nix</strong> allows for declaring &quot;milestones&quot;.</p>
+<p><strong>fuel.nix</strong> allows for declaring "milestones".</p>
 <p>Milestones provide a way of pinning a significant set of hand-picked commits
 across the Fuel ecosystem under a single named release.</p>
 <p>Milestones are provided by the <code>./milestones.nix</code> file.</p>
@@ -682,11 +684,11 @@ which is used to select the set of package manifests used to generate package
 outputs for the milestone.</p>
 <p>Here's what the <code>beta-2</code> milestone looks like:</p>
 <pre><code class="language-nix">  beta-2 = {
-    forc-explorer = &quot;4bb7392eed085ee3a6795b98ea25392b3f41ade8&quot;;
-    forc-wallet = &quot;9473052e88048f58e8c4e1eba0ff88ef6a4cdd59&quot;;
-    fuel-core = &quot;49e4305fea691bbf293c606334e7b282a54393b3&quot;;
-    fuel-indexer = &quot;c2425c8b63f01ef1b540ff3e5832ebdc018b951d&quot;;
-    sway = &quot;c32b0759d25c0b515cbf535f9fb9b8e6fda38ff2&quot;;
+    forc-explorer = "4bb7392eed085ee3a6795b98ea25392b3f41ade8";
+    forc-wallet = "9473052e88048f58e8c4e1eba0ff88ef6a4cdd59";
+    fuel-core = "49e4305fea691bbf293c606334e7b282a54393b3";
+    fuel-indexer = "c2425c8b63f01ef1b540ff3e5832ebdc018b951d";
+    sway = "c32b0759d25c0b515cbf535f9fb9b8e6fda38ff2";
   };
 </code></pre>
 <p>While <a href="contributing/internals/./providing-packages.html">providing packages</a>, milestones are used to
@@ -714,27 +716,27 @@ officially supported.</p>
 set of repositories:</p>
 <pre><code class="language-sh"># The set of fuel repositories.
 declare -A fuel_repos=(
-    [forc-explorer]=&quot;https://github.com/fuellabs/forc-explorer&quot;
-    [forc-wallet]=&quot;https://github.com/fuellabs/forc-wallet&quot;
-    [fuel-core]=&quot;https://github.com/fuellabs/fuel-core&quot;
-    [fuel-indexer]=&quot;https://github.com/fuellabs/fuel-indexer&quot;
-    [sway]=&quot;https://github.com/fuellabs/sway&quot;
-    [sway-vim]=&quot;https://github.com/fuellabs/sway.vim&quot;
+    [forc-explorer]="https://github.com/fuellabs/forc-explorer"
+    [forc-wallet]="https://github.com/fuellabs/forc-wallet"
+    [fuel-core]="https://github.com/fuellabs/fuel-core"
+    [fuel-indexer]="https://github.com/fuellabs/fuel-indexer"
+    [sway]="https://github.com/fuellabs/sway"
+    [sway-vim]="https://github.com/fuellabs/sway.vim"
 )
 </code></pre>
 <p>Next, add a dedicated package declaration:</p>
 <pre><code class="language-sh"># The set of packages.
 declare -A pkg_forc=(
-    [name]=&quot;forc&quot;
-    [repo]=&quot;${fuel_repos[sway]}&quot;
+    [name]="forc"
+    [repo]="${fuel_repos[sway]}"
 )
 declare -A pkg_forc_client=(
-    [name]=&quot;forc-client&quot;
-    [repo]=&quot;${fuel_repos[sway]}&quot;
+    [name]="forc-client"
+    [repo]="${fuel_repos[sway]}"
 )
 declare -A pkg_forc_doc=(
-    [name]=&quot;forc-doc&quot;
-    [repo]=&quot;${fuel_repos[sway]}&quot;
+    [name]="forc-doc"
+    [repo]="${fuel_repos[sway]}"
 )
 # ...
 </code></pre>
@@ -758,8 +760,8 @@ the nightly <code>refresh-manifests</code> CI action.</p>
 <p>It's often useful to filter out older versions that will never be tested by the
 flake's CI.</p>
 <p>We can do so by adding a condition to the list of filters:</p>
-<pre><code class="language-nix">  (m: m.pname != &quot;forc&quot; || versionAtLeast m.version &quot;0.19.0&quot;)
-  (m: m.pname != &quot;forc-client&quot; || versionAtLeast m.version &quot;0.19.0&quot;)
+<pre><code class="language-nix">  (m: m.pname != "forc" || versionAtLeast m.version "0.19.0")
+  (m: m.pname != "forc-client" || versionAtLeast m.version "0.19.0")
   # ...
 </code></pre>
 <p>See the <a href="contributing/./internals/providing-packages.html#filtering-manifests">Filtering
@@ -769,9 +771,9 @@ more details.</p>
 <p>If necessary, add a custom patch for the new package including any necessary
 unique attributes, environment variables, etc:</p>
 <pre><code class="language-nix">    {
-      condition = m: m.pname == &quot;forc-client&quot;;
+      condition = m: m.pname == "forc-client";
       patch = m: {
-        buildAndTestSubdir = &quot;forc-plugins/${m.pname}&quot;;
+        buildAndTestSubdir = "forc-plugins/${m.pname}";
         nativeBuildInputs = [
           pkgs.perl # for openssl-sys
           pkgs.pkg-config # for openssl-sys
@@ -820,18 +822,18 @@ construct flake outputs.</p>
 <p>Here's what <strong>fuel.nix</strong>'s flake inputs look like today:</p>
 <pre><code class="language-nix">  inputs = {
     nixpkgs = {
-      url = &quot;github:NixOS/nixpkgs/nixos-unstable&quot;;
+      url = "github:NixOS/nixpkgs/nixos-unstable";
     };
     rust-overlay = {
-      url = &quot;github:oxalica/rust-overlay/master&quot;;
-      inputs.nixpkgs.follows = &quot;nixpkgs&quot;;
+      url = "github:oxalica/rust-overlay/master";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     sway-vim-src = {
-      url = &quot;github:fuellabs/sway.vim&quot;;
+      url = "github:fuellabs/sway.vim";
       flake = false;
     };
     utils = {
-      url = &quot;github:numtide/flake-utils&quot;;
+      url = "github:numtide/flake-utils";
     };
   };
 </code></pre>
