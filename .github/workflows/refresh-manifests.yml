@@ -7,7 +7,7 @@ on:
 
 jobs:
   refresh-and-upload-manifests:
-    runs-on: ubuntu-latest
+    runs-on: buildjet-64vcpu-ubuntu-2024
     steps:
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v22
@@ -37,7 +37,7 @@ jobs:
       fail-fast: false
       matrix:
         package: [fuel, fuel-beta-4, fuel-beta-5, fuel-nightly]
-        os: [ubuntu-latest, macos-latest, macos-latest-xlarge]
+        os: [buildjet-64vcpu-ubuntu-2024, macos-latest, macos-latest-xlarge]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -59,7 +59,7 @@ jobs:
 
   download-manifests-and-commit:
     needs: [refresh-and-upload-manifests, download-manifests-and-nix-build]
-    runs-on: ubuntu-latest
+    runs-on: buildjet-64vcpu-ubuntu-2024
     steps:
       - uses: actions/checkout@v3
         with:
@@ -90,7 +90,7 @@ jobs:
         download-manifests-and-nix-build,
         download-manifests-and-commit,
       ]
-    runs-on: ubuntu-latest
+    runs-on: buildjet-64vcpu-ubuntu-2024
     steps:
       - uses: ravsamhq/notify-slack-action@v1
         with:
