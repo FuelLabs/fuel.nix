@@ -75,7 +75,13 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add manifests
-          git commit -m "manifest: update"
+          # Check if there are any changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
+          else
+            git commit -m "manifest: update"
+          fi
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
