@@ -345,4 +345,14 @@ in [
       rust = pkgs.rust-bin.stable."1.76.0".default;
     };
   }
+
+  # `fuel-core-client` requires wasm32-unknown-unknown target to be added as of ~2024-04-01.
+  {
+    condition = m: m.date >= "2024-04-13";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.76.0".default.override {
+        targets = ["wasm32-unknown-unknown"];
+      };
+    };
+  }
 ]
