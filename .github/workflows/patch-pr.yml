@@ -1,11 +1,9 @@
 name: Patch PR
 
 on:
-  push:
+  pull_request:
     paths:
       - 'patches.nix'
-    branches:
-      - '!master'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
