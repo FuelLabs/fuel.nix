@@ -35,8 +35,20 @@ jobs:
           if [[ "${#files[*]}" -ne 0 ]]; then
             nix-instantiate --parse "${files[@]}" >/dev/null
           fi
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - name: Check and commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add manifests
+          # Check if there are any changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
+          else
+            git commit -m "ci: refresh manifests for patch PR"
+          fi
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
+          github_token: ${{ secrets.REPO_TOKEN }}
           branch: ${{ github.ref_name }}
-          commit_message: 'ci: refresh manifests for patch PR'
-          file_pattern: 'manifests/*'
