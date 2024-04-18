@@ -355,14 +355,4 @@ in [
       };
     };
   }
-
-  # Test patch: do not check in!
-  {
-    condition = m: m.date >= "2024-04-15";
-    patch = m: {
-      rust = pkgs.rust-bin.stable."1.77.0".default.override {
-        targets = ["wasm32-unknown-unknown"];
-      };
-    };
-  }
 ]
