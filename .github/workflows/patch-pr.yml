@@ -4,8 +4,6 @@ on:
   push:
     paths:
       - patches.nix
-    branches:
-      - '!master'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -14,6 +12,7 @@ concurrency:
 jobs:
   refresh-and-commit:
     runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/master'
     permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the
       # added or changed files to the repository.
