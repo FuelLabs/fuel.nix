@@ -198,9 +198,9 @@
 <pre><code>nix run github:fuellabs/fuel.nix#forc-nightly
 </code></pre>
 <p>Similarly, run the version of a package from a milestone with <code>-&lt;milestone&gt;</code>, e.g.</p>
-<pre><code>nix run github:fuellabs/fuel.nix#forc-lsp-beta-5
+<pre><code>nix run github:fuellabs/fuel.nix#forc-lsp-testnet
 </code></pre>
-<pre><code>nix run github:fuellabs/fuel.nix#forc-wallet-beta-5
+<pre><code>nix run github:fuellabs/fuel.nix#forc-wallet-testnet
 </code></pre>
 <h2 id="temporary-shells"><a class="header" href="#temporary-shells">Temporary Shells</a></h2>
 <p>To enter a temporary shell with all of the fuel packages available on <code>$PATH</code>,
@@ -228,9 +228,9 @@ $ exit
 
 # No fuel packages on `PATH`
 
-$ nix shell github:fuellabs/fuel.nix#fuel-beta-5
+$ nix shell github:fuellabs/fuel.nix#fuel-testnet
 
-# All beta-5 milestone `fuel` packages on `PATH`.
+# All testnet milestone `fuel` packages on `PATH`.
 </code></pre>
 <h2 id="installing-packages"><a class="header" href="#installing-packages">Installing Packages</a></h2>
 <p>To install fuel packages persistently for the current user:</p>

@@ -196,18 +196,18 @@ Nix or NixOS installation, see the detailed
 <h2 id="install-fuel"><a class="header" href="#install-fuel">Install Fuel</a></h2>
 <p>After installing Nix, open a new terminal and install the stable Fuel toolchain
 in a temporary shell with the following:</p>
-<pre><code class="language-console">nix shell github:fuellabs/fuel.nix#fuel-beta-5
+<pre><code class="language-console">nix shell github:fuellabs/fuel.nix#fuel-testnet
 </code></pre>
 <p>This will download the latest release of <code>fuel-core</code>, <code>forc</code>, compatible with
-beta-5 network and a suite of other tools from the Fuel Labs cache into the
+the testnet network and a suite of other tools from the Fuel Labs cache into the
 local <code>/nix/store</code> cache and "install" them to <code>PATH</code> for the duration of the
 current shell.</p>
 <p>Let's check installation worked:</p>
 <pre><code class="language-console">$ fuel-core --version
-fuel-core 0.22.0
+fuel-core 0.26.0
 
 $ forc --version
-forc 0.49.2
+forc 0.60.0
 </code></pre>
 <blockquote>
 <p><strong>Note:</strong> If you have previously installed Fuel tools using <code>cargo</code>, <code>fuelup</code>
@@ -223,7 +223,7 @@ in your <code>PATH</code>.</p>
 were never installed.</p>
 <h2 id="diving-deeper"><a class="header" href="#diving-deeper">Diving Deeper</a></h2>
 <p>To find out how to install tools persistently for the current user, how to
-install different toolchain channels (nightly, beta-5, etc), how to install
+install different toolchain channels (nightly, testnet, etc), how to install
 individual components, along with a whole suite of other options, see <a href="./packages.html"><strong>the
 Packages chapter</strong></a>.</p>
 <p>For more details on installing Nix or configuring an existing Nix or NixOS
@@ -325,9 +325,9 @@ packages with the following:</p>
 <pre><code>nix run github:fuellabs/fuel.nix#forc-nightly
 </code></pre>
 <p>Similarly, run the version of a package from a milestone with <code>-&lt;milestone&gt;</code>, e.g.</p>
-<pre><code>nix run github:fuellabs/fuel.nix#forc-lsp-beta-5
+<pre><code>nix run github:fuellabs/fuel.nix#forc-lsp-testnet
 </code></pre>
-<pre><code>nix run github:fuellabs/fuel.nix#forc-wallet-beta-5
+<pre><code>nix run github:fuellabs/fuel.nix#forc-wallet-testnet
 </code></pre>
 <h2 id="temporary-shells"><a class="header" href="#temporary-shells">Temporary Shells</a></h2>
 <p>To enter a temporary shell with all of the fuel packages available on <code>$PATH</code>,
@@ -355,9 +355,9 @@ $ exit
 
 # No fuel packages on `PATH`
 
-$ nix shell github:fuellabs/fuel.nix#fuel-beta-5
+$ nix shell github:fuellabs/fuel.nix#fuel-testnet
 
-# All beta-5 milestone `fuel` packages on `PATH`.
+# All testnet milestone `fuel` packages on `PATH`.
 </code></pre>
 <h2 id="installing-packages"><a class="header" href="#installing-packages">Installing Packages</a></h2>
 <p>To install fuel packages persistently for the current user:</p>
@@ -455,7 +455,7 @@ filtering (<code>filters.nix</code>) and patching (<code>patches.nix</code>) all
 provide package <strong>sets</strong> for the latest semver releases and nightlies e.g.
 (<code>fuel-latest</code>, <code>fuel-nightly</code>).</li>
 <li><a href="contributing/./internals/providing-milestones.html"><strong>Provide a special set of "milestone" packages</strong></a>
-(e.g. <code>forc-wallet-beta-5</code>) and package sets (e.g. <code>fuel-beta-5</code>) by finding
+(e.g. <code>forc-wallet-testnet</code>) and package sets (e.g. <code>fuel-testnet</code>) by finding
 packages that match the commits specified in <code>milestones.nix</code>.</li>
 <li><strong>Provide <code>devShell</code>s</strong> to assist working on the fuel repos by collecting all
 of the inputs to their associated packages and inheriting their environment
