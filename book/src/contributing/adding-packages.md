@@ -14,7 +14,6 @@ declare -A fuel_repos=(
     [forc-explorer]="https://github.com/fuellabs/forc-explorer"
     [forc-wallet]="https://github.com/fuellabs/forc-wallet"
     [fuel-core]="https://github.com/fuellabs/fuel-core"
-    [fuel-indexer]="https://github.com/fuellabs/fuel-indexer"
     [sway]="https://github.com/fuellabs/sway"
     [sway-vim]="https://github.com/fuellabs/sway.vim"
 )

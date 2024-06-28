@@ -11,7 +11,7 @@ At a very high level, **fuel.nix** does the following:
    provide package **sets** for the latest semver releases and nightlies e.g.
    (`fuel-latest`, `fuel-nightly`).
 3. [**Provide a special set of "milestone" packages**](./internals/providing-milestones.html)
-   (e.g. `forc-wallet-beta-5`) and package sets (e.g. `fuel-beta-5`) by finding
+   (e.g. `forc-wallet-testnet`) and package sets (e.g. `fuel-testnet`) by finding
    packages that match the commits specified in `milestones.nix`.
 4. **Provide `devShell`s** to assist working on the fuel repos by collecting all
    of the inputs to their associated packages and inheriting their environment

@@ -263,29 +263,6 @@ in [
     };
   }
 
-  # The fuel-indexer crates generally require postgresql and sqlx-cli.
-  # They're normally placed under `packages` directory with the exception of
-  # forc plugins.
-  {
-    condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/fuel-indexer";
-    patch = m: {
-      nativeBuildInputs = (m.nativeBuildInputs or []) ++ [pkgs.pkg-config];
-      buildAndTestSubdir =
-        if pkgs.lib.hasPrefix "forc-" m.pname
-        then "plugins/${m.pname}"
-        else "packages/${m.pname}";
-      buildInputs =
-        (m.buildInputs or [])
-        ++ [
-          pkgs.postgresql
-          pkgs.sqlx-cli
-        ];
-      doCheck = false; # Already tested at repo.
-      LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
-      SQLX_OFFLINE = true;
-    };
-  }
-
   # `fuel-core` crates need Rust 1.67 as of
   # `580b2212bd5fa9870c9fef11e0ad72f373925e78` due to use of `checked_ilog` in
   # `fuel-vm` 0.25.3.
@@ -293,14 +270,6 @@ in [
     condition = m: m.date >= "2023-02-03" || m.src.rev == "580b2212bd5fa9870c9fef11e0ad72f373925e78";
     patch = m: {
       rust = pkgs.rust-bin.stable."1.67.0".default;
-    };
-  }
-
-  # As of ~2023-02-15, the fuel-indexer crates appear to require openssl.
-  {
-    condition = m: m.date >= "2023-02-15" && m.src.gitRepoUrl == "https://github.com/fuellabs/fuel-indexer";
-    patch = m: {
-      buildInputs = (m.buildInputs or []) ++ [pkgs.openssl];
     };
   }
 
