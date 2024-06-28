@@ -12,11 +12,9 @@ The `fuel.nix` flake provides the following packages:
 | [`forc-doc`][sway-repo] | Sway API documentation generator. |
 | [`forc-explore`][sway-repo] | Runs the Fuel Explorer. |
 | [`forc-fmt`][sway-repo] | The Sway code formatter. |
-| [`forc-index`][fuel-indexer-repo] | A forc plugin for working with the indexer. |
 | [`forc-lsp`][sway-repo] | The Sway Language Server Protocol implementation. |
 | [`forc-tx`][sway-repo] | Construct transactions with a CLI. |
 | [`forc-wallet`][forc-wallet-repo] | A Fuel Wallet CLI implementation. |
-| [`fuel-indexer`][fuel-indexer-repo] | An indexer for the Fuel blockchain. |
 | [`sway-vim`][sway-vim-repo] | The Sway Vim plugin. |
 | `fuel` | All of the above tools under a single package. |
 
@@ -138,6 +136,5 @@ nix run github:fuellabs/fuel.nix#forc-fmt-0-24-3-nightly-2022-09-14
 
 [forc-wallet-repo]: https://github.com/fuellabs/forc-wallet
 [fuel-core-repo]: https://github.com/fuellabs/fuel-core
-[fuel-indexer-repo]: https://github.com/fuellabs/fuel-indexer
 [sway-repo]: https://github.com/fuellabs/sway
 [sway-vim-repo]: https://github.com/fuellabs/sway.vim

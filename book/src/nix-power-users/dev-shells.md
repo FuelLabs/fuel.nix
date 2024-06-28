@@ -9,7 +9,6 @@ the various fuel projects yourself.
 | --- | --- |
 | `fuel-core-dev` | A shell for working on the `fuel-core` repo. |
 | `sway-dev` | A shell for working on the `sway` repo. |
-| `fuel-indexer-dev` | A shell for working on the `fuel-indexer` repo. |
 | `fuel-dev` | A shell ready for working with on any Fuel repo. |
 
 You can enter a temporary dev shell like so:
