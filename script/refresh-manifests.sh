@@ -35,6 +35,14 @@ declare -A pkg_forc_client=(
     [name]="forc-client"
     [repo]="${fuel_repos[sway]}"
 )
+declare -A pkg_forc_crypto=(
+    [name]="forc-crypto"
+    [repo]="${fuel_repos[sway]}"
+)
+declare -A pkg_forc_debug=(
+    [name]="forc-debug"
+    [repo]="${fuel_repos[sway]}"
+)
 declare -A pkg_forc_doc=(
     [name]="forc-doc"
     [repo]="${fuel_repos[sway]}"
@@ -217,6 +225,8 @@ function refresh {
 
 refresh pkg_forc
 refresh pkg_forc_client
+refresh pkg_forc_crypto
+refresh pkg_forc_debug
 refresh pkg_forc_doc
 refresh pkg_forc_explore
 refresh pkg_forc_fmt

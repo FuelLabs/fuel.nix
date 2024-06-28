@@ -9,6 +9,8 @@ The `fuel.nix` flake provides the following packages:
 | [`fuel-core-client`][fuel-core-repo] | A Fuel VM transaction client. |
 | [`forc`][sway-repo] | The Fuel Orchestrator. Compiler, packaging and plugin support. |
 | [`forc-client`][sway-repo] | Provides the `forc deploy` and `forc run` commands. |
+| [`forc-crypto`][sway-repo] | A Forc plugin for hashing arbitrary data. |
+| [`forc-debug`][sway-repo] | A Forc plugin for debugging via CLI and IDE. |
 | [`forc-doc`][sway-repo] | Sway API documentation generator. |
 | [`forc-explore`][sway-repo] | Runs the Fuel Explorer. |
 | [`forc-fmt`][sway-repo] | The Sway code formatter. |
