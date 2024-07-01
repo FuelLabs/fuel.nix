@@ -4,6 +4,8 @@
 {pkgs}: let
   forc-plugins = [
     "forc-client"
+    "forc-crypto"
+    "forc-debug"
     "forc-doc"
     "forc-fmt"
     "forc-lsp"
