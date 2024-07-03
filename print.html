@@ -310,7 +310,6 @@ packages with the following:</p>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-crypto</code></a></td><td>A Forc plugin for hashing arbitrary data.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-debug</code></a></td><td>A Forc plugin for debugging via CLI and IDE.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-doc</code></a></td><td>Sway API documentation generator.</td></tr>
-<tr><td><a href="https://github.com/fuellabs/sway"><code>forc-explore</code></a></td><td>Runs the Fuel Explorer.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-fmt</code></a></td><td>The Sway code formatter.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-lsp</code></a></td><td>The Sway Language Server Protocol implementation.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-tx</code></a></td><td>Construct transactions with a CLI.</td></tr>
@@ -715,7 +714,6 @@ officially supported.</p>
 set of repositories:</p>
 <pre><code class="language-sh"># The set of fuel repositories.
 declare -A fuel_repos=(
-    [forc-explorer]="https://github.com/fuellabs/forc-explorer"
     [forc-wallet]="https://github.com/fuellabs/forc-wallet"
     [fuel-core]="https://github.com/fuellabs/fuel-core"
     [sway]="https://github.com/fuellabs/sway"
@@ -742,7 +740,6 @@ declare -A pkg_forc_doc=(
 <pre><code class="language-sh">refresh pkg_forc
 refresh pkg_forc_client
 refresh pkg_forc_doc
-refresh pkg_forc_explore
 refresh pkg_forc_fmt
 refresh pkg_forc_index
 refresh pkg_forc_lsp
