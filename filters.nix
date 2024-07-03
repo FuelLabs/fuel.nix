@@ -11,7 +11,6 @@ with pkgs.lib; [
   (m: m.pname != "forc-crypto" || versionAtLeast m.version "0.48.1")
   (m: m.pname != "forc-debug" || versionAtLeast m.version "0.48.1")
   (m: m.pname != "forc-doc" || versionAtLeast m.version "0.29.0")
-  (m: m.pname != "forc-explore" || versionAtLeast m.version "0.19.0")
   (m: m.pname != "forc-fmt" || versionAtLeast m.version "0.19.0")
   (m: m.pname != "forc-lsp" || versionAtLeast m.version "0.19.0")
   (m: m.pname != "forc-tx" || versionAtLeast m.version "0.33.1")

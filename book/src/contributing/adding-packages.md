@@ -11,7 +11,6 @@ set of repositories:
 ```sh
 # The set of fuel repositories.
 declare -A fuel_repos=(
-    [forc-explorer]="https://github.com/fuellabs/forc-explorer"
     [forc-wallet]="https://github.com/fuellabs/forc-wallet"
     [fuel-core]="https://github.com/fuellabs/fuel-core"
     [sway]="https://github.com/fuellabs/sway"
@@ -44,7 +43,6 @@ Finally, add a call to `refresh` for the new package:
 refresh pkg_forc
 refresh pkg_forc_client
 refresh pkg_forc_doc
-refresh pkg_forc_explore
 refresh pkg_forc_fmt
 refresh pkg_forc_index
 refresh pkg_forc_lsp

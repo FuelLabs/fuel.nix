@@ -12,7 +12,6 @@ The `fuel.nix` flake provides the following packages:
 | [`forc-crypto`][sway-repo] | A Forc plugin for hashing arbitrary data. |
 | [`forc-debug`][sway-repo] | A Forc plugin for debugging via CLI and IDE. |
 | [`forc-doc`][sway-repo] | Sway API documentation generator. |
-| [`forc-explore`][sway-repo] | Runs the Fuel Explorer. |
 | [`forc-fmt`][sway-repo] | The Sway code formatter. |
 | [`forc-lsp`][sway-repo] | The Sway Language Server Protocol implementation. |
 | [`forc-tx`][sway-repo] | Construct transactions with a CLI. |
