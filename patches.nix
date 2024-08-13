@@ -331,7 +331,9 @@ in [
   {
     condition = m: m.date >= "2024-08-08";
     patch = m: {
-      rust = pkgs.rust-bin.stable."1.79.0".default;
+      rust = pkgs.rust-bin.stable."1.79.0".default.override {
+        targets = ["wasm32-unknown-unknown"];
+      };
     };
   }
 ]
