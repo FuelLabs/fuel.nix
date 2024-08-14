@@ -326,4 +326,14 @@ in [
       };
     };
   }
+
+  # `fuels-rs` requires Rust 1.79 as of v0.66.0 due to use of `path::absolute`.
+  {
+    condition = m: m.date >= "2024-08-08";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.79.0".default.override {
+        targets = ["wasm32-unknown-unknown"];
+      };
+    };
+  }
 ]
