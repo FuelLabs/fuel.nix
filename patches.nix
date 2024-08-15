@@ -327,7 +327,7 @@ in [
     };
   }
 
-  # `fuels-rs` requires Rust 1.79 as of v0.66.0 due to use of `path::absolute`.
+  # `fuels-rs` requires Rust 1.79 as of v0.66.0 due to the use of `path::absolute`.
   {
     condition = m: m.date >= "2024-08-08";
     patch = m: {
