@@ -184,7 +184,7 @@ uninstall Nix and its installed packages if necessary.</p>
 <h2 id="install-nix"><a class="header" href="#install-nix">Install Nix</a></h2>
 <p>To recap our <a href="./quick-start.html">Quick Start</a>, we can install Nix with the
 following command:</p>
-<pre><code class="language-console">curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix/tag/v0.9.0 | sh -s -- install --extra-conf "extra-substituters = https://fuellabs.cachix.org" --extra-conf "extra-trusted-public-keys = fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8="
+<pre><code class="language-console">curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix/tag/v0.20.2 | sh -s -- install --extra-conf "extra-substituters = https://fuellabs.cachix.org" --extra-conf "extra-trusted-public-keys = fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8="
 </code></pre>
 <p>This uses the <a href="nix-installer"><code>nix-installer</code> tool by Determinate Systems</a> to
 install Nix with the <a href="nix-flakes"><strong>flakes</strong></a> and <a href="nix-command"><strong>nix-command</strong></a>
