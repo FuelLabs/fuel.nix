@@ -26,6 +26,6 @@
   testnet = {
     forc-wallet = "ee49fcbacedc5f446134c6b7e5513d4232bb7566";
     fuel-core = "8c92d37598b760d64a14df1588ff27b3d14c7d2c";
-    sway = "3a9c171cd43611d7ccad94ab66a5093c6634717b";
+    sway = "66bb430395daf5b8f7205f7b9d8d008e2e812d54";
   };
 }
