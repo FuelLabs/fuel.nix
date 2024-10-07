@@ -24,8 +24,8 @@
   # Commits sourced from:
   # https://raw.githubusercontent.com/FuelLabs/fuelup/gh-pages/channel-fuel-testnet.toml
   testnet = {
-    forc-wallet = "29d9b25c2ce7a273618945d561148e3034e47441";
-    fuel-core = "9f96573224056aa5a11233b821d34cb8ae4fad20";
-    sway = "31a1d6f98395f571cd3674b492d9bf4773c55f65";
+    forc-wallet = "ee49fcbacedc5f446134c6b7e5513d4232bb7566";
+    fuel-core = "8c92d37598b760d64a14df1588ff27b3d14c7d2c";
+    sway = "3a9c171cd43611d7ccad94ab66a5093c6634717b";
   };
 }
