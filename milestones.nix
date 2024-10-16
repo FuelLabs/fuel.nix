@@ -28,4 +28,20 @@
     fuel-core = "8c92d37598b760d64a14df1588ff27b3d14c7d2c";
     sway = "66bb430395daf5b8f7205f7b9d8d008e2e812d54";
   };
+
+  # Commits sourced from:
+  # https://raw.githubusercontent.com/FuelLabs/fuelup/gh-pages/channel-fuel-mainnet.toml
+  ignition = {
+    forc-wallet = "152bfb48c347363d32dc573c77315baba8d05e5b";
+    fuel-core = "eea8c605258d79d5243f3f822c0e1205b0802f3c";
+    sway = "31486c0b47669612acb7c64d66ecb50aea281282";
+  };
+
+  # Commits sourced from:
+  # https://raw.githubusercontent.com/FuelLabs/fuelup/gh-pages/channel-fuel-mainnet.toml
+  mainnet = {
+    forc-wallet = "152bfb48c347363d32dc573c77315baba8d05e5b";
+    fuel-core = "eea8c605258d79d5243f3f822c0e1205b0802f3c";
+    sway = "31486c0b47669612acb7c64d66ecb50aea281282";
+  };
 }
