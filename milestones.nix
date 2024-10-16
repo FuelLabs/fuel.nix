@@ -34,7 +34,7 @@
   ignition = {
     forc-wallet = "152bfb48c347363d32dc573c77315baba8d05e5b";
     fuel-core = "eea8c605258d79d5243f3f822c0e1205b0802f3c";
-    sway = "d5662c6bd0e5519446aa1b3ebb6af703025accec";
+    sway = "31486c0b47669612acb7c64d66ecb50aea281282";
   };
 
   # Commits sourced from:
@@ -42,6 +42,6 @@
   mainnet = {
     forc-wallet = "152bfb48c347363d32dc573c77315baba8d05e5b";
     fuel-core = "eea8c605258d79d5243f3f822c0e1205b0802f3c";
-    sway = "d5662c6bd0e5519446aa1b3ebb6af703025accec";
+    sway = "31486c0b47669612acb7c64d66ecb50aea281282";
   };
 }
