@@ -336,4 +336,14 @@ in [
       };
     };
   }
+
+  # `fuel-core` requires Rust 1.81 as of v0.40.2.
+  {
+    condition = m: m.date >= "2024-12-30";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.81.0".default.override {
+        targets = ["wasm32-unknown-unknown"];
+      };
+    };
+  }
 ]
