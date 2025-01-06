@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   refresh-and-commit:
-    runs-on: ubuntu-latest
+    runs-on: buildjet-4vcpu-ubuntu-2204
     if: github.ref != 'refs/heads/master'
     permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the
