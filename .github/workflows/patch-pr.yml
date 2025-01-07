@@ -31,7 +31,7 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - run: nix flake update
       - run: nix run .#refresh-manifests
-        timeout-minutes: 180
+        timeout-minutes: 240
       - name: validate changed nix files
         run: |
           files=( $(git diff --name-only '*.nix') )
