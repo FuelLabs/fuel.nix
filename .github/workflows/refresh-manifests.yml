@@ -7,7 +7,7 @@ on:
 
 jobs:
   refresh-and-upload-manifests:
-    runs-on: ubuntu-latest
+    runs-on: buildjet-4vcpu-ubuntu-2204
     steps:
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v22
@@ -18,7 +18,7 @@ jobs:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - run: nix run .#refresh-manifests
-        timeout-minutes: 120
+        timeout-minutes: 240
       - name: validate changed nix files
         run: |
           files=( $(git diff --name-only '*.nix') )

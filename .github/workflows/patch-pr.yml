@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   refresh-and-commit:
-    runs-on: ubuntu-latest
+    runs-on: buildjet-4vcpu-ubuntu-2204
     if: github.ref != 'refs/heads/master'
     permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the
@@ -31,7 +31,7 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - run: nix flake update
       - run: nix run .#refresh-manifests
-        timeout-minutes: 120
+        timeout-minutes: 240
       - name: validate changed nix files
         run: |
           files=( $(git diff --name-only '*.nix') )
