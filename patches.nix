@@ -283,7 +283,7 @@ in [
     };
   }
 
-  # `forc` requires Rust 1.70 as of ~2023-07-01
+  # `forc` requires Rust 1.70 as of ~2023-07-01.
   {
     condition = m: m.date >= "2023-07-01";
     patch = m: {
