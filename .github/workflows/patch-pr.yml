@@ -32,7 +32,7 @@ jobs:
       - run: nix flake update
       - run: nix run .#refresh-manifests
         timeout-minutes: 240
-      - name: validate changed nix files
+      - name: Validate changed nix files
         run: |
           files=( $(git diff --name-only '*.nix') )
           echo "${#files[*]} nix files changed: ${files[*]}"
