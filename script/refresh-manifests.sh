@@ -176,7 +176,7 @@ function refresh_nightlies {
         git clone "${pkg[repo]}" "$pkg_repo_dir"
     fi
     local pkg_git_branch="$(cd $pkg_repo_dir && git branch --show-current)"
-    local date_nightly="2022-09-01"
+    local date_nightly="2024-01-01"
     local date_today=$(date -u +"%F")
     echo "Collecting nightlies from $date_nightly to $date_today"
     local last_git_rev=""
