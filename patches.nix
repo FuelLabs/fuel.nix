@@ -346,4 +346,18 @@ in [
       };
     };
   }
+
+  # At some point around this date, forc-client started failing due to not
+  # being able to find zlib. Here we just make it available to all fuel 
+  # packages going forward.
+  {
+    condition = m: pkgs.lib.hasInfix "darwin" pkgs.system && m.date >= "2024-12-30";
+    patch = m: {
+      buildInputs =
+        (m.buildInputs or [])
+        ++ [
+          pkgs.zlib
+        ];
+    };
+  }
 ]
