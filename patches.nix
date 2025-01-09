@@ -336,7 +336,7 @@ in [
       };
     };
   }
-
+  
   # `fuel-core` requires Rust 1.81 as of v0.40.2.
   {
     condition = m: m.date >= "2024-12-30";
@@ -353,11 +353,7 @@ in [
   {
     condition = m: pkgs.lib.hasInfix "darwin" pkgs.system && m.date >= "2024-12-30";
     patch = m: {
-      buildInputs =
-        (m.buildInputs or [])
-        ++ [
-          pkgs.zlib
-        ];
+      buildInputs = (m.buildInputs or []) ++ [pkgs.zlib];
     };
   }
 ]
