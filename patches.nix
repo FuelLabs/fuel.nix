@@ -336,7 +336,7 @@ in [
       };
     };
   }
-  
+
   # `fuel-core` requires Rust 1.81 as of v0.40.2.
   {
     condition = m: m.date >= "2024-12-30";
@@ -348,7 +348,7 @@ in [
   }
 
   # At some point around this date, forc-client started failing due to not
-  # being able to find zlib. Here we just make it available to all fuel 
+  # being able to find zlib. Here we just make it available to all fuel
   # packages going forward.
   {
     condition = m: pkgs.lib.hasInfix "darwin" pkgs.system && m.date >= "2024-12-30";
