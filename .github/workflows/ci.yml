@@ -31,8 +31,6 @@ jobs:
         package:
           [
             fuel,
-            fuel-beta-4,
-            fuel-beta-5,
             fuel-testnet,
             fuel-ignition,
             fuel-mainnet,

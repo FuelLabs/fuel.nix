@@ -99,7 +99,7 @@
         nightly = pkgs.lib.mapAttrs' mapNightly foldNightly;
       };
 
-      # Construct the milestone package lists, e.g. `{ beta-4 = [...]; beta-5 = [...]; }`.
+      # Construct the milestone package lists, e.g. `{ testnet = [...]; mainnet = [...]; }`.
       milestones = let
         filterPkg = revs: m: builtins.any (rev: rev == m.src.rev) (builtins.attrValues revs);
         filterPublished = revs: builtins.filter (filterPkg revs) published.prepared;
