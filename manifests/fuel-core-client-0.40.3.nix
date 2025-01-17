@@ -1,8 +1,8 @@
 {
   pname = "fuel-core-client";
   version = "0.40.3";
-  date = "2025-01-15";
+  date = "2025-01-16";
   url = "https://github.com/fuellabs/fuel-core";
-  rev = "79e3932d13aa5437d282d6616561f2a38582c616";
-  sha256 = "sha256-FnM6ikigxZzH7sExbaDyQPI8w27K8DwGcOOjTrRkS2U=";
+  rev = "a1bf2b879053e5dcfcacebc794cd036358b2182c";
+  sha256 = "sha256-hPoK8V7XpF+NB58o3O/jHCE5WbrzIpBX8AokhtYVEZ8=";
 }
