@@ -17,6 +17,7 @@ jobs:
       # Give the default GITHUB_TOKEN write permission to commit and push the
       # added or changed files to the repository.
       contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -54,5 +55,5 @@ jobs:
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.REPO_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.head_ref }}
