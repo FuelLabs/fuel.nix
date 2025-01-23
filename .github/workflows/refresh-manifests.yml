@@ -30,6 +30,7 @@ jobs:
         with:
           name: manifests
           path: manifests/
+          overwrite: true
 
   download-manifests-and-nix-build:
     needs: refresh-and-upload-manifests
@@ -46,6 +47,7 @@ jobs:
         with:
           name: manifests
           path: manifests/
+          overwrite: true
       - name: stage manifests for nix build
         run: git add -v manifests
       - uses: cachix/install-nix-action@v22
@@ -74,6 +76,7 @@ jobs:
         with:
           name: manifests
           path: manifests/
+          overwrite: true
       - name: Check and commit changes
         run: |
           git config --local user.email "action@github.com"
