@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: rm -r manifests
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: manifests
           path: manifests/
@@ -70,7 +70,7 @@ jobs:
           persist-credentials: false
           ref: master
       - run: rm -r ./manifests
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: manifests
           path: manifests/
