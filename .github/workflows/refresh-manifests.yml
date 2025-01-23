@@ -62,10 +62,7 @@ jobs:
   download-manifests-and-commit:
     needs: [refresh-and-upload-manifests, download-manifests-and-nix-build]
     runs-on: ubuntu-latest
-    permissions:
-      # Give the default GITHUB_TOKEN write permission to commit and push the
-      # added or changed files to the repository.
-      contents: write
+    environment: fuel-nix-bot
     steps:
       - uses: actions/checkout@v3
         with:
@@ -89,10 +86,16 @@ jobs:
           else
             git commit -m "manifest: update"
           fi
+      - name: Get app credentials
+        uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_KEY }}
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ steps.app-token.outputs.token }}
           branch: master
 
   notify-slack-on-failure:
