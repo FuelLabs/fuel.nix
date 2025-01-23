@@ -26,7 +26,7 @@ jobs:
           if [[ "${#files[*]}" -ne 0 ]]; then
             nix-instantiate --parse "${files[@]}" >/dev/null
           fi
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: manifests
           path: manifests/
