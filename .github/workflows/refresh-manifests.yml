@@ -99,7 +99,7 @@ jobs:
           branch: master
 
   notify-slack-on-failure:
-    if: failure()
+    if: failure() && github.ref == 'refs/heads/master'
     needs:
       [
         refresh-and-upload-manifests,
