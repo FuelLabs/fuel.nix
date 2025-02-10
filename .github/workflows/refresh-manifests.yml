@@ -57,7 +57,7 @@ jobs:
         with:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
+      - run: NIX_DEBUG=1 nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
 
   download-manifests-and-commit:
     needs: [refresh-and-upload-manifests, download-manifests-and-nix-build]
