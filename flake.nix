@@ -228,7 +228,6 @@
         name = "fuel-core-dev";
         inputsFrom = with fuelpkgs; [
           fuel-core-nightly
-          fuel-gql-cli-nightly
         ];
         buildInputs = [pkgs.grpc-tools];
         inherit (fuelpkgs.fuel-core-nightly) LIBCLANG_PATH ROCKSDB_LIB_DIR;

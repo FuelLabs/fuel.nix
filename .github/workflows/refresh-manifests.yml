@@ -38,7 +38,7 @@ jobs:
       fail-fast: false
       matrix:
         package: [fuel, fuel-testnet, fuel-mainnet, fuel-ignition, fuel-nightly]
-        os: [buildjet-4vcpu-ubuntu-2204, macos-latest, macos-latest-xlarge]
+        os: [buildjet-4vcpu-ubuntu-2204, macos-latest-large, macos-latest-xlarge]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -99,7 +99,7 @@ jobs:
           branch: master
 
   notify-slack-on-failure:
-    if: failure()
+    if: failure() && github.ref == 'refs/heads/master'
     needs:
       [
         refresh-and-upload-manifests,
