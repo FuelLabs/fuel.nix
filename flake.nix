@@ -256,6 +256,9 @@
         in
           (pkgs.lib.mapAttrsToList (n: v: v) currentNightlies) ++ [fuel-core-dev sway-dev];
         inherit (fuel-core-dev) LIBCLANG_PATH ROCKSDB_LIB_DIR PROTOC NIX_CFLAGS_COMPILE;
+        # Remove the hardening added by nix to fix jmalloc compilation error.
+        # More info: https://github.com/tikv/jemallocator/issues/108
+        hardeningDisable = ["fortify"];
       };
 
       default = fuel-dev;
