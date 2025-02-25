@@ -229,7 +229,10 @@
         inputsFrom = with fuelpkgs; [
           fuel-core-nightly
         ];
-        buildInputs = [pkgs.grpc-tools];
+        buildInputs = [
+          pkgs.grpc-tools
+          pkgs.rust-analyzer
+        ];
         inherit (fuelpkgs.fuel-core-nightly) LIBCLANG_PATH ROCKSDB_LIB_DIR;
         PROTOC = "${pkgs.grpc-tools}/bin/protoc";
         NIX_CFLAGS_COMPILE = fuelpkgs.fuel-core-nightly.NIX_CFLAGS_COMPILE or "";
@@ -255,6 +258,9 @@
           currentNightlies = pkgs.lib.filterAttrs (n: v: isCurrentNightly n) fuelpkgs;
         in
           (pkgs.lib.mapAttrsToList (n: v: v) currentNightlies) ++ [fuel-core-dev sway-dev];
+        buildInputs = [
+          pkgs.postgresql
+        ];
         inherit (fuel-core-dev) LIBCLANG_PATH ROCKSDB_LIB_DIR PROTOC NIX_CFLAGS_COMPILE;
         # Remove the hardening added by nix to fix jmalloc compilation error.
         # More info: https://github.com/tikv/jemallocator/issues/108
