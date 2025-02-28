@@ -346,4 +346,14 @@ in [
       };
     };
   }
+
+  # `forc.pub` requires Rust 1.82.
+  {
+    condition = m: m.date >= "2025-02-23";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.82.0".default.override {
+        targets = ["wasm32-unknown-unknown"];
+      };
+    };
+  }
 ]
