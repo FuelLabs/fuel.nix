@@ -356,4 +356,14 @@ in [
       };
     };
   }
+
+  # `fuel-core` requires Rust 1.85 as of `2a7e031fca28c751215030f719c99cb6a82d30f3`.
+  {
+    condition = m: m.date >= "2025-04-10";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.85.0".default.override {
+        targets = ["wasm32-unknown-unknown"];
+      };
+    };
+  }
 ]
