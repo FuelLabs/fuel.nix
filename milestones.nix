@@ -5,9 +5,9 @@
   # Commits sourced from:
   # https://raw.githubusercontent.com/FuelLabs/fuelup/gh-pages/channel-fuel-testnet.toml
   testnet = {
-    forc-wallet = "8d59dbc462dab2d438c6ec8e52051deb000ac5a4";
-    fuel-core = "ccff696336406e842c9ed25bc23af8bcaa47eccd";
-    sway = "d821dcb0c7edb1d6e2a772f5a1ccefe38902eaec";
+    forc-wallet = "9015e09f45818bbb8068fa644e9cda0e5b5c3809";
+    fuel-core = "ba653d74fdddc397c971e5da79f189dd76ef877f";
+    sway = "7e1bc152face6f1ae20b4274d98446100920e573";
   };
 
   # Commits sourced from:
