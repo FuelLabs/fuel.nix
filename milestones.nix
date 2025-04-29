@@ -6,7 +6,7 @@
   # https://raw.githubusercontent.com/FuelLabs/fuelup/gh-pages/channel-fuel-testnet.toml
   testnet = {
     forc-wallet = "9015e09f45818bbb8068fa644e9cda0e5b5c3809";
-    fuel-core = "ba653d74fdddc397c971e5da79f189dd76ef877f";
+    fuel-core = "6dc7e90305d59c04b5c6e83a6dde84abdf928ccb";
     sway = "7e1bc152face6f1ae20b4274d98446100920e573";
   };
 
