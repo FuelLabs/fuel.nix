@@ -52,6 +52,7 @@ jobs:
   verify-nix-shell:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2.4.0
       - uses: cachix/install-nix-action@v22
         with:
           nix_path: nixpkgs=channel:nixos-unstable
@@ -61,7 +62,7 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
       - name: Verify nix shell command from docs
         run: |
-          nix shell github:fuellabs/fuel.nix#fuel-testnet --command bash -c '
+          nix shell .#fuel-testnet --command bash -c '
             set -e
             echo "Checking fuel-core version..."
             fuel-core --version
