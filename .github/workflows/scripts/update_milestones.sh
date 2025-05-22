@@ -1,32 +1,32 @@
 #!/usr/bin/env bash
 
-# Script: update_milestones.sh
-# Description: Updates milestones.nix file with latest component hashes from GitHub releases
-#
-# Usage:
-#   ./update_milestones.sh [options]
-#
-# Options:
-#   --testnet-forc-wallet <tag|hash>   : Use specific forc-wallet tag/hash for testnet
-#   --testnet-fuel-core <tag|hash>     : Use specific fuel-core tag/hash for testnet
-#   --testnet-sway <tag|hash>          : Use specific sway tag/hash for testnet
-#   --mainnet-forc-wallet <tag|hash>   : Use specific forc-wallet tag/hash for ignition/mainnet
-#   --mainnet-fuel-core <tag|hash>     : Use specific fuel-core tag/hash for ignition/mainnet
-#   --mainnet-sway <tag|hash>          : Use specific sway tag/hash for ignition/mainnet
-#   --token <github_token>             : GitHub API token to avoid rate limiting
-#   --verbose                          : Enable verbose output
-#   --help                             : Show this help message
-#
-# Example:
-#   ./update_milestones.sh --verbose
-#   ./update_milestones.sh --testnet-forc-wallet v0.14.0 --mainnet-sway v0.45.0
-#   ./update_milestones.sh --testnet-sway v0.68.4 --token ghp_xxxxxxxxxxxx
-#
-# Exit codes:
-#   0 - Success
-#   1 - General error
-#   2 - Missing required dependency
-#   3 - GitHub API error
+## Script: update_milestones.sh
+## Description: Updates milestones.nix file with latest component hashes from GitHub releases
+##
+## Usage:
+##   ./update_milestones.sh [options]
+##
+## Options:
+##   --testnet-forc-wallet <tag|hash>   : Use specific forc-wallet tag/hash for testnet
+##   --testnet-fuel-core <tag|hash>     : Use specific fuel-core tag/hash for testnet
+##   --testnet-sway <tag|hash>          : Use specific sway tag/hash for testnet
+##   --mainnet-forc-wallet <tag|hash>   : Use specific forc-wallet tag/hash for ignition/mainnet
+##   --mainnet-fuel-core <tag|hash>     : Use specific fuel-core tag/hash for ignition/mainnet
+##   --mainnet-sway <tag|hash>          : Use specific sway tag/hash for ignition/mainnet
+##   --token <github_token>             : GitHub API token to avoid rate limiting
+##   --verbose                          : Enable verbose output
+##   --help                             : Show this help message
+##
+## Example:
+##   ./update_milestones.sh --verbose
+##   ./update_milestones.sh --testnet-forc-wallet v0.14.0 --mainnet-sway v0.45.0
+##   ./update_milestones.sh --testnet-sway v0.68.4 --token ghp_xxxxxxxxxxxx
+##
+## Exit codes:
+##   0 - Success
+##   1 - General error
+##   2 - Missing required dependency
+##   3 - GitHub API error
 
 # Exit on any error
 set -e
@@ -76,7 +76,7 @@ log() {
 
 # Function to print usage information
 usage() {
-  grep "^# " "$0" | cut -c 3- | grep -v "Exit codes:" | sed '/^$/q'
+  grep "^##" "$0" | sed 's/^##\s*//'
   exit 0
 }
 
