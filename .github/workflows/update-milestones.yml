@@ -1,0 +1,125 @@
+name: update-component-channels
+
+on:
+  workflow_dispatch:
+    inputs:
+      testnet-forc-wallet:
+        description: 'Testnet forc-wallet tag or commit hash'
+        required: false
+        type: string
+      testnet-fuel-core:
+        description: 'Testnet fuel-core tag or commit hash'
+        required: false
+        type: string
+      testnet-sway:
+        description: 'Testnet sway tag or commit hash'
+        required: false
+        type: string
+      mainnet-forc-wallet:
+        description: 'Mainnet/Ignition forc-wallet tag or commit hash'
+        required: false
+        type: string
+      mainnet-fuel-core:
+        description: 'Mainnet/Ignition fuel-core tag or commit hash'
+        required: false
+        type: string
+      mainnet-sway:
+        description: 'Mainnet/Ignition sway tag or commit hash'
+        required: false
+        type: string
+
+jobs:
+  update-milestones:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          depth: 1
+
+      - name: Set up Git
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+
+      - name: Get current date
+        id: date
+        run: echo "DATE=$(date +'%d-%m-%Y')" >> $GITHUB_OUTPUT
+
+      - name: Create branch
+        run: |
+          BRANCH_NAME="bump/${{ steps.date.outputs.DATE }}"
+          git fetch origin
+          if git ls-remote --heads origin $BRANCH_NAME | grep -q $BRANCH_NAME; then
+            echo "Branch exists - will force push later"
+          else
+            echo "Creating new branch"
+          fi
+          git checkout -B $BRANCH_NAME
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: Update milestones.nix
+        id: update-milestones
+        run: |
+          # Build command with optional inputs
+          CMD=".github/workflows/scripts/update_milestones.sh --verbose"
+
+          # Add testnet inputs if provided
+          if [[ -n "${{ inputs.testnet-forc-wallet }}" ]]; then
+            CMD="$CMD --testnet-forc-wallet '${{ inputs.testnet-forc-wallet }}'"
+          fi
+          if [[ -n "${{ inputs.testnet-fuel-core }}" ]]; then
+            CMD="$CMD --testnet-fuel-core '${{ inputs.testnet-fuel-core }}'"
+          fi
+          if [[ -n "${{ inputs.testnet-sway }}" ]]; then
+            CMD="$CMD --testnet-sway '${{ inputs.testnet-sway }}'"
+          fi
+
+          # Add mainnet inputs if provided
+          if [[ -n "${{ inputs.mainnet-forc-wallet }}" ]]; then
+            CMD="$CMD --mainnet-forc-wallet '${{ inputs.mainnet-forc-wallet }}'"
+          fi
+          if [[ -n "${{ inputs.mainnet-fuel-core }}" ]]; then
+            CMD="$CMD --mainnet-fuel-core '${{ inputs.mainnet-fuel-core }}'"
+          fi
+          if [[ -n "${{ inputs.mainnet-sway }}" ]]; then
+            CMD="$CMD --mainnet-sway '${{ inputs.mainnet-sway }}'"
+          fi
+
+          # Make script executable and run it
+          chmod +x .github/workflows/scripts/update_milestones.sh
+          echo "Running: $CMD"
+          eval "$CMD"
+
+          echo "Updated milestones.nix file"
+
+      - name: Commit and push changes
+        run: |
+          git add milestones.nix
+          git commit -m "chore: bump networks to match fuelup versions"
+          git push -f origin $BRANCH_NAME
+
+      - name: Create or update PR
+        id: create-pr
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Check if PR already exists
+          PR_EXISTS=$(gh pr list --head $BRANCH_NAME --json number --jq 'length')
+
+          if [ "$PR_EXISTS" -gt "0" ]; then
+            PR_NUMBER=$(gh pr list --head $BRANCH_NAME --json number --jq '.[0].number')
+            gh pr edit $PR_NUMBER --title "chore: bump networks to match fuelup versions" --body "$PR_DESCRIPTION"
+            PR_URL=$(gh pr view $PR_NUMBER --json url --jq '.url')
+          else
+            PR_URL=$(gh pr create --base master --head $BRANCH_NAME --title "chore: bump networks to match fuelup versions" --body "$PR_DESCRIPTION" --json url --jq '.url')
+          fi
+
+          echo "PR URL: $PR_URL"
+          echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+
+      - name: Print PR URL
+        run: |
+          echo "::notice ::PR created or updated at ${{ steps.create-pr.outputs.pr_url }}"
+          echo "PR URL: ${{ steps.create-pr.outputs.pr_url }}"
