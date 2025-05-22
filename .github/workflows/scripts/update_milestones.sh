@@ -252,7 +252,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     *)
       log "ERROR" "Unknown option: $1"
-      usage
+      usage 1
       ;;
   esac
 done
@@ -273,6 +273,7 @@ fi
 REPOS=("forc-wallet" "fuel-core" "sway")
 
 # Create a temp file for processing
+trap 'rm -f "$TEMP_FILE"; exit 1' ERR INT TERM
 TEMP_FILE=$(mktemp)
 cp "$MILESTONES_FILE" "$TEMP_FILE"
 
@@ -288,13 +289,13 @@ update_component_hash() {
 
   awk -v env="$environment" -v comp="$component" -v hash="$hash" '
   BEGIN { in_env = 0; }
-  /^  '${environment}' = \{/ { in_env = 1; print; next; }
-  /^  \};/ { in_env = 0; print; next; }
-
-  in_env && $1 == comp && $2 == "=" { 
-    printf "    %s = \"%s\";\n", comp, hash;
+  $0 ~ "^  " env " = \\{"    { in_env = 1; print; next }
+  $0 ~ "^  \\};"            { in_env = 0; print; next }
+  in_env && $1 == comp && $2 == "=" {
+    printf "    %s = \"%s\";\n", comp, hash
+    next
   }
-  !(in_env && $1 == comp && $2 == "=") { print; }
+  { print }
   ' "$file" > "$temp_file2"
 
   mv "$temp_file2" "$file"
