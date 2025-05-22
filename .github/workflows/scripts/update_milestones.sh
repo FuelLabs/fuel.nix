@@ -13,11 +13,14 @@
 #   --mainnet-forc-wallet <tag|hash>   : Use specific forc-wallet tag/hash for ignition/mainnet
 #   --mainnet-fuel-core <tag|hash>     : Use specific fuel-core tag/hash for ignition/mainnet
 #   --mainnet-sway <tag|hash>          : Use specific sway tag/hash for ignition/mainnet
+#   --token <github_token>             : GitHub API token to avoid rate limiting
 #   --verbose                          : Enable verbose output
 #   --help                             : Show this help message
 #
 # Example:
+#   ./update_milestones.sh --verbose
 #   ./update_milestones.sh --testnet-forc-wallet v0.14.0 --mainnet-sway v0.45.0
+#   ./update_milestones.sh --testnet-sway v0.68.4 --token ghp_xxxxxxxxxxxx
 #
 # Exit codes:
 #   0 - Success
@@ -41,6 +44,11 @@ TESTNET_SWAY=""
 MAINNET_FORC_WALLET=""
 MAINNET_FUEL_CORE=""
 MAINNET_SWAY=""
+GITHUB_TOKEN=""
+
+# Cache to avoid duplicate API calls
+declare -A TAG_COMMIT_CACHE
+declare -A LATEST_RELEASE_CACHE
 
 # Array to store summary information
 declare -a TESTNET_SUMMARY
@@ -96,16 +104,38 @@ check_dependencies() {
   fi
 }
 
+# Function to make GitHub API calls with auth token if available
+github_api_call() {
+  local url=$1
+  local auth_header=""
+
+  if [[ -n "$GITHUB_TOKEN" ]]; then
+    auth_header="-H \"Authorization: token $GITHUB_TOKEN\""
+  fi
+
+  # Use eval to properly handle the auth_header
+  eval "curl -s $auth_header \"$url\""
+}
+
 # Function to get commit hash from tag or use provided hash
 get_commit_hash() {
   local repo=$1
   local tag_or_hash=$2
+
+  # Check cache first
+  local cache_key="${repo}:${tag_or_hash}"
+  if [[ -n "${TAG_COMMIT_CACHE[$cache_key]}" ]]; then
+    log "INFO" "Using cached commit hash for $repo:$tag_or_hash: ${TAG_COMMIT_CACHE[$cache_key]}"
+    echo "${TAG_COMMIT_CACHE[$cache_key]}"
+    return 0
+  fi
 
   log "INFO" "Getting commit hash for $repo using '$tag_or_hash'"
 
   # If it looks like a commit hash already, return it
   if [[ $tag_or_hash =~ ^[0-9a-f]{40}$ ]]; then
     log "INFO" "Input looks like a hash, using directly: $tag_or_hash"
+    TAG_COMMIT_CACHE[$cache_key]=$tag_or_hash
     echo $tag_or_hash
     return 0
   fi
@@ -115,11 +145,11 @@ get_commit_hash() {
 
   # Try with v prefix first
   log "INFO" "Trying API call with v-prefix: v$tag"
-  local response=$(curl -s "https://api.github.com/repos/FuelLabs/$repo/git/refs/tags/v$tag")
+  local response=$(github_api_call "https://api.github.com/repos/FuelLabs/$repo/git/refs/tags/v$tag")
 
   if [[ $(echo $response | jq 'has("object")') == "false" ]]; then
     log "INFO" "Tag not found with v-prefix, trying without v: $tag"
-    response=$(curl -s "https://api.github.com/repos/FuelLabs/$repo/git/refs/tags/$tag")
+    response=$(github_api_call "https://api.github.com/repos/FuelLabs/$repo/git/refs/tags/$tag")
   fi
 
   if [[ $(echo $response | jq 'has("object")') == "false" ]]; then
@@ -137,10 +167,13 @@ get_commit_hash() {
   if [[ "$object_type" == "tag" ]]; then
     log "INFO" "Annotated tag found, getting commit SHA"
     local tag_url=$(echo $response | jq -r '.object.url')
-    local tag_response=$(curl -s "$tag_url")
+    local tag_response=$(github_api_call "$tag_url")
     sha=$(echo $tag_response | jq -r '.object.sha')
     log "INFO" "Commit SHA from annotated tag: $sha"
   fi
+
+  # Save in cache
+  TAG_COMMIT_CACHE[$cache_key]=$sha
 
   echo $sha
 }
@@ -149,8 +182,15 @@ get_commit_hash() {
 get_latest_release() {
   local repo=$1
 
+  # Check cache first
+  if [[ -n "${LATEST_RELEASE_CACHE[$repo]}" ]]; then
+    log "INFO" "Using cached latest release for $repo: ${LATEST_RELEASE_CACHE[$repo]}"
+    echo "${LATEST_RELEASE_CACHE[$repo]}"
+    return 0
+  fi
+
   log "INFO" "Getting latest release for $repo"
-  local response=$(curl -s "https://api.github.com/repos/FuelLabs/$repo/releases/latest")
+  local response=$(github_api_call "https://api.github.com/repos/FuelLabs/$repo/releases/latest")
 
   if [[ $(echo $response | jq 'has("tag_name")') == "false" ]]; then
     log "ERROR" "Failed to get latest release for $repo"
@@ -164,8 +204,12 @@ get_latest_release() {
   local commit_hash=$(get_commit_hash $repo $tag_name)
   log "INFO" "Commit hash for $tag_name: $commit_hash"
 
+  # Save result in cache
+  local result="$tag_name|$commit_hash"
+  LATEST_RELEASE_CACHE[$repo]=$result
+
   # Return both tag_name and commit_hash
-  echo "$tag_name|$commit_hash"
+  echo "$result"
 }
 
 # Parse command line arguments
@@ -193,6 +237,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --mainnet-sway)
       MAINNET_SWAY="$2"
+      shift 2
+      ;;
+    --token)
+      GITHUB_TOKEN="$2"
       shift 2
       ;;
     --verbose)
@@ -252,53 +300,65 @@ update_component_hash() {
   mv "$temp_file2" "$file"
 }
 
-# Update testnet components
-log "INFO" "Updating testnet components"
+# Determine which components need to be updated for testnet
+log "INFO" "Determining which components need to be updated for testnet"
 for repo in "${REPOS[@]}"; do
-  input_value_var="TESTNET_${repo^^}"
-  input_value_var="${input_value_var//-/_}"
-  input_value="${!input_value_var}"
+  input_var="TESTNET_${repo^^}"
+  input_var="${input_var//-/_}"
 
-  if [[ -n "$input_value" ]]; then
-    tag_name="$input_value"
-    log "INFO" "Using provided input for testnet $repo: $tag_name"
-    commit_hash=$(get_commit_hash "$repo" "$input_value")
+  # Only update if explicitly requested or if all components should be updated
+  if [[ -n "${!input_var}" || ( -z "$TESTNET_FORC_WALLET" && -z "$TESTNET_FUEL_CORE" && -z "$TESTNET_SWAY" ) ]]; then
+    input_value="${!input_var}"
+    
+    if [[ -n "$input_value" ]]; then
+      tag_name="$input_value"
+      log "INFO" "Using provided input for testnet $repo: $tag_name"
+      commit_hash=$(get_commit_hash "$repo" "$input_value")
+    else
+      log "INFO" "No input provided for testnet $repo, getting latest release"
+      release_info=$(get_latest_release "$repo")
+      tag_name=$(echo "$release_info" | cut -d'|' -f1)
+      commit_hash=$(echo "$release_info" | cut -d'|' -f2)
+    fi
+    
+    log "INFO" "Updating $repo for testnet: $tag_name -> $commit_hash"
+    update_component_hash "testnet" "$repo" "$commit_hash"
+    
+    TESTNET_SUMMARY+=("\`$repo\`: $tag_name")
   else
-    log "INFO" "No input provided for testnet $repo, getting latest release"
-    release_info=$(get_latest_release "$repo")
-    tag_name=$(echo "$release_info" | cut -d'|' -f1)
-    commit_hash=$(echo "$release_info" | cut -d'|' -f2)
+    log "INFO" "Skipping testnet $repo update (not specified in arguments)"
   fi
-
-  log "INFO" "Updating $repo for testnet: $tag_name -> $commit_hash"
-  update_component_hash "testnet" "$repo" "$commit_hash"
-
-  TESTNET_SUMMARY+=("\`$repo\`: $tag_name")
 done
 
-# Update ignition and mainnet components
-log "INFO" "Updating ignition and mainnet components"
+# Determine which components need to be updated for mainnet/ignition
+log "INFO" "Determining which components need to be updated for ignition/mainnet"
 for repo in "${REPOS[@]}"; do
-  input_value_var="MAINNET_${repo^^}"
-  input_value_var="${input_value_var//-/_}"
-  input_value="${!input_value_var}"
+  input_var="MAINNET_${repo^^}"
+  input_var="${input_var//-/_}"
 
-  if [[ -n "$input_value" ]]; then
-    tag_name="$input_value"
-    log "INFO" "Using provided input for mainnet $repo: $tag_name"
-    commit_hash=$(get_commit_hash "$repo" "$input_value")
+  # Only update if explicitly requested or if all components should be updated
+  if [[ -n "${!input_var}" || ( -z "$MAINNET_FORC_WALLET" && -z "$MAINNET_FUEL_CORE" && -z "$MAINNET_SWAY" ) ]]; then
+    input_value="${!input_var}"
+    
+    if [[ -n "$input_value" ]]; then
+      tag_name="$input_value"
+      log "INFO" "Using provided input for mainnet $repo: $tag_name"
+      commit_hash=$(get_commit_hash "$repo" "$input_value")
+    else
+      log "INFO" "No input provided for mainnet $repo, getting latest release"
+      release_info=$(get_latest_release "$repo")
+      tag_name=$(echo "$release_info" | cut -d'|' -f1)
+      commit_hash=$(echo "$release_info" | cut -d'|' -f2)
+    fi
+    
+    log "INFO" "Updating $repo for ignition/mainnet: $tag_name -> $commit_hash"
+    update_component_hash "ignition" "$repo" "$commit_hash"
+    update_component_hash "mainnet" "$repo" "$commit_hash"
+    
+    MAINNET_SUMMARY+=("\`$repo\`: $tag_name")
   else
-    log "INFO" "No input provided for mainnet $repo, getting latest release"
-    release_info=$(get_latest_release "$repo")
-    tag_name=$(echo "$release_info" | cut -d'|' -f1)
-    commit_hash=$(echo "$release_info" | cut -d'|' -f2)
+    log "INFO" "Skipping mainnet $repo update (not specified in arguments)"
   fi
-
-  log "INFO" "Updating $repo for ignition/mainnet: $tag_name -> $commit_hash"
-  update_component_hash "ignition" "$repo" "$commit_hash"
-  update_component_hash "mainnet" "$repo" "$commit_hash"
-
-  MAINNET_SUMMARY+=("\`$repo\`: $tag_name")
 done
 
 # Write the updated content back to the file
