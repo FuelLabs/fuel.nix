@@ -7,7 +7,7 @@
   testnet = {
     forc-wallet = "9015e09f45818bbb8068fa644e9cda0e5b5c3809";
     fuel-core = "9827d2115c8e73cf3a13952f2cb3dd596858165c";
-    sway = "05480bb07ed7b62e4123a2696ba22bce57ffb049";
+    sway = "512bbfccdb15a0045576604ba97d7943c9b7520f";
   };
 
   # Commits sourced from:
@@ -15,7 +15,7 @@
   ignition = {
     forc-wallet = "9015e09f45818bbb8068fa644e9cda0e5b5c3809";
     fuel-core = "9827d2115c8e73cf3a13952f2cb3dd596858165c";
-    sway = "05480bb07ed7b62e4123a2696ba22bce57ffb049";
+    sway = "512bbfccdb15a0045576604ba97d7943c9b7520f";
   };
 
   # Commits sourced from:
@@ -23,6 +23,6 @@
   mainnet = {
     forc-wallet = "9015e09f45818bbb8068fa644e9cda0e5b5c3809";
     fuel-core = "9827d2115c8e73cf3a13952f2cb3dd596858165c";
-    sway = "05480bb07ed7b62e4123a2696ba22bce57ffb049";
+    sway = "512bbfccdb15a0045576604ba97d7943c9b7520f";
   };
 }
