@@ -1,0 +1,129 @@
+name: update-component-channels
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  RUST_VERSION: 1.85.0
+
+on:
+  workflow_dispatch:
+    inputs:
+      testnet-forc-wallet:
+        description: 'Testnet forc-wallet tag or commit hash'
+        required: false
+        type: string
+      testnet-fuel-core:
+        description: 'Testnet fuel-core tag or commit hash'
+        required: false
+        type: string
+      testnet-sway:
+        description: 'Testnet sway tag or commit hash'
+        required: false
+        type: string
+      mainnet-forc-wallet:
+        description: 'Mainnet/Ignition forc-wallet tag or commit hash'
+        required: false
+        type: string
+      mainnet-fuel-core:
+        description: 'Mainnet/Ignition fuel-core tag or commit hash'
+        required: false
+        type: string
+      mainnet-sway:
+        description: 'Mainnet/Ignition sway tag or commit hash'
+        required: false
+        type: string
+
+jobs:
+  update-milestones:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          depth: 1
+
+      - name: Set up Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Install update-milestones script
+        run: cargo install --debug --path ./ci/update-milestones
+
+      - name: Update milestones
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Build script arguments
+          ARGS=""
+
+          # Add testnet arguments if provided
+          if [ -n "${{ github.event.inputs.testnet-forc-wallet }}" ]; then
+            ARGS="$ARGS --testnet-forc-wallet ${{ github.event.inputs.testnet-forc-wallet }}"
+          fi
+          if [ -n "${{ github.event.inputs.testnet-fuel-core }}" ]; then
+            ARGS="$ARGS --testnet-fuel-core ${{ github.event.inputs.testnet-fuel-core }}"
+          fi
+          if [ -n "${{ github.event.inputs.testnet-sway }}" ]; then
+            ARGS="$ARGS --testnet-sway ${{ github.event.inputs.testnet-sway }}"
+          fi
+          
+          # Add mainnet arguments if provided
+          if [ -n "${{ github.event.inputs.mainnet-forc-wallet }}" ]; then
+            ARGS="$ARGS --mainnet-forc-wallet ${{ github.event.inputs.mainnet-forc-wallet }}"
+          fi
+          if [ -n "${{ github.event.inputs.mainnet-fuel-core }}" ]; then
+            ARGS="$ARGS --mainnet-fuel-core ${{ github.event.inputs.mainnet-fuel-core }}"
+          fi
+          if [ -n "${{ github.event.inputs.mainnet-sway }}" ]; then
+            ARGS="$ARGS --mainnet-sway ${{ github.event.inputs.mainnet-sway }}"
+          fi
+
+          # Run the update-milestones binary - to update the milestones.nix file
+          update-milestones $ARGS
+
+      - name: Create bump branch
+        run: |
+          BRANCH_NAME="bump/$(date +'%d-%m-%Y')"
+          git checkout -b "$BRANCH_NAME"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: Commit and push changes
+        run: |
+          git add milestones.nix
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            exit 1
+          else
+            git commit -m "Update milestones"
+            git push origin "$BRANCH_NAME"
+          fi
+
+      - name: Create or update pull request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_DESCRIPTION: ${{ env.PR_DESCRIPTION }}
+        run: |
+          # Check if a PR already exists for this branch
+          PR_EXISTS=$(gh pr list --head "$BRANCH_NAME" --json number --jq '.[0].number' || echo "")
+          
+          if [ -z "$PR_EXISTS" ]; then
+            # Create a new PR
+            gh pr create \
+              --title "chore: bump networks to match fuelup versions - $(date +'%d-%m-%Y')" \
+              --body "$PR_DESCRIPTION" \
+              --base master \
+              --head "$BRANCH_NAME"
+          else
+            # Update existing PR
+            echo "PR #$PR_EXISTS already exists, updating description..."
+            gh pr edit "$PR_EXISTS" --body "$PR_DESCRIPTION"
+          fi
