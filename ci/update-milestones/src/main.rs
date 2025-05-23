@@ -403,10 +403,7 @@ fn generate_pr_description(
     mainnet_versions: &HashMap<String, ComponentVersion>,
 ) -> String {
     let mut description = String::new();
-
-    description.push_str("title: chore: bump networks to match fuelup versions\n\n");
     description.push_str("Bump testnet, ignition and mainnet channels.\n\n");
-
     description.push_str("Testnet:\n");
     if let Some(version) = testnet_versions.get("forc-wallet") {
         description.push_str(&format!("`forc-wallet`: {}\n", version.tag));
@@ -417,7 +414,6 @@ fn generate_pr_description(
     if let Some(version) = testnet_versions.get("sway") {
         description.push_str(&format!("`sway`: {}\n", version.tag));
     }
-
     description.push_str("\nIgnition & Mainnet:\n");
     if let Some(version) = mainnet_versions.get("forc-wallet") {
         description.push_str(&format!("`forc-wallet`: {}\n", version.tag));
