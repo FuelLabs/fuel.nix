@@ -57,6 +57,21 @@ jobs:
       - name: Install update-milestones script
         run: cargo install --debug --path ./ci/update-milestones
 
+      - name: Create bump branch
+        run: |
+          BRANCH_NAME="bump/milestones-$(date +'%d-%m-%Y')"
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          
+          # Check if branch exists remotely
+          if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; then
+            echo "Branch $BRANCH_NAME already exists remotely, checking it out"
+            git fetch origin "$BRANCH_NAME"
+            git checkout -b "$BRANCH_NAME" origin/"$BRANCH_NAME"
+          else
+            echo "Creating new branch $BRANCH_NAME"
+            git checkout -b "$BRANCH_NAME"
+          fi
+
       - name: Update milestones
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -88,21 +103,6 @@ jobs:
 
           # Run the update-milestones binary - to update the milestones.nix file
           update-milestones $ARGS
-
-      - name: Create bump branch
-        run: |
-          BRANCH_NAME="bump/milestones-$(date +'%d-%m-%Y')"
-          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
-          
-          # Check if branch exists remotely
-          if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; then
-            echo "Branch $BRANCH_NAME already exists remotely, checking it out"
-            git fetch origin "$BRANCH_NAME"
-            git checkout -b "$BRANCH_NAME" origin/"$BRANCH_NAME"
-          else
-            echo "Creating new branch $BRANCH_NAME"
-            git checkout -b "$BRANCH_NAME"
-          fi
 
       - name: Commit and push changes
         run: |
