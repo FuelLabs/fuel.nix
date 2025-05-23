@@ -92,8 +92,17 @@ jobs:
       - name: Create bump branch
         run: |
           BRANCH_NAME="bump/milestones-$(date +'%d-%m-%Y')"
-          git checkout -b "$BRANCH_NAME"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+          
+          # Check if branch exists remotely
+          if git ls-remote --heads origin "$BRANCH_NAME" | grep -q "$BRANCH_NAME"; then
+            echo "Branch $BRANCH_NAME already exists remotely, checking it out"
+            git fetch origin "$BRANCH_NAME"
+            git checkout -b "$BRANCH_NAME" origin/"$BRANCH_NAME"
+          else
+            echo "Creating new branch $BRANCH_NAME"
+            git checkout -b "$BRANCH_NAME"
+          fi
 
       - name: Commit and push changes
         run: |
@@ -103,7 +112,8 @@ jobs:
             exit 0
           else
             git commit -m "chore: update milestones"
-            git push origin "$BRANCH_NAME"
+            # Force push to handle existing branches
+            git push --force-with-lease origin "$BRANCH_NAME"
           fi
 
       - name: Create or update pull request
