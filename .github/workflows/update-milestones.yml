@@ -92,7 +92,7 @@ jobs:
 
       - name: Create bump branch
         run: |
-          BRANCH_NAME="bump/$(date +'%d-%m-%Y')"
+          BRANCH_NAME="bump/milestones-$(date +'%d-%m-%Y')"
           git checkout -b "$BRANCH_NAME"
           echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
 
@@ -103,7 +103,7 @@ jobs:
             echo "No changes to commit"
             exit 0
           else
-            git commit -m "Update milestones"
+            git commit -m "chore: update milestones"
             git push origin "$BRANCH_NAME"
           fi
 
