@@ -118,7 +118,9 @@ fn main() -> Result<()> {
         fs::write(&github_env_path, env_content)?;
         info!("PR description written to GITHUB_ENV");
     } else {
+        println!("---------- PR DESCRIPTION ----------");
         println!("{}", pr_description);
+        println!("-----------------------------------");
     }
     Ok(())
 }
