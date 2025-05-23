@@ -406,25 +406,25 @@ fn generate_pr_description(
 ) -> String {
     let mut description = String::new();
     description.push_str("Bump testnet, ignition and mainnet channels.\n\n");
-    description.push_str("Testnet:\n");
+    description.push_str("**Testnet:**\n");
     if let Some(version) = testnet_versions.get("forc-wallet") {
-        description.push_str(&format!("`forc-wallet`: {}\n", version.tag));
+        description.push_str(&format!("forc-wallet: `{}`\n", version.tag));
     }
     if let Some(version) = testnet_versions.get("fuel-core") {
-        description.push_str(&format!("`fuel-core`: {}\n", version.tag));
+        description.push_str(&format!("fuel-core: `{}`\n", version.tag));
     }
     if let Some(version) = testnet_versions.get("sway") {
-        description.push_str(&format!("`sway`: {}\n", version.tag));
+        description.push_str(&format!("sway: `{}`\n", version.tag));
     }
-    description.push_str("\nIgnition & Mainnet:\n");
+    description.push_str("\n**Ignition & Mainnet:**\n");
     if let Some(version) = mainnet_versions.get("forc-wallet") {
-        description.push_str(&format!("`forc-wallet`: {}\n", version.tag));
+        description.push_str(&format!("forc-wallet: `{}`\n", version.tag));
     }
     if let Some(version) = mainnet_versions.get("fuel-core") {
-        description.push_str(&format!("`fuel-core`: {}\n", version.tag));
+        description.push_str(&format!("fuel-core: `{}`\n", version.tag));
     }
     if let Some(version) = mainnet_versions.get("sway") {
-        description.push_str(&format!("`sway`: {}\n", version.tag));
+        description.push_str(&format!("sway: `{}`\n", version.tag));
     }
     description
 }
