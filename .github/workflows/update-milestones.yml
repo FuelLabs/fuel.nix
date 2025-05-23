@@ -120,7 +120,7 @@ jobs:
             gh pr create \
               --title "chore: bump networks to match fuelup versions - $(date +'%d-%m-%Y')" \
               --body "$PR_DESCRIPTION" \
-              --base main \
+              --base master \
               --head "$BRANCH_NAME"
           else
             # Update existing PR
