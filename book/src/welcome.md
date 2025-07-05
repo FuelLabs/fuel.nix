@@ -2,7 +2,7 @@
 
 **fuel.nix** provides an easy, reliable way of using Fuel tools.
 
-Each night at midnight (UTC) [**the fuel.nix repo**](fuel.nix) is automatically
+Each night at midnight (UTC) [**the fuel.nix repo**](https://github.com/FuelLabs/fuel.nix) is automatically
 updated with the latest stable and nightly releases of all fuel packages. Builds
 are tested and cached for both **Linux** and **macOS** systems.
 
