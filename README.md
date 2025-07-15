@@ -1,6 +1,6 @@
 # fuel.nix
 
-A Nix flake for the Fuel Labs ecosystem. **https://fuel.network**
+A Nix flake for the [Fuel Ecosystem](https://fuel.network).
 
 Each night at midnight (UTC) this repo is automatically updated with the latest
 stable and nightly releases of all fuel packages. Builds are tested and cached
