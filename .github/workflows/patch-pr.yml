@@ -19,13 +19,15 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v5
         with:
           ref: ${{ github.head_ref }}
           fetch-depth: 0
-      - uses: cachix/install-nix-action@v22
+      - uses: cachix/install-nix-action@v31
         with:
           nix_path: nixpkgs=channel:nixos-unstable
+        env:
+          NIX_FIRST_BUILD_UID: 400
       - uses: cachix/cachix-action@v12
         with:
           name: fuellabs
