@@ -10,7 +10,6 @@
     "forc-fmt"
     "forc-lsp"
     "forc-tx"
-    "forc-call"
     "forc-migrate"
     "forc-node"
     "forc-publish"
