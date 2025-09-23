@@ -247,11 +247,11 @@
           forc-fmt-nightly
           forc-lsp-nightly
           forc-tx-nightly
-          forc-call-nightly
-          forc-migrate-nightly
-          forc-node-nightly
-          forc-publish-nightly
-        ];
+        ]
+        ++ (pkgs.lib.optional (fuelpkgs ? forc-call-nightly) forc-call-nightly)
+        ++ (pkgs.lib.optional (fuelpkgs ? forc-migrate-nightly) forc-migrate-nightly)
+        ++ (pkgs.lib.optional (fuelpkgs ? forc-node-nightly) forc-node-nightly)
+        ++ (pkgs.lib.optional (fuelpkgs ? forc-publish-nightly) forc-publish-nightly);
         buildInputs = with fuelpkgs; [fuel-core fuel-gql-cli];
       };
 
