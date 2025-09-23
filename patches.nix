@@ -10,6 +10,10 @@
     "forc-fmt"
     "forc-lsp"
     "forc-tx"
+    "forc-call"
+    "forc-migrate"
+    "forc-node"
+    "forc-publish"
   ];
 in [
   # By default, most packages have their `Cargo.lock` file in the repo root.

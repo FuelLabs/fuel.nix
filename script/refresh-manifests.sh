@@ -58,6 +58,22 @@ declare -A pkg_forc_tx=(
     [name]="forc-tx"
     [repo]="${fuel_repos[sway]}"
 )
+declare -A pkg_forc_call=(
+    [name]="forc-call"
+    [repo]="${fuel_repos[sway]}"
+)
+declare -A pkg_forc_migrate=(
+    [name]="forc-migrate"
+    [repo]="${fuel_repos[sway]}"
+)
+declare -A pkg_forc_node=(
+    [name]="forc-node"
+    [repo]="${fuel_repos[sway]}"
+)
+declare -A pkg_forc_publish=(
+    [name]="forc-publish"
+    [repo]="${fuel_repos[sway]}"
+)
 declare -A pkg_forc_wallet=(
     [name]="forc-wallet"
     [repo]="${fuel_repos[forc-wallet]}"
@@ -226,6 +242,10 @@ refresh pkg_forc_doc
 refresh pkg_forc_fmt
 refresh pkg_forc_lsp
 refresh pkg_forc_tx
+refresh pkg_forc_call
+refresh pkg_forc_migrate
+refresh pkg_forc_node
+refresh pkg_forc_publish
 refresh pkg_forc_wallet
 refresh pkg_fuel_core
 refresh pkg_fuel_core_client
