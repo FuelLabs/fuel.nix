@@ -247,6 +247,10 @@
           forc-fmt-nightly
           forc-lsp-nightly
           forc-tx-nightly
+          forc-call-nightly
+          forc-migrate-nightly
+          forc-node-nightly
+          forc-publish-nightly
         ];
         buildInputs = with fuelpkgs; [fuel-core fuel-gql-cli];
       };
