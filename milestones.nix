@@ -6,23 +6,23 @@
   # https://raw.githubusercontent.com/FuelLabs/fuelup/gh-pages/channel-fuel-testnet.toml
   testnet = {
     forc-wallet = "9fea98d095d72c771f6a6f81f901fa4f8d5ece52";
-    fuel-core = "8e34930a63329ce60bb361d38e25f6b9a7429a05";
-    sway = "b68a3861db866f33078b3c966eaf5b3379e716cf";
+    fuel-core = "e295b233078e8d236826019c4a5db13ed89a437c";
+    sway = "ec6f0ca5c7c062251713021c42fdf51223810d21";
   };
 
   # Commits sourced from:
   # https://raw.githubusercontent.com/FuelLabs/fuelup/gh-pages/channel-fuel-mainnet.toml
   ignition = {
     forc-wallet = "9fea98d095d72c771f6a6f81f901fa4f8d5ece52";
-    fuel-core = "8e34930a63329ce60bb361d38e25f6b9a7429a05";
-    sway = "b68a3861db866f33078b3c966eaf5b3379e716cf";
+    fuel-core = "e295b233078e8d236826019c4a5db13ed89a437c";
+    sway = "ec6f0ca5c7c062251713021c42fdf51223810d21";
   };
 
   # Commits sourced from:
   # https://raw.githubusercontent.com/FuelLabs/fuelup/gh-pages/channel-fuel-mainnet.toml
   mainnet = {
     forc-wallet = "9fea98d095d72c771f6a6f81f901fa4f8d5ece52";
-    fuel-core = "8e34930a63329ce60bb361d38e25f6b9a7429a05";
-    sway = "b68a3861db866f33078b3c966eaf5b3379e716cf";
+    fuel-core = "e295b233078e8d236826019c4a5db13ed89a437c";
+    sway = "ec6f0ca5c7c062251713021c42fdf51223810d21";
   };
 }
