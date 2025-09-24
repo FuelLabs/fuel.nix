@@ -15,6 +15,7 @@
     "forc-publish"
   ];
 
+  # Picks whichever Darwin SDK (new apple-sdk or legacy apple_sdk) is available.
   resolveDarwinFrameworks =
     let
       appleFrameworks =
