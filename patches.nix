@@ -74,6 +74,16 @@ in [
     };
   }
 
+  {
+    condition = m: m.pname == "forc-node";
+    patch = m: {
+      nativeBuildInputs = (m.nativeBuildInputs or []) ++ [pkgs.clang];
+      buildInputs = (m.buildInputs or []) ++ [pkgs.rocksdb];
+      LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
+      ROCKSDB_LIB_DIR = "${pkgs.rocksdb}/lib";
+    };
+  }
+
   # Fuel-core tests run at their repo - no need to repeat them here.
   {
     condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/fuel-core";
@@ -151,14 +161,17 @@ in [
   # We generally appear to require these frameworks on darwin.
   {
     condition = m: pkgs.lib.hasInfix "darwin" pkgs.system;
-    patch = m: {
+    patch = m: let
+      frameworks =
+        if pkgs.lib.hasAttrByPath ["apple-sdk" "frameworks"] pkgs
+        then pkgs."apple-sdk".frameworks
+        else pkgs.darwin.apple_sdk.frameworks;
+    in {
       buildInputs =
         (m.buildInputs or [])
-        ++ [
-          pkgs.darwin.apple_sdk.frameworks.CoreFoundation
-          pkgs.darwin.apple_sdk.frameworks.Security
-          pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
-        ];
+        ++ pkgs.lib.optionals (pkgs.lib.hasAttr "CoreFoundation" frameworks) [frameworks.CoreFoundation]
+        ++ pkgs.lib.optionals (pkgs.lib.hasAttr "Security" frameworks) [frameworks.Security]
+        ++ pkgs.lib.optionals (pkgs.lib.hasAttr "SystemConfiguration" frameworks) [frameworks.SystemConfiguration];
     };
   }
 
@@ -196,12 +209,15 @@ in [
   # available to all fuel packages going forward.
   {
     condition = m: pkgs.lib.hasInfix "darwin" pkgs.system && m.date >= "2022-10-10";
-    patch = m: {
+    patch = m: let
+      frameworks =
+        if pkgs.lib.hasAttrByPath ["apple-sdk" "frameworks"] pkgs
+        then pkgs."apple-sdk".frameworks
+        else pkgs.darwin.apple_sdk.frameworks;
+    in {
       buildInputs =
         (m.buildInputs or [])
-        ++ [
-          pkgs.darwin.apple_sdk.frameworks.CoreServices
-        ];
+        ++ pkgs.lib.optionals (pkgs.lib.hasAttr "CoreServices" frameworks) [frameworks.CoreServices];
     };
   }
 
