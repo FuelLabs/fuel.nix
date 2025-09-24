@@ -14,6 +14,39 @@
     "forc-node"
     "forc-publish"
   ];
+
+  resolveDarwinFrameworks =
+    let
+      appleFrameworks =
+        if (pkgs ? "apple-sdk") && (pkgs."apple-sdk" ? frameworks)
+        then pkgs."apple-sdk".frameworks
+        else null;
+
+      legacyFrameworks =
+        if (pkgs ? darwin) && (pkgs.darwin ? apple_sdk)
+        then
+          let
+            legacyEval = builtins.tryEval pkgs.darwin.apple_sdk;
+          in
+            if legacyEval.success && legacyEval.value ? frameworks
+            then legacyEval.value.frameworks
+            else null
+        else null;
+    in
+      if appleFrameworks != null then appleFrameworks
+      else if legacyFrameworks != null then legacyFrameworks
+      else {};
+
+  # Returns the resolved Darwin frameworks matching the requested names.
+  addDarwinFrameworks = names:
+    let
+      frameworks = resolveDarwinFrameworks;
+    in
+      pkgs.lib.concatMap
+        (name:
+          if builtins.hasAttr name frameworks then [frameworks.${name}] else []
+        )
+        names;
 in [
   # By default, most packages have their `Cargo.lock` file in the repo root.
   # We also specify a base, minimum Rust version. This version should never
@@ -161,40 +194,10 @@ in [
   # We generally appear to require these frameworks on darwin.
   {
     condition = m: pkgs.lib.hasInfix "darwin" pkgs.system;
-    patch = m: let
-      frameworks = let
-        appleFrameworks =
-          if pkgs ? "apple-sdk" && pkgs."apple-sdk" ? frameworks
-          then pkgs."apple-sdk".frameworks
-          else null;
-        legacyFrameworks = let
-          legacyEval =
-            if pkgs ? darwin && pkgs.darwin ? apple_sdk
-            then builtins.tryEval pkgs.darwin.apple_sdk
-            else {
-              success = false;
-              value = null;
-            };
-        in
-          if legacyEval.success && legacyEval.value ? frameworks
-          then legacyEval.value.frameworks
-          else null;
-      in
-        if appleFrameworks != null
-        then appleFrameworks
-        else if legacyFrameworks != null
-        then legacyFrameworks
-        else {};
-      addFramework = name:
-        if builtins.hasAttr name frameworks
-        then [frameworks.${name}]
-        else [];
-    in {
+    patch = m: {
       buildInputs =
         (m.buildInputs or [])
-        ++ addFramework "CoreFoundation"
-        ++ addFramework "Security"
-        ++ addFramework "SystemConfiguration";
+        ++ addDarwinFrameworks ["CoreFoundation" "Security" "SystemConfiguration"];
     };
   }
 
@@ -232,38 +235,10 @@ in [
   # available to all fuel packages going forward.
   {
     condition = m: pkgs.lib.hasInfix "darwin" pkgs.system && m.date >= "2022-10-10";
-    patch = m: let
-      frameworks = let
-        appleFrameworks =
-          if pkgs ? "apple-sdk" && pkgs."apple-sdk" ? frameworks
-          then pkgs."apple-sdk".frameworks
-          else null;
-        legacyFrameworks = let
-          legacyEval =
-            if pkgs ? darwin && pkgs.darwin ? apple_sdk
-            then builtins.tryEval pkgs.darwin.apple_sdk
-            else {
-              success = false;
-              value = null;
-            };
-        in
-          if legacyEval.success && legacyEval.value ? frameworks
-          then legacyEval.value.frameworks
-          else null;
-      in
-        if appleFrameworks != null
-        then appleFrameworks
-        else if legacyFrameworks != null
-        then legacyFrameworks
-        else {};
-      addFramework = name:
-        if builtins.hasAttr name frameworks
-        then [frameworks.${name}]
-        else [];
-    in {
+    patch = m: {
       buildInputs =
         (m.buildInputs or [])
-        ++ addFramework "CoreServices";
+        ++ addDarwinFrameworks ["CoreServices"];
     };
   }
 
