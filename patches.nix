@@ -16,38 +16,40 @@
   ];
 
   # Picks whichever Darwin SDK (new apple-sdk or legacy apple_sdk) is available.
-  resolveDarwinFrameworks =
-    let
-      appleFrameworks =
-        if (pkgs ? "apple-sdk") && (pkgs."apple-sdk" ? frameworks)
-        then pkgs."apple-sdk".frameworks
-        else null;
+  resolveDarwinFrameworks = let
+    appleFrameworks =
+      if (pkgs ? "apple-sdk") && (pkgs."apple-sdk" ? frameworks)
+      then pkgs."apple-sdk".frameworks
+      else null;
 
-      legacyFrameworks =
-        if (pkgs ? darwin) && (pkgs.darwin ? apple_sdk)
-        then
-          let
-            legacyEval = builtins.tryEval pkgs.darwin.apple_sdk;
-          in
-            if legacyEval.success && legacyEval.value ? frameworks
-            then legacyEval.value.frameworks
-            else null
-        else null;
-    in
-      if appleFrameworks != null then appleFrameworks
-      else if legacyFrameworks != null then legacyFrameworks
-      else {};
+    legacyFrameworks =
+      if (pkgs ? darwin) && (pkgs.darwin ? apple_sdk)
+      then let
+        legacyEval = builtins.tryEval pkgs.darwin.apple_sdk;
+      in
+        if legacyEval.success && legacyEval.value ? frameworks
+        then legacyEval.value.frameworks
+        else null
+      else null;
+  in
+    if appleFrameworks != null
+    then appleFrameworks
+    else if legacyFrameworks != null
+    then legacyFrameworks
+    else {};
 
   # Returns the resolved Darwin frameworks matching the requested names.
-  addDarwinFrameworks = names:
-    let
-      frameworks = resolveDarwinFrameworks;
-    in
-      pkgs.lib.concatMap
-        (name:
-          if builtins.hasAttr name frameworks then [frameworks.${name}] else []
-        )
-        names;
+  addDarwinFrameworks = names: let
+    frameworks = resolveDarwinFrameworks;
+  in
+    pkgs.lib.concatMap
+    (
+      name:
+        if builtins.hasAttr name frameworks
+        then [frameworks.${name}]
+        else []
+    )
+    names;
 in [
   # By default, most packages have their `Cargo.lock` file in the repo root.
   # We also specify a base, minimum Rust version. This version should never
@@ -160,12 +162,14 @@ in [
       # `fuel-core` vendors a build script that shells out to `cargo install`
       # for the WASM executor. During a Nix build we have no network, so we
       # rewrite the script to force cargo offline mode.
-      postPatch = (m.postPatch or "") + ''
-        find . -path '*/fuel-core-*/crates/services/upgradable-executor/build.rs' -print0 | while IFS= read -r -d '\0' f; do
-          perl -0pi -e 's/let mut args = vec!\[\n/let mut args = vec![\n        "--offline".to_owned(),\n/' "$f"
-          perl -0pi -e 's/cargo.env\("CARGO_PROFILE_RELEASE_DEBUG", "false"\);\n/cargo.env("CARGO_PROFILE_RELEASE_DEBUG", "false");\n    cargo.env("CARGO_NET_OFFLINE", "true");\n/' "$f"
-        done
-      '';
+      postPatch =
+        (m.postPatch or "")
+        + ''
+          find . -path '*/fuel-core-*/crates/services/upgradable-executor/build.rs' -print0 | while IFS= read -r -d '\0' f; do
+            perl -0pi -e 's/let mut args = vec!\[\n/let mut args = vec![\n        "--offline".to_owned(),\n/' "$f"
+            perl -0pi -e 's/cargo.env\("CARGO_PROFILE_RELEASE_DEBUG", "false"\);\n/cargo.env("CARGO_PROFILE_RELEASE_DEBUG", "false");\n    cargo.env("CARGO_NET_OFFLINE", "true");\n/' "$f"
+          done
+        '';
     };
   }
 
