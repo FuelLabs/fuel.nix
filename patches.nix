@@ -162,19 +162,26 @@ in [
   {
     condition = m: pkgs.lib.hasInfix "darwin" pkgs.system;
     patch = m: let
-      appleFrameworks =
-        if pkgs.lib.hasAttr "apple-sdk" pkgs
-        then
-          let candidate = pkgs."apple-sdk";
-          in if pkgs.lib.hasAttr "frameworks" candidate then candidate.frameworks else null
-        else null;
-      frameworks =
-        if appleFrameworks != null then appleFrameworks
-        else
-          let legacyEval = pkgs.lib.tryEval pkgs.darwin.apple_sdk.frameworks;
-          in if legacyEval.success then legacyEval.value else {};
+      frameworks = let
+        appleFrameworks =
+          if pkgs ? "apple-sdk" && pkgs."apple-sdk" ? frameworks
+          then pkgs."apple-sdk".frameworks
+          else null;
+        legacyFrameworks = let
+          legacyEval =
+            if pkgs ? darwin && pkgs.darwin ? apple_sdk
+            then builtins.tryEval pkgs.darwin.apple_sdk
+            else {success = false; value = null;};
+        in if legacyEval.success && legacyEval.value ? frameworks
+          then legacyEval.value.frameworks
+          else null;
+      in if appleFrameworks != null then appleFrameworks
+        else if legacyFrameworks != null then legacyFrameworks
+        else {};
       addFramework = name:
-        pkgs.lib.optionals (pkgs.lib.hasAttr name frameworks) [frameworks.${name}];
+        if builtins.hasAttr name frameworks
+        then [frameworks.${name}]
+        else [];
     in {
       buildInputs =
         (m.buildInputs or [])
@@ -219,19 +226,26 @@ in [
   {
     condition = m: pkgs.lib.hasInfix "darwin" pkgs.system && m.date >= "2022-10-10";
     patch = m: let
-      appleFrameworks =
-        if pkgs.lib.hasAttr "apple-sdk" pkgs
-        then
-          let candidate = pkgs."apple-sdk";
-          in if pkgs.lib.hasAttr "frameworks" candidate then candidate.frameworks else null
-        else null;
-      frameworks =
-        if appleFrameworks != null then appleFrameworks
-        else
-          let legacyEval = pkgs.lib.tryEval pkgs.darwin.apple_sdk.frameworks;
-          in if legacyEval.success then legacyEval.value else {};
+      frameworks = let
+        appleFrameworks =
+          if pkgs ? "apple-sdk" && pkgs."apple-sdk" ? frameworks
+          then pkgs."apple-sdk".frameworks
+          else null;
+        legacyFrameworks = let
+          legacyEval =
+            if pkgs ? darwin && pkgs.darwin ? apple_sdk
+            then builtins.tryEval pkgs.darwin.apple_sdk
+            else {success = false; value = null;};
+        in if legacyEval.success && legacyEval.value ? frameworks
+          then legacyEval.value.frameworks
+          else null;
+      in if appleFrameworks != null then appleFrameworks
+        else if legacyFrameworks != null then legacyFrameworks
+        else {};
       addFramework = name:
-        pkgs.lib.optionals (pkgs.lib.hasAttr name frameworks) [frameworks.${name}];
+        if builtins.hasAttr name frameworks
+        then [frameworks.${name}]
+        else [];
     in {
       buildInputs =
         (m.buildInputs or [])
