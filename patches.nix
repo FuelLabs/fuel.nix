@@ -162,16 +162,25 @@ in [
   {
     condition = m: pkgs.lib.hasInfix "darwin" pkgs.system;
     patch = m: let
+      appleFrameworks =
+        if pkgs.lib.hasAttr "apple-sdk" pkgs
+        then
+          let candidate = pkgs."apple-sdk";
+          in if pkgs.lib.hasAttr "frameworks" candidate then candidate.frameworks else null
+        else null;
       frameworks =
-        if pkgs.lib.hasAttrByPath ["apple-sdk" "frameworks"] pkgs
-        then pkgs."apple-sdk".frameworks
-        else pkgs.darwin.apple_sdk.frameworks;
+        if appleFrameworks != null then appleFrameworks
+        else
+          let legacyEval = pkgs.lib.tryEval pkgs.darwin.apple_sdk.frameworks;
+          in if legacyEval.success then legacyEval.value else {};
+      addFramework = name:
+        pkgs.lib.optionals (pkgs.lib.hasAttr name frameworks) [frameworks.${name}];
     in {
       buildInputs =
         (m.buildInputs or [])
-        ++ pkgs.lib.optionals (pkgs.lib.hasAttr "CoreFoundation" frameworks) [frameworks.CoreFoundation]
-        ++ pkgs.lib.optionals (pkgs.lib.hasAttr "Security" frameworks) [frameworks.Security]
-        ++ pkgs.lib.optionals (pkgs.lib.hasAttr "SystemConfiguration" frameworks) [frameworks.SystemConfiguration];
+        ++ addFramework "CoreFoundation"
+        ++ addFramework "Security"
+        ++ addFramework "SystemConfiguration";
     };
   }
 
@@ -210,14 +219,23 @@ in [
   {
     condition = m: pkgs.lib.hasInfix "darwin" pkgs.system && m.date >= "2022-10-10";
     patch = m: let
+      appleFrameworks =
+        if pkgs.lib.hasAttr "apple-sdk" pkgs
+        then
+          let candidate = pkgs."apple-sdk";
+          in if pkgs.lib.hasAttr "frameworks" candidate then candidate.frameworks else null
+        else null;
       frameworks =
-        if pkgs.lib.hasAttrByPath ["apple-sdk" "frameworks"] pkgs
-        then pkgs."apple-sdk".frameworks
-        else pkgs.darwin.apple_sdk.frameworks;
+        if appleFrameworks != null then appleFrameworks
+        else
+          let legacyEval = pkgs.lib.tryEval pkgs.darwin.apple_sdk.frameworks;
+          in if legacyEval.success then legacyEval.value else {};
+      addFramework = name:
+        pkgs.lib.optionals (pkgs.lib.hasAttr name frameworks) [frameworks.${name}];
     in {
       buildInputs =
         (m.buildInputs or [])
-        ++ pkgs.lib.optionals (pkgs.lib.hasAttr "CoreServices" frameworks) [frameworks.CoreServices];
+        ++ addFramework "CoreServices";
     };
   }
 
