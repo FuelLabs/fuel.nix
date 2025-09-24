@@ -161,11 +161,20 @@ in [
     patch = m: {
       # `fuel-core` vendors a build script that shells out to `cargo install`
       # for the WASM executor. During a Nix build we have no network, so we
-      # rewrite the script to force cargo offline mode.
+      # stage the vendored sources and rewrite the script to force cargo
+      # offline mode.
       postPatch =
         (m.postPatch or "")
         + ''
-          find . -path '*/fuel-core-*/crates/services/upgradable-executor/build.rs' -print0 | while IFS= read -r -d '\0' f; do
+          find . -maxdepth 6 -type d -path '*/fuel-core-upgradable-executor-*' -print0 | while IFS= read -r -d '\0' dir; do
+            version="''${dir##*-executor-}"
+            parent="''${dir%/*}"
+            wasm="$parent/fuel-core-wasm-executor-''${version}"
+            if [ -d "$wasm" ] && [ ! -e "$dir/wasm-executor" ]; then
+              ln -s "../fuel-core-wasm-executor-''${version}" "$dir/wasm-executor"
+            fi
+          done
+          find . -path '*/fuel-core-upgradable-executor-*/build.rs' -print0 | while IFS= read -r -d '\0' f; do
             perl -0pi -e 's/let mut args = vec!\[\n/let mut args = vec![\n        "--offline".to_owned(),\n/' "$f"
             perl -0pi -e 's/cargo.env\("CARGO_PROFILE_RELEASE_DEBUG", "false"\);\n/cargo.env("CARGO_PROFILE_RELEASE_DEBUG", "false");\n    cargo.env("CARGO_NET_OFFLINE", "true");\n/' "$f"
           done
