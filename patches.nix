@@ -171,12 +171,19 @@ in [
           legacyEval =
             if pkgs ? darwin && pkgs.darwin ? apple_sdk
             then builtins.tryEval pkgs.darwin.apple_sdk
-            else {success = false; value = null;};
-        in if legacyEval.success && legacyEval.value ? frameworks
+            else {
+              success = false;
+              value = null;
+            };
+        in
+          if legacyEval.success && legacyEval.value ? frameworks
           then legacyEval.value.frameworks
           else null;
-      in if appleFrameworks != null then appleFrameworks
-        else if legacyFrameworks != null then legacyFrameworks
+      in
+        if appleFrameworks != null
+        then appleFrameworks
+        else if legacyFrameworks != null
+        then legacyFrameworks
         else {};
       addFramework = name:
         if builtins.hasAttr name frameworks
@@ -235,12 +242,19 @@ in [
           legacyEval =
             if pkgs ? darwin && pkgs.darwin ? apple_sdk
             then builtins.tryEval pkgs.darwin.apple_sdk
-            else {success = false; value = null;};
-        in if legacyEval.success && legacyEval.value ? frameworks
+            else {
+              success = false;
+              value = null;
+            };
+        in
+          if legacyEval.success && legacyEval.value ? frameworks
           then legacyEval.value.frameworks
           else null;
-      in if appleFrameworks != null then appleFrameworks
-        else if legacyFrameworks != null then legacyFrameworks
+      in
+        if appleFrameworks != null
+        then appleFrameworks
+        else if legacyFrameworks != null
+        then legacyFrameworks
         else {};
       addFramework = name:
         if builtins.hasAttr name frameworks
