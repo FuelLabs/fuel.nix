@@ -1,0 +1,15 @@
+--- a/crates/services/upgradable-executor/build.rs
++++ b/crates/services/upgradable-executor/build.rs
+@@
+-    let mut args = vec![
+-        "install".to_owned(),
++    let mut args = vec![
++        "--offline".to_owned(),
++        "install".to_owned(),
+         "--target=wasm32-unknown-unknown".to_owned(),
+         "--no-default-features".to_owned(),
+         "--locked".to_owned(),
+@@
+-    cargo.current_dir(project_root()).args(args);
++    cargo.env("CARGO_NET_OFFLINE", "true");
++    cargo.current_dir(project_root()).args(args);

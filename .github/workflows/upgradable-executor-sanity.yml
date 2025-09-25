@@ -1,0 +1,27 @@
+name: fuel-core upgradable executor sanity
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Nix
+        uses: cachix/install-nix-action@v27
+        with:
+          extra_nix_config: |
+            substituters = https://cache.nixos.org https://fuellabs.cachix.org
+            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcD7cjw= fuellabs.cachix.org-1:qcA4niPC7ub2V6lYkN0gqQTQW85UYjJgRHaN8hSMKps=
+      - name: Build upgradable executor (Linux)
+        run: |
+          nix-shell -E 'with import <nixpkgs> {}; mkShell { buildInputs = [ rustup ]; }' --run '
+            cd vendor && \
+            crate_path=$(find . -maxdepth 5 -type d -path "*fuel-core-upgradable-executor-*" | head -n1) && \
+            cd "$crate_path" && \
+            cargo build --release --locked --offline --features wasm-executor --target wasm32-unknown-unknown
+          '
