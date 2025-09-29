@@ -62,10 +62,6 @@ declare -A pkg_forc_migrate=(
     [name]="forc-migrate"
     [repo]="${fuel_repos[sway]}"
 )
-declare -A pkg_forc_node=(
-    [name]="forc-node"
-    [repo]="${fuel_repos[sway]}"
-)
 declare -A pkg_forc_publish=(
     [name]="forc-publish"
     [repo]="${fuel_repos[sway]}"

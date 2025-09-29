@@ -11,9 +11,44 @@
     "forc-lsp"
     "forc-tx"
     "forc-migrate"
-    "forc-node"
     "forc-publish"
   ];
+
+  # Picks whichever Darwin SDK (new apple-sdk or legacy apple_sdk) is available.
+  resolveDarwinFrameworks = let
+    appleFrameworks =
+      if (pkgs ? "apple-sdk") && (pkgs."apple-sdk" ? frameworks)
+      then pkgs."apple-sdk".frameworks
+      else null;
+
+    legacyFrameworks =
+      if (pkgs ? darwin) && (pkgs.darwin ? apple_sdk)
+      then let
+        legacyEval = builtins.tryEval pkgs.darwin.apple_sdk;
+      in
+        if legacyEval.success && legacyEval.value ? frameworks
+        then legacyEval.value.frameworks
+        else null
+      else null;
+  in
+    if appleFrameworks != null
+    then appleFrameworks
+    else if legacyFrameworks != null
+    then legacyFrameworks
+    else {};
+
+  # Returns the resolved Darwin frameworks matching the requested names.
+  addDarwinFrameworks = names: let
+    frameworks = resolveDarwinFrameworks;
+  in
+    pkgs.lib.concatMap
+    (
+      name:
+        if builtins.hasAttr name frameworks
+        then [frameworks.${name}]
+        else []
+    )
+    names;
 in [
   # By default, most packages have their `Cargo.lock` file in the repo root.
   # We also specify a base, minimum Rust version. This version should never
@@ -74,7 +109,6 @@ in [
     };
   }
 
-  # Fuel-core tests run at their repo - no need to repeat them here.
   {
     condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/fuel-core";
     patch = m: {
@@ -154,11 +188,7 @@ in [
     patch = m: {
       buildInputs =
         (m.buildInputs or [])
-        ++ [
-          pkgs.darwin.apple_sdk.frameworks.CoreFoundation
-          pkgs.darwin.apple_sdk.frameworks.Security
-          pkgs.darwin.apple_sdk.frameworks.SystemConfiguration
-        ];
+        ++ addDarwinFrameworks ["CoreFoundation" "Security" "SystemConfiguration"];
     };
   }
 
@@ -199,9 +229,7 @@ in [
     patch = m: {
       buildInputs =
         (m.buildInputs or [])
-        ++ [
-          pkgs.darwin.apple_sdk.frameworks.CoreServices
-        ];
+        ++ addDarwinFrameworks ["CoreServices"];
     };
   }
 

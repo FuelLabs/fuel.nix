@@ -17,7 +17,6 @@ The `fuel.nix` flake provides the following packages:
 | [`forc-tx`][sway-repo] | Construct transactions with a CLI. |
 | [`forc-call`][sway-repo] | A Forc plugin to call contracts and query the chain from the CLI. |
 | [`forc-migrate`][sway-repo] |  Migrate Sway projects to the next breaking version. |
-| [`forc-node`][sway-repo] | Bootstrap and run a Fuel node (local, testnet, ignition). |
 | [`forc-publish`][sway-repo] | Publish a package to the Forc registry. |
 | [`forc-wallet`][forc-wallet-repo] | A Fuel Wallet CLI implementation. |
 | [`sway-vim`][sway-vim-repo] | The Sway Vim plugin. |
