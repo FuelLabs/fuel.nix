@@ -16,7 +16,6 @@ with pkgs.lib; [
   (m: m.pname != "forc-tx" || versionAtLeast m.version "0.33.1")
   (m: m.pname != "forc-wallet" || versionAtLeast m.version "0.1.0")
   (m: m.pname != "forc-migrate" || versionAtLeast m.version "0.69.1")
-  (m: m.pname != "forc-node" || versionAtLeast m.version "0.69.1")
   (m: m.pname != "forc-publish" || versionAtLeast m.version "0.69.1")
   (m: m.pname != "fuel-core" || versionAtLeast m.version "0.9.0")
   (m: m.pname != "fuel-core-client" || (versionAtLeast m.version "0.14.2" && m.date >= "2022-12-17"))
