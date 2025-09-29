@@ -11,7 +11,6 @@
     "forc-lsp"
     "forc-tx"
     "forc-migrate"
-    "forc-node"
     "forc-publish"
   ];
 
@@ -111,26 +110,9 @@ in [
   }
 
   {
-    condition = m: m.pname == "forc-node";
-    patch = m: {
-      nativeBuildInputs = (m.nativeBuildInputs or []) ++ [pkgs.clang];
-      buildInputs = (m.buildInputs or []) ++ [pkgs.rocksdb];
-      LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
-      ROCKSDB_LIB_DIR = "${pkgs.rocksdb}/lib";
-    };
-  }
-
-  # Fuel-core tests run at their repo - no need to repeat them here, and
-  # patch the wasm executor build script so it works in Nix's offline builds.
-  {
     condition = m: m.src.gitRepoUrl == "https://github.com/fuellabs/fuel-core";
     patch = m: {
       doCheck = false; # Already tested at repo, causes longer build times.
-      cargoPatches =
-        (m.cargoPatches or [])
-        ++ [
-          ./patch/fuel-core-upgradable-executor-offline.patch
-        ];
     };
   }
 
