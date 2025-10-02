@@ -412,4 +412,14 @@ in [
       };
     };
   }
+
+  # `sway` requires Rust 1.90 as of `14bb898f3bc4d0d5690f3ca94a040696054e4ca9`.
+  {
+    condition = m: m.date >= "2025-10-01";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.90.0".default.override {
+        targets = ["wasm32-unknown-unknown"];
+      };
+    };
+  }
 ]
