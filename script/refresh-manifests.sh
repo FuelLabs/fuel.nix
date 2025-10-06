@@ -235,7 +235,6 @@ refresh pkg_forc_fmt
 refresh pkg_forc_lsp
 refresh pkg_forc_tx
 refresh pkg_forc_migrate
-refresh pkg_forc_node
 refresh pkg_forc_publish
 refresh pkg_forc_wallet
 refresh pkg_fuel_core
