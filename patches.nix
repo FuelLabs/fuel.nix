@@ -422,4 +422,21 @@ in [
       };
     };
   }
+
+  # Allow warnings without failing the build.
+  # This ensures that warnings from dependencies like fuel-core don't cause
+  # compilation failures when building packages like sway.
+  # Some repos set RUSTFLAGS="-D warnings" which treats warnings as errors.
+  # We override this to allow warnings.
+  {
+    condition = m: m.date >= "2025-10-11";
+    patch = m: let
+      # Remove any -D warnings flags and add --cap-lints warn
+      existingFlags = m.RUSTFLAGS or "";
+      cleanedFlags = pkgs.lib.replaceStrings ["-D warnings"] [""] existingFlags;
+    in {
+      # Don't treat warnings as errors
+      RUSTFLAGS = cleanedFlags + " --cap-lints warn";
+    };
+  }
 ]
