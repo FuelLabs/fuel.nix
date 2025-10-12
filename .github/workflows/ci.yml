@@ -52,7 +52,17 @@ jobs:
         with:
           name: fuellabs
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-      - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
+      - name: Build and check for warnings
+        id: build
+        run: |
+          nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }} 2>&1 | tee build.log
+          if grep -iE "warning:" build.log > /dev/null 2>&1; then
+            echo "has_warnings=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_warnings=false" >> $GITHUB_OUTPUT
+          fi
+    outputs:
+      has_warnings: ${{ steps.build.outputs.has_warnings }}
 
   verify-nix-shell:
     runs-on: ubuntu-latest
@@ -129,6 +139,28 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           notification_title: "{workflow} has {status_message}"
           message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}> : <{run_url}|View Run Results>"
+          footer: ""
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_TOOLING }}
+
+  notify-slack-on-warnings:
+    if: success() && github.ref == 'refs/heads/master' && needs.nix-build.outputs.has_warnings == 'true'
+    needs:
+      [
+        nix-fmt-check,
+        nix-build,
+        nix-develop,
+        nix-build-book,
+        verify-nix-shell
+      ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ravsamhq/notify-slack-action@v1
+        with:
+          status: "warning"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          notification_title: "{workflow} succeeded with warnings"
+          message_format: ":warning: *{workflow}* succeeded with warnings in <{repo_url}|{repo}> : <{run_url}|View Run Results>"
           footer: ""
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_TOOLING }}    
