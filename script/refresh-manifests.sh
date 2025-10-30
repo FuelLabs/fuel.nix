@@ -184,8 +184,9 @@ function refresh_nightlies {
         git clone "${pkg[repo]}" "$pkg_repo_dir"
     fi
     local pkg_git_branch="$(cd $pkg_repo_dir && git branch --show-current)"
-    local date_nightly="2025-04-01"
+    # Only keep the last 30 days of nightlies to reduce manifest count
     local date_today=$(date -u +"%F")
+    local date_nightly=$(date -u '+%F' -d "$date_today-30 days")
     echo "Collecting nightlies from $date_nightly to $date_today"
     local last_git_rev=""
     local pkg_git_rev=""
