@@ -137,17 +137,17 @@ function write_manifest {
 
 }
 
-# Refresh published manifests from a repo. Args: pkg, repo_url, tag_prefix, [max_version]
+# Refresh published manifests from a repo. Args: pkg_ref, repo_url, tag_prefix, [max_version]
 # If max_version is set, only versions < max_version are included.
 function refresh_published_from_repo {
-    local -n pkg=$1
+    local -n rpkg=$1
     local repo_url=$2
     local tag_prefix=$3
     local max_version=${4:-}
 
     local pkg_repo_suffix="${repo_url##*/}"
     local pkg_repo_dir="$WORK_DIR/$pkg_repo_suffix"
-    echo "Refreshing published manifests for ${pkg[name]} from $pkg_repo_suffix"
+    echo "Refreshing published manifests for ${rpkg[name]} from $pkg_repo_suffix"
     if [ ! -d "$pkg_repo_dir" ]; then
         git clone "$repo_url" "$pkg_repo_dir"
     fi
@@ -171,7 +171,7 @@ function refresh_published_from_repo {
         local pkg_version_hash=$(nix hash path "$pkg_repo_dir")
         mv "$WORK_DIR/.git" $pkg_repo_dir
 
-        write_manifest "${pkg[name]}" "$repo_url" "$pkg_version" "$pkg_version_date" "$pkg_git_rev" "$pkg_version_hash" "${pkg[name]}-$pkg_version"
+        write_manifest "${rpkg[name]}" "$repo_url" "$pkg_version" "$pkg_version_date" "$pkg_git_rev" "$pkg_version_hash" "${rpkg[name]}-$pkg_version"
     done
     (cd $pkg_repo_dir && git checkout -q "$pkg_git_branch")
 }
