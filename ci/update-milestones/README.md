@@ -24,16 +24,16 @@ cargo run -- --testnet-sway 1fb61fdc42054109c54a57544b9aeb88afd3cae8
 
 # Update all testnet components
 cargo run -- \
-  --testnet-forc-wallet v0.14.0 \
+  --testnet-forc-wallet 0.16.1 \
   --testnet-fuel-core v0.40.0 \
   --testnet-sway v0.65.2
 
 # Update all components for all environments
 cargo run -- \
-  --testnet-forc-wallet v0.14.0 \
+  --testnet-forc-wallet 0.16.1 \
   --testnet-fuel-core v0.40.0 \
   --testnet-sway v0.65.2 \
-  --mainnet-forc-wallet v0.14.0 \
+  --mainnet-forc-wallet 0.16.1 \
   --mainnet-fuel-core v0.40.0 \
   --mainnet-sway v0.65.1
 ```
@@ -62,12 +62,12 @@ The tool will:
   Bump testnet, ignition and mainnet channels.
 
   Testnet:
-  `forc-wallet`: vX.Y.Z
+  `forc-wallet`: forc-wallet-X.Y.Z
   `fuel-core`: vX.Y.Z
   `sway`: vX.Y.Z
 
   Ignition & Mainnet:
-  `forc-wallet`: vX.Y.Z
+  `forc-wallet`: forc-wallet-X.Y.Z
   `fuel-core`: vX.Y.Z
   `sway`: vX.Y.Z
   ```
