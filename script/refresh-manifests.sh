@@ -19,7 +19,8 @@ echo "Manifests directory: $MANIFESTS_DIR"
 
 # The set of fuel repositories.
 declare -A fuel_repos=(
-    [forc-wallet]="https://github.com/fuellabs/forc-wallet"
+    [forc]="https://github.com/fuellabs/forc"
+    [forc-wallet-legacy]="https://github.com/fuellabs/forc-wallet"
     [fuel-core]="https://github.com/fuellabs/fuel-core"
     [sway]="https://github.com/fuellabs/sway"
     [sway-vim]="https://github.com/fuellabs/sway.vim"
@@ -66,9 +67,12 @@ declare -A pkg_forc_publish=(
     [name]="forc-publish"
     [repo]="${fuel_repos[sway]}"
 )
+# forc-wallet migrated to forc monorepo at 0.16.0; legacy repo for older versions.
 declare -A pkg_forc_wallet=(
     [name]="forc-wallet"
-    [repo]="${fuel_repos[forc-wallet]}"
+    [repo]="${fuel_repos[forc]}"
+    [legacy_repo]="${fuel_repos[forc-wallet-legacy]}"
+    [legacy_before]="0.16.0"
 )
 declare -A pkg_fuel_core=(
     [name]="fuel-core"
@@ -133,45 +137,54 @@ function write_manifest {
 
 }
 
-# Refresh the set of published manifests for the given package.
-function refresh_published {
+# Refresh published manifests from a repo. Args: pkg, repo_url, tag_prefix, [max_version]
+# If max_version is set, only versions < max_version are included.
+function refresh_published_from_repo {
     local -n pkg=$1
-    local pkg_repo_suffix="${pkg[repo]##*/}"
+    local repo_url=$2
+    local tag_prefix=$3
+    local max_version=${4:-}
+
+    local pkg_repo_suffix="${repo_url##*/}"
     local pkg_repo_dir="$WORK_DIR/$pkg_repo_suffix"
-    echo "Refreshing published manifests for ${pkg[name]}"
+    echo "Refreshing published manifests for ${pkg[name]} from $pkg_repo_suffix"
     if [ ! -d "$pkg_repo_dir" ]; then
-        git clone "${pkg[repo]}" "$pkg_repo_dir"
+        git clone "$repo_url" "$pkg_repo_dir"
     fi
     local pkg_git_branch="$(cd $pkg_repo_dir && git branch --show-current)"
-    echo "Retrieving published versions from git tags"
-    pkg_git_tags=($(cd "$pkg_repo_dir" && git tag --list))
-    echo "Found ${#pkg_git_tags[@]} git tags"
+    pkg_git_tags=($(cd "$pkg_repo_dir" && git tag --list "${tag_prefix}*"))
+    echo "Found ${#pkg_git_tags[@]} matching tags"
     for pkg_git_tag in "${pkg_git_tags[@]}"; do
-        pkg_version="${pkg_git_tag:1}"
+        pkg_version="${pkg_git_tag#"$tag_prefix"}"
         if [[ $(semver validate "$pkg_version") != "valid" ]]; then
-            echo "Skipping non-semver tag: $pkg_git_tag"
+            continue
+        fi
+        # Skip if version >= max_version (used for legacy repos).
+        if [[ -n "$max_version" && $(semver compare "$pkg_version" "$max_version") -ge 0 ]]; then
             continue
         fi
 
-        # Retrieve the commit for the tag.
         (cd $pkg_repo_dir && git checkout -q "$pkg_git_tag")
         local pkg_git_rev=$(git -C $pkg_repo_dir rev-parse HEAD)
-
-        # Fetch the date for this commit.
         local pkg_version_date="$(cd $pkg_repo_dir && git show -s --format=%ci $pkg_git_rev | cut -d ' ' -f1)"
-
-        # Generate the sha256. We must move the inner `.git` dir, hash, then put it back.
         mv "$pkg_repo_dir/.git" "$WORK_DIR"
         local pkg_version_hash=$(nix hash path "$pkg_repo_dir")
         mv "$WORK_DIR/.git" $pkg_repo_dir
 
-        # Construct a manifest for this package at this version.
-        local pkg_manifest_name="${pkg[name]}-$pkg_version"
-
-        write_manifest "${pkg[name]}" "${pkg[repo]}" "$pkg_version" "$pkg_version_date" "$pkg_git_rev" "$pkg_version_hash" "$pkg_manifest_name"
+        write_manifest "${pkg[name]}" "$repo_url" "$pkg_version" "$pkg_version_date" "$pkg_git_rev" "$pkg_version_hash" "${pkg[name]}-$pkg_version"
     done
-    # Switch back to the default branch before returning.
     (cd $pkg_repo_dir && git checkout -q "$pkg_git_branch")
+}
+
+# Refresh the set of published manifests for the given package.
+function refresh_published {
+    local -n pkg=$1
+    if [[ -n "${pkg[legacy_repo]:-}" ]]; then
+        refresh_published_from_repo pkg "${pkg[legacy_repo]}" "v" "${pkg[legacy_before]}"
+        refresh_published_from_repo pkg "${pkg[repo]}" "${pkg[name]}-"
+    else
+        refresh_published_from_repo pkg "${pkg[repo]}" "v"
+    fi
 }
 
 # Refresh the set of nightly manifests for the given package.
@@ -190,13 +203,19 @@ function refresh_nightlies {
     echo "Collecting nightlies from $date_nightly to $date_today"
     local last_git_rev=""
     local pkg_git_rev=""
+    # Determine tag pattern: forc monorepo uses "{name}-" prefix, others use "v".
+    local tag_pattern="(tag: v"
+    local tag_prefix=" (tag: v"
+    if [[ -n "${pkg[legacy_repo]:-}" ]]; then
+        tag_pattern="(tag: ${pkg[name]}-"
+        tag_prefix=" (tag: ${pkg[name]}-"
+    fi
     while [[ "$date_nightly" < "$date_today" || "$date_nightly" == "$date_today" ]]; do
         local pkg_git_rev=$(cd $pkg_repo_dir && git log --before="$date_nightly 00:00:00 +0000" --pretty=oneline -1 | cut -d ' ' -f1)
         if [[ "${#pkg_git_rev}" == 40 && $pkg_git_rev != $last_git_rev ]]; then
             # Retrieve version from the tag preceding the nightly date.
-            local prefix=" (tag: v"
-            local git_tag_line=$(cd $pkg_repo_dir && git log --tags --simplify-by-decoration --before="$date_nightly 00:00:00 +0000" --pretty="format:%d" | grep -e "(tag: v" | cut -d ')' -f1 | cut -d ',' -f1 | head -n 1)
-            local pkg_version=${git_tag_line#"$prefix"}
+            local git_tag_line=$(cd $pkg_repo_dir && git log --tags --simplify-by-decoration --before="$date_nightly 00:00:00 +0000" --pretty="format:%d" | grep -e "$tag_pattern" | cut -d ')' -f1 | cut -d ',' -f1 | head -n 1)
+            local pkg_version=${git_tag_line#"$tag_prefix"}
             if [[ $(semver validate "$pkg_version") != "valid" ]]; then
                 pkg_version="0.0.0"
             fi
