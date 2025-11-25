@@ -2,7 +2,7 @@
   pname = "forc-wallet";
   version = "0.3.0";
   date = "2023-08-28";
-  url = "https://github.com/fuellabs/forc-wallet";
+  url = "https://github.com/fuellabs/forc";
   rev = "7aea7749d716fbe807680b06935e3698a0cbd324";
   sha256 = "sha256-REesZFQTjrGxncOCAQWlE52aQYoB2sjxvtUooFLAjk4=";
 }
