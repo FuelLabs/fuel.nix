@@ -114,10 +114,10 @@ function write_manifest {
     local tmp_manifest_path="$WORK_DIR/$pkg_manifest_name.nix"
     local pkg_manifest_nix="\
         {
-          pname = \"${pkg[name]}\";
+          pname = \"$pkg_name\";
           version = \"$pkg_version\";
           date = \"$pkg_version_date\";
-          url = \"${pkg[repo]}\";
+          url = \"$pkg_repo\";
           rev = \"$pkg_git_rev\";
           sha256 = \"$pkg_version_hash\";
         }
