@@ -189,7 +189,7 @@ fn process_environment(
         get_component_version(
             client,
             "forc-wallet",
-            "FuelLabs/forc-wallet",
+            "FuelLabs/forc",
             forc_wallet_input,
         )?,
     );
@@ -213,76 +213,100 @@ fn get_component_version(
     repo: &str,
     input: Option<String>,
 ) -> Result<ComponentVersion> {
+    // forc monorepo uses "{component}-{version}" tags; others use "v{version}".
+    let is_forc_monorepo = repo == "FuelLabs/forc";
+
     match input {
         Some(value) => {
             // Check if it's a commit hash (40 chars hex) or a tag
             if value.len() == 40 && value.chars().all(|c| c.is_ascii_hexdigit()) {
                 info!("{}: Using provided commit hash: {}", component_name, value);
-                // For a commit hash, we don't have the tag, so we'll use the hash as the tag too
                 Ok(ComponentVersion {
                     tag: value.clone(),
                     commit_hash: value,
                 })
             } else {
-                // It's a tag, fetch the commit hash
-                let tag = if value.starts_with('v') {
-                    value
-                } else {
-                    format!("v{}", value)
-                };
+                // It's a tag or version, normalize to full tag format
+                let tag = normalize_tag(&value, component_name, is_forc_monorepo);
                 info!("{}: Fetching commit hash for tag: {}", component_name, tag);
                 let commit_hash = fetch_commit_hash_for_tag(client, repo, &tag)?;
                 Ok(ComponentVersion { tag, commit_hash })
             }
         }
         None => {
-            // Fetch latest release
+            // Fetch latest release for this component
             info!("{}: Fetching latest release", component_name);
-            fetch_latest_release(client, repo)
+            fetch_latest_release_for_component(client, repo, component_name, is_forc_monorepo)
         }
     }
 }
 
-fn fetch_latest_release(
+/// Normalize a version/tag input to the correct tag format for the repository.
+fn normalize_tag(value: &str, component_name: &str, is_forc_monorepo: bool) -> String {
+    if is_forc_monorepo {
+        // forc monorepo: "forc-wallet-0.16.0" format
+        if value.starts_with(&format!("{}-", component_name)) {
+            value.to_string()
+        } else {
+            let version = value.strip_prefix('v').unwrap_or(value);
+            format!("{}-{}", component_name, version)
+        }
+    } else {
+        // Standard repos: "v0.16.0" format
+        if value.starts_with('v') {
+            value.to_string()
+        } else {
+            format!("v{}", value)
+        }
+    }
+}
+
+fn fetch_latest_release_for_component(
     client: &reqwest::blocking::Client,
     repo: &str,
+    component_name: &str,
+    is_forc_monorepo: bool,
 ) -> Result<ComponentVersion> {
-    let url = format!("https://api.github.com/repos/{}/releases/latest", repo);
+    if is_forc_monorepo {
+        // Monorepo: find latest release with tag matching "{component}-*"
+        let url = format!("https://api.github.com/repos/{}/releases?per_page=100", repo);
+        let request = client.get(&url).header("User-Agent", "update-milestones");
+        let response = request.send().context(format!("Failed to fetch releases for {}", repo))?;
 
-    let request = client.get(&url).header("User-Agent", "update-milestones");
+        if !response.status().is_success() {
+            let status = response.status();
+            let error_body = response.text().unwrap_or_default();
+            return Err(anyhow::anyhow!("Failed to fetch releases for {}: {} - {}", repo, status, error_body));
+        }
 
-    let response = request
-        .send()
-        .context(format!("Failed to fetch latest release for {}", repo))?;
+        let releases: Vec<GitHubRelease> = response.json().context("Failed to parse releases")?;
+        let prefix = format!("{}-", component_name);
+        let tag = releases
+            .iter()
+            .find(|r| r.tag_name.starts_with(&prefix))
+            .map(|r| r.tag_name.clone())
+            .ok_or_else(|| anyhow::anyhow!("No release found for {} in {}", component_name, repo))?;
 
-    if !response.status().is_success() {
-        let status = response.status();
-        let error_body = response
-            .text()
-            .unwrap_or_else(|_| "Unable to read error response".to_string());
-        return Err(anyhow::anyhow!(
-            "Failed to fetch latest release for {}: {} - {}",
-            repo,
-            status,
-            error_body
-        ));
+        let commit_hash = fetch_commit_hash_for_tag(client, repo, &tag)?;
+        info!("Found latest {} release: {} ({})", component_name, tag, commit_hash);
+        Ok(ComponentVersion { tag, commit_hash })
+    } else {
+        // Standard repo: use /releases/latest
+        let url = format!("https://api.github.com/repos/{}/releases/latest", repo);
+        let request = client.get(&url).header("User-Agent", "update-milestones");
+        let response = request.send().context(format!("Failed to fetch latest release for {}", repo))?;
+
+        if !response.status().is_success() {
+            let status = response.status();
+            let error_body = response.text().unwrap_or_default();
+            return Err(anyhow::anyhow!("Failed to fetch latest release for {}: {} - {}", repo, status, error_body));
+        }
+
+        let release: GitHubRelease = response.json().context("Failed to parse release")?;
+        let commit_hash = fetch_commit_hash_for_tag(client, repo, &release.tag_name)?;
+        info!("Found latest release for {}: {} ({})", repo, release.tag_name, commit_hash);
+        Ok(ComponentVersion { tag: release.tag_name, commit_hash })
     }
-
-    let release: GitHubRelease = response
-        .json()
-        .context(format!("Failed to parse release response for {}", repo))?;
-
-    let tag = release.tag_name;
-
-    // Fetch the commit hash for this tag
-    let commit_hash = fetch_commit_hash_for_tag(client, repo, &tag)?;
-
-    info!(
-        "Found latest release for {}: {} ({})",
-        repo, tag, commit_hash
-    );
-
-    Ok(ComponentVersion { tag, commit_hash })
 }
 
 fn fetch_commit_hash_for_tag(
@@ -427,4 +451,30 @@ fn generate_pr_description(
         description.push_str(&format!(r"sway: `{}`\n", version.tag));
     }
     description
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_normalize_tag_forc_monorepo() {
+        // forc-wallet in forc monorepo uses "forc-wallet-X.Y.Z" format
+        assert_eq!(normalize_tag("0.16.0", "forc-wallet", true), "forc-wallet-0.16.0");
+        assert_eq!(normalize_tag("0.16.1", "forc-wallet", true), "forc-wallet-0.16.1");
+        // Already correctly formatted
+        assert_eq!(normalize_tag("forc-wallet-0.16.0", "forc-wallet", true), "forc-wallet-0.16.0");
+        // Strip v prefix and add component prefix
+        assert_eq!(normalize_tag("v0.16.0", "forc-wallet", true), "forc-wallet-0.16.0");
+    }
+
+    #[test]
+    fn test_normalize_tag_standard_repo() {
+        // Standard repos (fuel-core, sway) use "vX.Y.Z" format
+        assert_eq!(normalize_tag("0.40.0", "fuel-core", false), "v0.40.0");
+        assert_eq!(normalize_tag("0.65.2", "sway", false), "v0.65.2");
+        // Already correctly formatted
+        assert_eq!(normalize_tag("v0.40.0", "fuel-core", false), "v0.40.0");
+        assert_eq!(normalize_tag("v0.65.2", "sway", false), "v0.65.2");
+    }
 }
