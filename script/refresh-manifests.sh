@@ -187,35 +187,31 @@ function refresh_published {
     fi
 }
 
-# Refresh the set of nightly manifests for the given package.
-function refresh_nightlies {
-    local -n pkg=$1
-    local pkg_repo_suffix="${pkg[repo]##*/}"
+# Refresh nightly manifests from a repo. Args: pkg_ref, repo_url, tag_prefix, start_date, end_date
+function refresh_nightlies_from_repo {
+    local -n npkg=$1
+    local repo_url=$2
+    local tag_prefix=$3
+    local start_date=$4
+    local end_date=$5
+
+    local pkg_repo_suffix="${repo_url##*/}"
     local pkg_repo_dir="$WORK_DIR/$pkg_repo_suffix"
-    echo "Refreshing nightly manifests for ${pkg[name]}"
+    echo "Refreshing nightly manifests for ${npkg[name]} from $pkg_repo_suffix ($start_date to $end_date)"
     if [ ! -d "$pkg_repo_dir" ]; then
-        git clone "${pkg[repo]}" "$pkg_repo_dir"
+        git clone "$repo_url" "$pkg_repo_dir"
     fi
     local pkg_git_branch="$(cd $pkg_repo_dir && git branch --show-current)"
-    # Only keep the last 30 days of nightlies to reduce manifest count
-    local date_today=$(date -u +"%F")
-    local date_nightly=$(date -u '+%F' -d "$date_today-30 days")
-    echo "Collecting nightlies from $date_nightly to $date_today"
     local last_git_rev=""
-    local pkg_git_rev=""
-    # Determine tag pattern: forc monorepo uses "{name}-" prefix, others use "v".
-    local tag_pattern="(tag: v"
-    local tag_prefix=" (tag: v"
-    if [[ -n "${pkg[legacy_repo]:-}" ]]; then
-        tag_pattern="(tag: ${pkg[name]}-"
-        tag_prefix=" (tag: ${pkg[name]}-"
-    fi
-    while [[ "$date_nightly" < "$date_today" || "$date_nightly" == "$date_today" ]]; do
+    local date_nightly="$start_date"
+    local tag_pattern="(tag: $tag_prefix"
+    local tag_prefix_full=" (tag: $tag_prefix"
+    while [[ "$date_nightly" < "$end_date" || "$date_nightly" == "$end_date" ]]; do
         local pkg_git_rev=$(cd $pkg_repo_dir && git log --before="$date_nightly 00:00:00 +0000" --pretty=oneline -1 | cut -d ' ' -f1)
         if [[ "${#pkg_git_rev}" == 40 && $pkg_git_rev != $last_git_rev ]]; then
             # Retrieve version from the tag preceding the nightly date.
             local git_tag_line=$(cd $pkg_repo_dir && git log --tags --simplify-by-decoration --before="$date_nightly 00:00:00 +0000" --pretty="format:%d" | grep -e "$tag_pattern" | cut -d ')' -f1 | cut -d ',' -f1 | head -n 1)
-            local pkg_version=${git_tag_line#"$tag_prefix"}
+            local pkg_version=${git_tag_line#"$tag_prefix_full"}
             if [[ $(semver validate "$pkg_version") != "valid" ]]; then
                 pkg_version="0.0.0"
             fi
@@ -227,17 +223,66 @@ function refresh_nightlies {
             mv "$WORK_DIR/.git" $pkg_repo_dir
 
             # Construct a manifest for this package at this version.
-            local pkg_manifest_name="${pkg[name]}-$pkg_version-nightly-$date_nightly"
+            local pkg_manifest_name="${npkg[name]}-$pkg_version-nightly-$date_nightly"
 
-            write_manifest "${pkg[name]}" "${pkg[repo]}" "$pkg_version" "$date_nightly" "$pkg_git_rev" "$pkg_version_hash" "$pkg_manifest_name"
+            write_manifest "${npkg[name]}" "$repo_url" "$pkg_version" "$date_nightly" "$pkg_git_rev" "$pkg_version_hash" "$pkg_manifest_name"
 
             # Switch back to the default branch before looping back.
             (cd $pkg_repo_dir && git checkout -q "$pkg_git_branch")
             last_git_rev="$pkg_git_rev"
         fi
-        date_nightly=`date -u '+%F' -d "$date_nightly+1 days"`
+        date_nightly=$(date -u '+%F' -d "$date_nightly+1 days")
     done
-    last_git_rev=""
+}
+
+# Get the date of the first tag matching a prefix in a repo.
+function get_first_tag_date {
+    local repo_url=$1
+    local tag_prefix=$2
+
+    local pkg_repo_suffix="${repo_url##*/}"
+    local pkg_repo_dir="$WORK_DIR/$pkg_repo_suffix"
+    if [ ! -d "$pkg_repo_dir" ]; then
+        git clone "$repo_url" "$pkg_repo_dir"
+    fi
+    # Find the first (oldest) tag matching the prefix by sorting tags by date.
+    local first_tag=$(cd "$pkg_repo_dir" && git tag --list "${tag_prefix}*" --sort=creatordate | head -n 1)
+    if [[ -n "$first_tag" ]]; then
+        (cd "$pkg_repo_dir" && git show -s --format=%ci "$first_tag" | cut -d ' ' -f1)
+    fi
+}
+
+# Refresh the set of nightly manifests for the given package.
+function refresh_nightlies {
+    local -n pkg=$1
+    echo "Refreshing nightly manifests for ${pkg[name]}"
+    # Only keep the last 30 days of nightlies to reduce manifest count
+    local date_today=$(date -u +"%F")
+    local date_start=$(date -u '+%F' -d "$date_today-30 days")
+
+    if [[ -n "${pkg[legacy_repo]:-}" ]]; then
+        # For packages with legacy repos, find the cutoff date (first tag in new repo).
+        local first_new_tag_date=$(get_first_tag_date "${pkg[repo]}" "${pkg[name]}-")
+        if [[ -n "$first_new_tag_date" ]]; then
+            echo "First ${pkg[name]} tag in new repo: $first_new_tag_date"
+            # Legacy repo: from date_start to day before first new tag (if in range).
+            local legacy_end=$(date -u '+%F' -d "$first_new_tag_date-1 days")
+            if [[ ! "$legacy_end" < "$date_start" ]]; then
+                refresh_nightlies_from_repo pkg "${pkg[legacy_repo]}" "v" "$date_start" "$legacy_end"
+            fi
+            # New repo: from first new tag date (or date_start if later) to today.
+            local new_start="$first_new_tag_date"
+            if [[ "$new_start" < "$date_start" ]]; then
+                new_start="$date_start"
+            fi
+            refresh_nightlies_from_repo pkg "${pkg[repo]}" "${pkg[name]}-" "$new_start" "$date_today"
+        else
+            # No tags in new repo yet, use legacy repo for all nightlies.
+            refresh_nightlies_from_repo pkg "${pkg[legacy_repo]}" "v" "$date_start" "$date_today"
+        fi
+    else
+        refresh_nightlies_from_repo pkg "${pkg[repo]}" "v" "$date_start" "$date_today"
+    fi
 }
 
 function refresh {
