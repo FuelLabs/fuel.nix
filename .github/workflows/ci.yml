@@ -46,7 +46,7 @@ jobs:
             fuel-nightly,
             sway-vim,
           ]
-        os: [ubuntu-latest, macos-latest, macos-latest-xlarge]
+        os: [ubuntu-latest-xlarge, macos-latest, macos-latest-xlarge]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -62,7 +62,7 @@ jobs:
       - run: nix build --print-build-logs --no-update-lock-file .#${{ matrix.package }}
 
   verify-nix-shell:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-xlarge
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
