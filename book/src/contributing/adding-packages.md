@@ -11,7 +11,8 @@ set of repositories:
 ```sh
 # The set of fuel repositories.
 declare -A fuel_repos=(
-    [forc-wallet]="https://github.com/fuellabs/forc-wallet"
+    [forc]="https://github.com/fuellabs/forc"
+    [forc-wallet-legacy]="https://github.com/fuellabs/forc-wallet"
     [fuel-core]="https://github.com/fuellabs/fuel-core"
     [sway]="https://github.com/fuellabs/sway"
     [sway-vim]="https://github.com/fuellabs/sway.vim"

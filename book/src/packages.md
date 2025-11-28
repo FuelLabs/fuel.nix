@@ -138,7 +138,7 @@ nix run github:fuellabs/fuel.nix#forc-fmt-0-24-3-nightly-2022-09-14
 > **Note:** that when building an older version or nightly, they may no longer
 > be available in the binary cache and may need to be rebuilt!
 
-[forc-wallet-repo]: https://github.com/fuellabs/forc-wallet
+[forc-wallet-repo]: https://github.com/fuellabs/forc
 [fuel-core-repo]: https://github.com/fuellabs/fuel-core
 [sway-repo]: https://github.com/fuellabs/sway
 [sway-vim-repo]: https://github.com/fuellabs/sway.vim
