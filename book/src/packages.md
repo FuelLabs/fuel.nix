@@ -9,7 +9,7 @@ The `fuel.nix` flake provides the following packages:
 | [`fuel-core-client`][fuel-core-repo] | A Fuel VM transaction client. |
 | [`forc`][sway-repo] | The Fuel Orchestrator. Compiler, packaging and plugin support. |
 | [`forc-client`][sway-repo] | Provides the `forc deploy` and `forc run` commands. |
-| [`forc-crypto`][sway-repo] | A Forc plugin for hashing arbitrary data. |
+| [`forc-crypto`][forc-repo] | A Forc plugin for hashing arbitrary data. |
 | [`forc-debug`][sway-repo] | A Forc plugin for debugging via CLI and IDE. |
 | [`forc-doc`][sway-repo] | Sway API documentation generator. |
 | [`forc-fmt`][sway-repo] | The Sway code formatter. |
@@ -18,7 +18,7 @@ The `fuel.nix` flake provides the following packages:
 | [`forc-call`][sway-repo] | A Forc plugin to call contracts and query the chain from the CLI. |
 | [`forc-migrate`][sway-repo] |  Migrate Sway projects to the next breaking version. |
 | [`forc-publish`][sway-repo] | Publish a package to the Forc registry. |
-| [`forc-wallet`][forc-wallet-repo] | A Fuel Wallet CLI implementation. |
+| [`forc-wallet`][forc-repo] | A Fuel Wallet CLI implementation. |
 | [`sway-vim`][sway-vim-repo] | The Sway Vim plugin. |
 | `fuel` | All of the above tools under a single package. |
 
@@ -138,7 +138,7 @@ nix run github:fuellabs/fuel.nix#forc-fmt-0-24-3-nightly-2022-09-14
 > **Note:** that when building an older version or nightly, they may no longer
 > be available in the binary cache and may need to be rebuilt!
 
-[forc-wallet-repo]: https://github.com/fuellabs/forc
+[forc-repo]: https://github.com/fuellabs/forc
 [fuel-core-repo]: https://github.com/fuellabs/fuel-core
 [sway-repo]: https://github.com/fuellabs/sway
 [sway-vim-repo]: https://github.com/fuellabs/sway.vim
