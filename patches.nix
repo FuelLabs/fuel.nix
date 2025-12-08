@@ -229,6 +229,14 @@ in [
     };
   }
 
+  # forc-crypto 0.71.0+ is built from the forc monorepo where it's in a subdirectory.
+  {
+    condition = m: m.pname == "forc-crypto" && m.src.gitRepoUrl == "https://github.com/fuellabs/forc";
+    patch = m: {
+      buildAndTestSubdir = "forc-crypto";
+    };
+  }
+
   # At some point around this date, Sway LSP started requiring the CoreServices
   # framework on Darwin due to a dependency update. Here we just make it
   # available to all fuel packages going forward.
