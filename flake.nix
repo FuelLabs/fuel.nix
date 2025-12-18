@@ -84,16 +84,29 @@
       latest = let
         update = m: acc: let
           has = builtins.hasAttr m.pname acc;
-          cur = if has then acc."${m.pname}" else null;
+          cur =
+            if has
+            then acc."${m.pname}"
+            else null;
           versionsEqual = has && pkgs.lib.versionAtLeast cur.version m.version && pkgs.lib.versionAtLeast m.version cur.version;
         in
-          acc // {
+          acc
+          // {
             "${m.pname}" =
-              if !has then m
+              if !has
+              then m
               # If versions are equal, pick the newer by date.
-              else if versionsEqual then (if m.date > cur.date then m else cur)
+              else if versionsEqual
+              then
+                (
+                  if m.date > cur.date
+                  then m
+                  else cur
+                )
               # Otherwise, pick the greater semver version.
-              else if pkgs.lib.versionAtLeast m.version cur.version then m else cur;
+              else if pkgs.lib.versionAtLeast m.version cur.version
+              then m
+              else cur;
           };
         mapPublished = name: v: pkgs.lib.nameValuePair (name + "-latest") v;
         mapNightly = name: v: pkgs.lib.nameValuePair (name + "-nightly") v;
