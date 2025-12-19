@@ -82,13 +82,31 @@
 
       # Find the latest published and nightly version for each package.
       latest = let
-        update = m: acc:
+        update = m: acc: let
+          has = builtins.hasAttr m.pname acc;
+          cur =
+            if has
+            then acc."${m.pname}"
+            else null;
+          versionsEqual = has && pkgs.lib.versionAtLeast cur.version m.version && pkgs.lib.versionAtLeast m.version cur.version;
+        in
           acc
           // {
             "${m.pname}" =
-              if builtins.hasAttr m.pname acc && pkgs.lib.versionAtLeast acc."${m.pname}".version m.version && acc."${m.pname}".date >= m.date
-              then acc."${m.pname}"
-              else m;
+              if !has
+              then m
+              # If versions are equal, pick the newer by date.
+              else if versionsEqual
+              then
+                (
+                  if m.date > cur.date
+                  then m
+                  else cur
+                )
+              # Otherwise, pick the greater semver version.
+              else if pkgs.lib.versionAtLeast m.version cur.version
+              then m
+              else cur;
           };
         mapPublished = name: v: pkgs.lib.nameValuePair (name + "-latest") v;
         mapNightly = name: v: pkgs.lib.nameValuePair (name + "-nightly") v;
