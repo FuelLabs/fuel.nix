@@ -14,6 +14,7 @@ The `fuel.nix` flake provides the following packages:
 | [`forc-doc`][sway-repo] | Sway API documentation generator. |
 | [`forc-fmt`][sway-repo] | The Sway code formatter. |
 | [`forc-lsp`][sway-repo] | The Sway Language Server Protocol implementation. |
+| [`forc-node`][forc-repo] | A CLI for running a Fuel node locally. |
 | [`forc-tx`][sway-repo] | Construct transactions with a CLI. |
 | [`forc-call`][sway-repo] | A Forc plugin to call contracts and query the chain from the CLI. |
 | [`forc-migrate`][sway-repo] |  Migrate Sway projects to the next breaking version. |

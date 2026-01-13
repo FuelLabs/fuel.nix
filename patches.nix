@@ -9,6 +9,7 @@
     "forc-doc"
     "forc-fmt"
     "forc-lsp"
+    "forc-node"
     "forc-tx"
     "forc-migrate"
     "forc-publish"
@@ -234,6 +235,26 @@ in [
     condition = m: m.pname == "forc-crypto" && m.src.gitRepoUrl == "https://github.com/fuellabs/forc";
     patch = m: {
       buildAndTestSubdir = "forc-crypto";
+    };
+  }
+
+  # forc-node 0.71.0+ is built from the forc monorepo where it's in a subdirectory.
+  {
+    condition = m: m.pname == "forc-node" && m.src.gitRepoUrl == "https://github.com/fuellabs/forc";
+    patch = m: {
+      buildAndTestSubdir = "forc-node";
+    };
+  }
+
+  # forc-node requires clang and rocksdb for fuel-core dependencies.
+  {
+    condition = m: m.pname == "forc-node";
+    patch = m: {
+      nativeBuildInputs = (m.nativeBuildInputs or []) ++ [pkgs.clang];
+      buildInputs = (m.buildInputs or []) ++ [pkgs.rocksdb];
+      LIBCLANG_PATH = "${pkgs.libclang.lib}/lib";
+      ROCKSDB_LIB_DIR = "${pkgs.rocksdb}/lib";
+      doCheck = false; # Already tested at repo.
     };
   }
 
