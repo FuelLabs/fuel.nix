@@ -46,6 +46,13 @@ declare -A pkg_forc_debug=(
     [name]="forc-debug"
     [repo]="${fuel_repos[sway]}"
 )
+# forc-node migrated to forc monorepo at 0.71.0; legacy repo (sway) for older versions.
+declare -A pkg_forc_node=(
+    [name]="forc-node"
+    [repo]="${fuel_repos[forc]}"
+    [legacy_repo]="${fuel_repos[sway]}"
+    [legacy_before]="0.71.0"
+)
 declare -A pkg_forc_doc=(
     [name]="forc-doc"
     [repo]="${fuel_repos[sway]}"
@@ -299,6 +306,7 @@ refresh pkg_forc_client
 refresh pkg_forc_crypto
 refresh pkg_forc_debug
 refresh pkg_forc_doc
+refresh pkg_forc_node
 refresh pkg_forc_fmt
 refresh pkg_forc_lsp
 refresh pkg_forc_tx
