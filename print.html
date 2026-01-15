@@ -13,21 +13,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff">
 
-        <link rel="icon" href="favicon.svg">
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" id="highlight-css" href="highlight.css">
-        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
-        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
 
         <!-- Custom theme stylesheets -->
 
@@ -37,10 +36,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex.js";
+            window.path_to_searchindex_js = "searchindex-6a31ffde.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc.js"></script>
+        <script src="toc-19be53cb.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -54,7 +53,7 @@
             </div>
         </div>
     </div>
-    <div id="body-container">
+    <div id="mdbook-body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -83,12 +82,12 @@
             html.classList.add("js");
         </script>
 
-        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             let sidebar = null;
-            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -103,39 +102,39 @@
             }
         </script>
 
-        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
             <!-- populated by js -->
             <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
             <noscript>
                 <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
             </noscript>
-            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <div id="page-wrapper" class="page-wrapper">
+        <div id="mdbook-page-wrapper" class="page-wrapper">
 
             <div class="page">
-                <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
-                            <i class="fa fa-bars"></i>
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
                         </label>
-                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
-                            <i class="fa fa-paint-brush"></i>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
                         </button>
-                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
-                            <i class="fa fa-search"></i>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
                         </button>
                     </div>
 
@@ -143,47 +142,48 @@
 
                     <div class="right-buttons">
                         <a href="print.html" title="Print this book" aria-label="Print this book">
-                            <i id="print-button" class="fa fa-print"></i>
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
                         </a>
 
                     </div>
                 </div>
 
-                <div id="search-wrapper" class="hidden">
-                    <form id="searchbar-outer" class="searchbar-outer">
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
                         <div class="search-wrapper">
-                            <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
                             <div class="spinner-wrapper">
-                                <i class="fa fa-spinner fa-spin"></i>
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
                             </div>
                         </div>
                     </form>
-                    <div id="searchresults-outer" class="searchresults-outer hidden">
-                        <div id="searchresults-header" class="searchresults-header"></div>
-                        <ul id="searchresults">
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
                         </ul>
                     </div>
                 </div>
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script>
-                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
-                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
-                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
                         link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
                     });
                 </script>
 
-                <div id="content" class="content">
+                <div id="mdbook-content" class="content">
                     <main>
                         <h1 id="welcome"><a class="header" href="#welcome">Welcome</a></h1>
 <p><strong>fuel.nix</strong> provides an easy, reliable way of using Fuel tools.</p>
 <p>Each night at midnight (UTC) <a href="https://github.com/FuelLabs/fuel.nix"><strong>the fuel.nix repo</strong></a> is automatically
 updated with the latest stable and nightly releases of all fuel packages. Builds
 are tested and cached for both <strong>Linux</strong> and <strong>macOS</strong> systems.</p>
-<p>Check out the <a href="./quick-start.html"><strong>Quick Start</strong></a> to dive in!</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h1>
-<p>Let's install both Nix and the latest full suite of Fuel tools in just two
+<p>Check out the <a href="#quick-start"><strong>Quick Start</strong></a> to dive in!</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h1>
+<p>Let’s install both Nix and the latest full suite of Fuel tools in just two
 commands.</p>
 <h2 id="install-nix"><a class="header" href="#install-nix">Install Nix</a></h2>
 <p>Nix is a package manager with a focus on reproducibility and reliability. We can
@@ -193,7 +193,7 @@ install it and enable the Fuel Labs binary cache with the following:</p>
 <blockquote>
 <p><strong>Note:</strong> For more details on Nix installation or how to configure an existing
 Nix or NixOS installation, see the detailed
-<a href="./nix-setup.html"><strong>Nix Setup</strong></a> chapter.</p>
+<a href="#nix-setup"><strong>Nix Setup</strong></a> chapter.</p>
 </blockquote>
 <h2 id="install-fuel"><a class="header" href="#install-fuel">Install Fuel</a></h2>
 <p>After installing Nix, open a new terminal and install the stable Fuel toolchain
@@ -202,9 +202,9 @@ in a temporary shell with the following:</p>
 </code></pre>
 <p>This will download the latest release of <code>fuel-core</code>, <code>forc</code>, compatible with
 the testnet network and a suite of other tools from the Fuel Labs cache into the
-local <code>/nix/store</code> cache and "install" them to <code>PATH</code> for the duration of the
+local <code>/nix/store</code> cache and “install” them to <code>PATH</code> for the duration of the
 current shell.</p>
-<p>Let's check installation worked:</p>
+<p>Let’s check installation worked:</p>
 <pre><code class="language-console">$ fuel-core --version
 fuel-core 0.26.0
 
@@ -220,20 +220,21 @@ sure you are using those installed by Nix.</p>
 <p>Your console will always use the first version of an executable that appears
 in your <code>PATH</code>.</p>
 </blockquote>
-<p>Now we're ready to build with Fuel!</p>
+<p>Now we’re ready to build with Fuel!</p>
 <p>We can <code>exit</code> the current shell to remove the tools from our <code>PATH</code> as if they
 were never installed.</p>
 <h2 id="diving-deeper"><a class="header" href="#diving-deeper">Diving Deeper</a></h2>
 <p>To find out how to install tools persistently for the current user, how to
 install different toolchain channels (nightly, testnet, etc), how to install
-individual components, along with a whole suite of other options, see <a href="./packages.html"><strong>the
+individual components, along with a whole suite of other options, see <a href="#packages"><strong>the
 Packages chapter</strong></a>.</p>
 <p>For more details on installing Nix or configuring an existing Nix or NixOS
-installation, see <a href="./nix-setup.html"><strong>the Nix Setup chapter</strong></a>.</p>
+installation, see <a href="#nix-setup"><strong>the Nix Setup chapter</strong></a>.</p>
 <p>If you are content with the installation, see the
 <a href="https://docs.fuel.network/"><strong>Documentation Portal</strong></a>
 for more details on how to build with Fuel!</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="nix-setup"><a class="header" href="#nix-setup">Nix Setup</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="nix-setup"><a class="header" href="#nix-setup">Nix Setup</a></h1>
 <p><a href="https://nixos.org/"><strong>Nix</strong></a> is a package manager with a focus on
 reproducibility and reliability. Fuel Labs leverages Nix to provide a simple
 way to natively install the ecosystem tooling along with any necessary system
@@ -242,7 +243,7 @@ dependencies and environment setup.</p>
 describes how to setup an existing Nix configuration, and covers how to
 uninstall Nix and its installed packages if necessary.</p>
 <h2 id="install-nix-1"><a class="header" href="#install-nix-1">Install Nix</a></h2>
-<p>To recap our <a href="./quick-start.html">Quick Start</a>, we can install Nix with the
+<p>To recap our <a href="#quick-start">Quick Start</a>, we can install Nix with the
 following command:</p>
 <pre><code class="language-console">curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix/tag/v0.20.2 | sh -s -- install --extra-conf "extra-substituters = https://fuellabs.cachix.org" --extra-conf "extra-trusted-public-keys = fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8="
 </code></pre>
@@ -253,7 +254,7 @@ binary cache</a>.</p>
 <blockquote>
 <p><strong>Note:</strong> Without a binary cache, Nix will build everything from source on
 first use. This can take a long time! The fuel.nix repo CI builds all channels
-(published, nightly, milestones) and provides a cache so you don't have to.</p>
+(published, nightly, milestones) and provides a cache so you don’t have to.</p>
 </blockquote>
 <p>The installer will first present an installation plan before prompting
 to continue. Feel free to review or prompt for further explanation before
@@ -261,7 +262,7 @@ proceeding with installation.</p>
 <p>After continuing, Nix installation should complete within a few seconds. Be sure
 to open a new terminal before using <code>nix</code>.</p>
 <h2 id="configuring-an-existing-nix-installation"><a class="header" href="#configuring-an-existing-nix-installation">Configuring an Existing Nix Installation</a></h2>
-<p>If you're an existing Nix user you can enable the necessary features along
+<p>If you’re an existing Nix user you can enable the necessary features along
 with the Fuel Labs binary cache with the following additions to your Nix
 configuration (<code>/etc/nix/nix.conf</code>):</p>
 <pre><code>experimental-features = nix-command flakes
@@ -269,7 +270,7 @@ extra-substituters = https://fuellabs.cachix.org
 extra-trusted-public-keys = fuellabs.cachix.org-1:3gOmll82VDbT7EggylzOVJ6dr0jgPVU/KMN6+Kf8qx8=
 </code></pre>
 <h2 id="configuring-nixos"><a class="header" href="#configuring-nixos">Configuring NixOS</a></h2>
-<p>Similarly, if you're an existing <a href="https://nixos.org/">NixOS</a> user, you can
+<p>Similarly, if you’re an existing <a href="https://nixos.org/">NixOS</a> user, you can
 update your nixos configuration with the following:</p>
 <pre><code class="language-nix">{
   nix = {
@@ -285,16 +286,16 @@ update your nixos configuration with the following:</p>
 </code></pre>
 <h2 id="trouble-shooting"><a class="header" href="#trouble-shooting">Trouble Shooting</a></h2>
 <h3 id="nix-command-not-available"><a class="header" href="#nix-command-not-available">Nix command not available</a></h3>
-<p>The daemon that makes nix available to your shell is not run automatically after installation. You'll need to either manually start it in your shell instance with <code>nix daemon</code> or open a new instance of your shell. If it persists, log out, log back in and open a new terminal.</p>
-<h3 id="nix-isnt-using-the-fuel-cache"><a class="header" href="#nix-isnt-using-the-fuel-cache">Nix isn't using the Fuel cache</a></h3>
+<p>The daemon that makes nix available to your shell is not run automatically after installation. You’ll need to either manually start it in your shell instance with <code>nix daemon</code> or open a new instance of your shell. If it persists, log out, log back in and open a new terminal.</p>
+<h3 id="nix-isnt-using-the-fuel-cache"><a class="header" href="#nix-isnt-using-the-fuel-cache">Nix isn’t using the Fuel cache</a></h3>
 <p>In some cases, usually in existing nix installations, nix may have trouble finding or using the cache. This could happen for a few reasons:</p>
 <h4 id="confirm-you-are-a-trusted-user"><a class="header" href="#confirm-you-are-a-trusted-user">Confirm you are a trusted user:</a></h4>
 <p>The user the request is coming from may not be a trusted user, in which case some permissions may be missing to use parts of the configuration.
 There is a great example of this in the Nix discourse which can be found <a href="https://discourse.nixos.org/t/nix-flake-and-trusted-users/8882">here</a> that also provides a solution if you want certain features available to untrusted users.</p>
 <h4 id="the-extra-substitutors-section-is-overlooked"><a class="header" href="#the-extra-substitutors-section-is-overlooked">The <code>extra-substitutors</code> section is overlooked:</a></h4>
-<p><code>extra-substitutors</code> appends additional caches to those already specified by <code>substitutors</code>, and will silently ignore them when they are attempted to be used by unprivileged users. If the output of <code>nix show-config</code> does not show the Fuel cache in <code>extra-substitutors</code> after <a href="nix-setup.html#confirm-you-are-a-trusted-user">confirming you are a trusted user</a>, you may need to restart your shell. If this still does not solve the issue, try adding the Fuel cachix link to <code>substitutors</code> instead, separating any existing substitutors by whitespace.</p>
+<p><code>extra-substitutors</code> appends additional caches to those already specified by <code>substitutors</code>, and will silently ignore them when they are attempted to be used by unprivileged users. If the output of <code>nix show-config</code> does not show the Fuel cache in <code>extra-substitutors</code> after <a href="#confirm-you-are-a-trusted-user">confirming you are a trusted user</a>, you may need to restart your shell. If this still does not solve the issue, try adding the Fuel cachix link to <code>substitutors</code> instead, separating any existing substitutors by whitespace.</p>
 <h4 id="negative-caching"><a class="header" href="#negative-caching">Negative caching:</a></h4>
-<p>If you ran into any of the previous problems, which made your system build a derivation from source, you may experience <a href="https://en.wikipedia.org/wiki/Negative_cache">negative caching</a> in which case you'll need to <a href="https://nix.dev/recipes/faq#how-do-i-force-nix-to-re-check-whether-something-exists-at-a-binary-cache">reset the lookup cache</a> that nix uses to check if a cache doesn't exist.</p>
+<p>If you ran into any of the previous problems, which made your system build a derivation from source, you may experience <a href="https://en.wikipedia.org/wiki/Negative_cache">negative caching</a> in which case you’ll need to <a href="https://nix.dev/recipes/faq#how-do-i-force-nix-to-re-check-whether-something-exists-at-a-binary-cache">reset the lookup cache</a> that nix uses to check if a cache doesn’t exist.</p>
 <p>If a problem persists after trying the above please <a href="https://github.com/FuelLabs/fuel.nix/issues/new">open an issue</a>.</p>
 <h2 id="uninstall-everything"><a class="header" href="#uninstall-everything">Uninstall Everything</a></h2>
 <p>If you installed Nix using the Determinate Systems nix-installer tool as
@@ -302,9 +303,15 @@ described in this guide, you can uninstall Nix along with all nix-installed
 packages with the following:</p>
 <pre><code class="language-console">/nix/nix-installer uninstall
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="packages"><a class="header" href="#packages">Packages</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="packages"><a class="header" href="#packages">Packages</a></h1>
 <p>The <code>fuel.nix</code> flake provides the following packages:</p>
-<div class="table-wrapper"><table><thead><tr><th>Package</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Package</th><th>Description</th></tr>
+</thead>
+<tbody>
 <tr><td><a href="https://github.com/fuellabs/fuel-core"><code>fuel-core</code></a></td><td>The Fuel VM node client.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/fuel-core"><code>fuel-core-client</code></a></td><td>A Fuel VM transaction client.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc</code></a></td><td>The Fuel Orchestrator. Compiler, packaging and plugin support.</td></tr>
@@ -314,6 +321,7 @@ packages with the following:</p>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-doc</code></a></td><td>Sway API documentation generator.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-fmt</code></a></td><td>The Sway code formatter.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-lsp</code></a></td><td>The Sway Language Server Protocol implementation.</td></tr>
+<tr><td><a href="https://github.com/fuellabs/forc"><code>forc-node</code></a></td><td>A CLI for running a Fuel node locally.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-tx</code></a></td><td>Construct transactions with a CLI.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-call</code></a></td><td>A Forc plugin to call contracts and query the chain from the CLI.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-migrate</code></a></td><td>Migrate Sway projects to the next breaking version.</td></tr>
@@ -321,7 +329,8 @@ packages with the following:</p>
 <tr><td><a href="https://github.com/fuellabs/forc"><code>forc-wallet</code></a></td><td>A Fuel Wallet CLI implementation.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway.vim"><code>sway-vim</code></a></td><td>The Sway Vim plugin.</td></tr>
 <tr><td><code>fuel</code></td><td>All of the above tools under a single package.</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <h2 id="running-packages"><a class="header" href="#running-packages">Running Packages</a></h2>
 <p>You can run any of the above programs without installing them like so:</p>
@@ -400,22 +409,30 @@ path.</p>
 <p><strong>Note:</strong> that when building an older version or nightly, they may no longer
 be available in the binary cache and may need to be rebuilt!</p>
 </blockquote>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="nix-power-users"><a class="header" href="#nix-power-users">Nix Power Users</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="nix-power-users"><a class="header" href="#nix-power-users">Nix Power Users</a></h1>
 <p><strong>fuel.nix</strong> offers some tools that may be more useful for existing Nix and
 NixOS power users.</p>
 <p>This chapter is targeted towards more experienced Nix users who use Nix to
 configure their home or NixOS systems (e.g. using home-manager or NixOS
 configuration).</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="dev-shells"><a class="header" href="#dev-shells">Dev Shells</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="dev-shells"><a class="header" href="#dev-shells">Dev Shells</a></h1>
 <p><strong>fuel.nix</strong> also features a few <code>devShell</code>s that make it easy to drop into a
 development shell for working on the fuel packages. They allow you to drop into
 a temporary shell with all the tools and environment variables required to build
 the various fuel projects yourself.</p>
-<div class="table-wrapper"><table><thead><tr><th>Dev Shell</th><th>Description</th></tr></thead><tbody>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Dev Shell</th><th>Description</th></tr>
+</thead>
+<tbody>
 <tr><td><code>fuel-core-dev</code></td><td>A shell for working on the <code>fuel-core</code> repo.</td></tr>
 <tr><td><code>sway-dev</code></td><td>A shell for working on the <code>sway</code> repo.</td></tr>
 <tr><td><code>fuel-dev</code></td><td>A shell ready for working with on any Fuel repo.</td></tr>
-</tbody></table>
+</tbody>
+</table>
 </div>
 <p>You can enter a temporary dev shell like so:</p>
 <pre><code>nix develop github:fuellabs/fuel.nix#fuel-dev
@@ -426,7 +443,7 @@ Sway language server implementation</p>
 <pre><code>nix develop github:fuellabs/fuel.nix#forc-lsp
 </code></pre>
 <p>Currently the vim plugin still needs to be installed separately. See
-<a href="nix-power-users/./overlays.html">the Overlays chapter</a> and the <a href="https://nixos.wiki/wiki/Vim">Nix Vim wiki</a>
+<a href="#overlays">the Overlays chapter</a> and the <a href="https://nixos.wiki/wiki/Vim">Nix Vim wiki</a>
 for more details.</p>
 <blockquote>
 <p><strong>Note:</strong> While these <code>devShell</code>s might be useful to get started on developing
@@ -434,33 +451,37 @@ fuel packages, ideally each upstream package would provide its own <code>devShel
 so that it may iterate on its own shell with more freedom (without editing these
 downstream <code>devShell</code>s).</p>
 </blockquote>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="overlays"><a class="header" href="#overlays">Overlays</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="overlays"><a class="header" href="#overlays">Overlays</a></h1>
 <p>Two nixpkgs <a href="https://nixos.wiki/wiki/Overlays">overlays</a> are provided (<code>fuel</code> and <code>fuel-nightly</code>) that allow for
-"merging" the set of packages provided by this flake with nixpkgs.</p>
+“merging” the set of packages provided by this flake with nixpkgs.</p>
 <p>Note that this makes the <code>sway-vim</code> plugin accessible via the <code>vimPlugins</code> set
 following the nixpkgs convention, e.g. <code>nixpkgs.vimPlugins.sway-vim</code>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="editor-plugins"><a class="header" href="#editor-plugins">Editor Plugins</a></h1>
-<p>Currently this flake and <a href="nix-power-users/./overlays.html">its overlay</a> only provide the
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="editor-plugins"><a class="header" href="#editor-plugins">Editor Plugins</a></h1>
+<p>Currently this flake and <a href="#overlays">its overlay</a> only provide the
 <code>sway-vim</code> Vim plugin.</p>
 <p>Contributions adding support for other editors/IDE plugins are more than
 welcome!</p>
 <p>In the meantime, you can <a href="https://marketplace.visualstudio.com/items?itemName=FuelLabs.sway-vscode-plugin">install the Sway VS Code plugin from the
 marketplace</a> as per usual.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
 <p>This chapter will cover the internals of <strong>fuel.nix</strong>, how it works, and how
 to contribute!</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="internals"><a class="header" href="#internals">Internals</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="internals"><a class="header" href="#internals">Internals</a></h1>
 <p>At a very high level, <strong>fuel.nix</strong> does the following:</p>
 <ol>
-<li><a href="contributing/./internals/generating-manifests.html"><strong>Generate unique "manifests" for each version of each package</strong></a>
+<li><a href="#generating-manifests"><strong>Generate unique “manifests” for each version of each package</strong></a>
 every night at 00:00 UTC under the <code>./manifests</code> directory using a CI action
 that runs the <code>./scripts/refresh-manifests.sh</code> script.</li>
-<li><a href="contributing/./internals/providing-packages.html"><strong>Provide <code>package</code> flake outputs</strong></a>
+<li><a href="#providing-packages"><strong>Provide <code>package</code> flake outputs</strong></a>
 (e.g. <code>forc-0-20-0</code>, <code>fuel-core-0-18-0-nightly-2023-04-29</code>) by collecting,
 filtering (<code>filters.nix</code>) and patching (<code>patches.nix</code>) all manifests. Also
 provide package <strong>sets</strong> for the latest semver releases and nightlies e.g.
 (<code>fuel-latest</code>, <code>fuel-nightly</code>).</li>
-<li><a href="contributing/./internals/providing-milestones.html"><strong>Provide a special set of "milestone" packages</strong></a>
+<li><a href="#providing-milestones"><strong>Provide a special set of “milestone” packages</strong></a>
 (e.g. <code>forc-wallet-testnet</code>) and package sets (e.g. <code>fuel-testnet</code>) by finding
 packages that match the commits specified in <code>milestones.nix</code>.</li>
 <li><strong>Provide <code>devShell</code>s</strong> to assist working on the fuel repos by collecting all
@@ -470,16 +491,17 @@ variables.</li>
 <p>Click on the links above to dive into more details on each step.</p>
 <p>Alternatively, for a quick look at adding or updating packages:</p>
 <ul>
-<li><a href="contributing/./adding-packages.html"><strong>Adding Packages</strong></a></li>
-<li><a href="contributing/./updating-packages.html"><strong>Updating Packages</strong></a></li>
-<li><a href="contributing/./updating-flake-inputs.html"><strong>Updating Flake Inputs</strong></a></li>
+<li><a href="#adding-packages"><strong>Adding Packages</strong></a></li>
+<li><a href="#updating-packages"><strong>Updating Packages</strong></a></li>
+<li><a href="#updating-flake-inputs"><strong>Updating Flake Inputs</strong></a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="generating-manifests"><a class="header" href="#generating-manifests">Generating Manifests</a></h1>
-<p>In <strong>fuel.nix</strong>, "Manifests" are small nix files that declare some unique
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="generating-manifests"><a class="header" href="#generating-manifests">Generating Manifests</a></h1>
+<p>In <strong>fuel.nix</strong>, “Manifests” are small nix files that declare some unique
 properties for a particular version of a particular package. These manifests
 are used by <code>flake.nix</code> to provide all of the fuel packages in a declarative,
 reproducible manner.</p>
-<p>Here's an example of what a manifest looks like:</p>
+<p>Here’s an example of what a manifest looks like:</p>
 <pre><code class="language-nix">{
   pname = "fuel-core";
   version = "0.18.0";
@@ -490,7 +512,7 @@ reproducible manner.</p>
 }
 </code></pre>
 <h2 id="refreshing-manifests-on-ci"><a class="header" href="#refreshing-manifests-on-ci">Refreshing Manifests on CI</a></h2>
-<p>Each night at 00:00 UTC, the <code>fuel.nix</code> repo's <code>refresh-manifests</code> GitHub action
+<p>Each night at 00:00 UTC, the <code>fuel.nix</code> repo’s <code>refresh-manifests</code> GitHub action
 runs the <code>./scripts/refresh-manifests.sh</code> script.</p>
 <p>The role of this script is to fetch each of the FuelLabs GitHub repositories,
 scan them for all versioned releases (by checking their git tags) and for all
@@ -518,7 +540,7 @@ to run.</p>
 <p>The script begins by declaring all FuelLabs repositories that we care about,
 followed by each unique package and which repository it is associated with.
 To declare new packages, see the
-<a href="contributing/internals/./contributing/adding-packages.html">Adding Packages</a> chapter.</p>
+<a href="contributing/internals/contributing/adding-packages.html">Adding Packages</a> chapter.</p>
 <p>The script aims to be idempotent, i.e. even if you were to delete the entire
 <code>./manifests</code> directory and all its manifests, running the script again should
 reproduce the exact same directory with the same set of manifests, assuming
@@ -526,12 +548,13 @@ the git history of each of the FuelLabs repos was not edited in some manner.</p>
 <p>Running the script can take a long time. This is because we scan each
 repository in its entirety multiple times - once while generating nightly
 manifests, and again while generating semver release manifests.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="providing-packages"><a class="header" href="#providing-packages">Providing Packages</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="providing-packages"><a class="header" href="#providing-packages">Providing Packages</a></h1>
 <p><strong>fuel.nix</strong> provides packages as <a href="https://nixos.wiki/wiki/Flakes">Nix flake <code>package</code> outputs</a>.</p>
 <h1 id="overview"><a class="header" href="#overview">Overview</a></h1>
 <p>The way in which <strong>fuel.nix</strong> creates package outputs is as follows:</p>
 <ol>
-<li>Load all manifests from the <code>./manifests/</code> directory (see <a href="contributing/internals/./generating-manifests.html">Generating
+<li>Load all manifests from the <code>./manifests/</code> directory (see <a href="#generating-manifests">Generating
 Manifests</a>).</li>
 <li>Filter out manifests for package versions that are known to be broken, or
 untested versions that are older than <strong>fuel.nix</strong> itself, by applying the
@@ -574,7 +597,7 @@ remaining manifests by applying the list of patches loaded from <code>./patches.
 into the existing manifest.</li>
 </ol>
 <p>All patches are applied to all manifests in the order in which they are declared
-in the <code>patches.nix</code> list, provided that they meet the patch's condition.</p>
+in the <code>patches.nix</code> list, provided that they meet the patch’s condition.</p>
 <h3 id="using-patches-to-fix-manifests"><a class="header" href="#using-patches-to-fix-manifests">Using Patches to Fix Manifests</a></h3>
 <p>The following is an example taken from <code>patches.nix</code> that applies a fix for a
 known broken <code>forc-wallet</code> version:</p>
@@ -623,10 +646,10 @@ support distributing non-Rust Fuel projects from <code>fuel.nix</code>.</p>
 <h3 id="adding-or-changing-patches"><a class="header" href="#adding-or-changing-patches">Adding or Changing Patches</a></h3>
 <p>In general, it is better to add new patches with conditions that only apply to
 newer packages when accounting for newly introduced dependencies or changes to
-a package's build environment.</p>
-<p>This approach ensures we don't accidentally break older versions of packages,
+a package’s build environment.</p>
+<p>This approach ensures we don’t accidentally break older versions of packages,
 and allows us to isolate each change clearly with its own entry in the list.</p>
-<p>Here's a patch that was added to account for an update in the Rust version used:</p>
+<p>Here’s a patch that was added to account for an update in the Rust version used:</p>
 <pre><code class="language-nix">  # `fuel-core` needs Rust 1.64 as of bcb86da09b6fdce09f13ef4181a0ca6461f8e2a8.
   # This changes the Rust used for all pkgs to 1.64 from the day of the commit.
   {
@@ -646,10 +669,10 @@ after 2023-09-23, setting the version to <code>1.64.0</code>.</p>
 <p>Multiple Rust version changes can be found throughout <code>patches.nix</code> that
 override the version following a particular date.</p>
 <h1 id="building-packages"><a class="header" href="#building-packages">Building Packages</a></h1>
-<p>Now that we have our final sets of manifests, we can build our flake's package
+<p>Now that we have our final sets of manifests, we can build our flake’s package
 outputs from them.</p>
 <p>This involves mapping the manifests we constructed with the <code>buildRustPackage</code>
-function provided by the Rust platform. This is all performed within the flake's
+function provided by the Rust platform. This is all performed within the flake’s
 <code>mkPackages</code> function.</p>
 <p>Package outputs are created for the published and nightly releases of each
 individual package (e.g. <code>forc-0-28-0</code>, <code>fuel-core-0-18-0-nightly-2023-05-04</code>).</p>
@@ -667,25 +690,26 @@ of every Fuel tool.</li>
 <li><strong><code>fuel-nightly</code></strong> - Provides the latest nightly version of every Fuel tool.</li>
 </ul>
 <p>Sets are also provided for each milestone, however this is covered in the
-<a href="contributing/internals/./providing-milestones.html">Providing Milestones</a> chapter.</p>
+<a href="#providing-milestones">Providing Milestones</a> chapter.</p>
 <h3 id="other-packages"><a class="header" href="#other-packages">Other Packages</a></h3>
 <p>While <code>mkPackages</code> mostly focuses on generating package outputs for all of
-Fuel's Rust packages, it also provides a couple of "hand-written" packages:</p>
+Fuel’s Rust packages, it also provides a couple of “hand-written” packages:</p>
 <ol>
 <li><code>refresh-manifests</code> - This is a small package for the script used to refresh
 the manifests under the <code>./manifests/</code> directory.</li>
 <li><code>sway-vim</code> - A Vim plugin derivation for NixOS or Nix home-manager users who
 want to configure Vim in their Nix configuration.</li>
 </ol>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="providing-milestones"><a class="header" href="#providing-milestones">Providing Milestones</a></h1>
-<p><strong>fuel.nix</strong> allows for declaring "milestones".</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="providing-milestones"><a class="header" href="#providing-milestones">Providing Milestones</a></h1>
+<p><strong>fuel.nix</strong> allows for declaring “milestones”.</p>
 <p>Milestones provide a way of pinning a significant set of hand-picked commits
 across the Fuel ecosystem under a single named release.</p>
 <p>Milestones are provided by the <code>./milestones.nix</code> file.</p>
 <p>Each milestone is a mapping from a name to a set of repository commits, each of
 which is used to select the set of package manifests used to generate package
 outputs for the milestone.</p>
-<p>Here's what the <code>beta-2</code> milestone looks like:</p>
+<p>Here’s what the <code>beta-2</code> milestone looks like:</p>
 <pre><code class="language-nix">  beta-2 = {
     forc-explorer = "4bb7392eed085ee3a6795b98ea25392b3f41ade8";
     forc-wallet = "9473052e88048f58e8c4e1eba0ff88ef6a4cdd59";
@@ -694,7 +718,7 @@ outputs for the milestone.</p>
     sway = "c32b0759d25c0b515cbf535f9fb9b8e6fda38ff2";
   };
 </code></pre>
-<p>While <a href="contributing/internals/./providing-packages.html">providing packages</a>, milestones are used to
+<p>While <a href="#providing-packages">providing packages</a>, milestones are used to
 provide a unique output for each package along with a dedicated package set.
 E.g. the above <code>beta-2</code> milestone is used to provide <code>fuel-core-beta-2</code> and
 <code>forc-beta-2</code> package aliases, as well as the extra <code>fuel-beta-2</code> package set.</p>
@@ -703,15 +727,16 @@ E.g. the above <code>beta-2</code> milestone is used to provide <code>fuel-core-
 <p>When selecting commits from each repository for a new milestone, it can be
 a good idea to do so from the top-down. I.e. First select a commit for the
 Sway repo, then select commits for repos with dependencies (e.g. fuel-core)
-by checking the versions that are tested under the Sway commit's integration
+by checking the versions that are tested under the Sway commit’s integration
 testing.</p>
 <h3 id="ci"><a class="header" href="#ci">CI</a></h3>
 <p>To ensure we maintain availability of milestone binaries in the cache, we build
 each of the milestones under the CI workflow.</p>
-<p>Currently, the milestones are manually specified. As a result, they'll need
-to be updated upon adding new milestones, or removed when they're no longer
+<p>Currently, the milestones are manually specified. As a result, they’ll need
+to be updated upon adding new milestones, or removed when they’re no longer
 officially supported.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="adding-packages"><a class="header" href="#adding-packages">Adding Packages</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="adding-packages"><a class="header" href="#adding-packages">Adding Packages</a></h1>
 <p>Adding new packages requires making small updates to multiple sections of
 <strong>fuel.nix</strong>:</p>
 <h2 id="updating-scriptsrefresh-manifestssh"><a class="header" href="#updating-scriptsrefresh-manifestssh">Updating <code>./scripts/refresh-manifests.sh</code></a></h2>
@@ -755,17 +780,17 @@ refresh pkg_fuel_core
 refresh pkg_fuel_core_client
 refresh pkg_fuel_indexer
 </code></pre>
-<p>This should ensure that the new package's manifests are generated as a part of
+<p>This should ensure that the new package’s manifests are generated as a part of
 the nightly <code>refresh-manifests</code> CI action.</p>
 <h2 id="updating-filtersnix"><a class="header" href="#updating-filtersnix">Updating <code>./filters.nix</code></a></h2>
-<p>It's often useful to filter out older versions that will never be tested by the
-flake's CI.</p>
+<p>It’s often useful to filter out older versions that will never be tested by the
+flake’s CI.</p>
 <p>We can do so by adding a condition to the list of filters:</p>
 <pre><code class="language-nix">  (m: m.pname != "forc" || versionAtLeast m.version "0.19.0")
   (m: m.pname != "forc-client" || versionAtLeast m.version "0.19.0")
   # ...
 </code></pre>
-<p>See the <a href="contributing/./internals/providing-packages.html#filtering-manifests">Filtering
+<p>See the <a href="#filtering-manifests">Filtering
 Manifests</a> section for
 more details.</p>
 <h2 id="updating-patchesnix"><a class="header" href="#updating-patchesnix">Updating <code>./patches.nix</code></a></h2>
@@ -783,10 +808,10 @@ unique attributes, environment variables, etc:</p>
     }
 </code></pre>
 <p>For more details on how to apply manifest patches, see the
-<a href="contributing/./internals/providing-packages.html#patching-manifests">Patching Manifests</a>
+<a href="#patching-manifests">Patching Manifests</a>
 section.</p>
 <blockquote>
-<p><strong>Tip:</strong> Check the new package's upstream CI to get an idea of what system
+<p><strong>Tip:</strong> Check the new package’s upstream CI to get an idea of what system
 dependencies, build inputs and environment setup might be required for the
 patch.</p>
 </blockquote>
@@ -803,24 +828,26 @@ the <code>forc-client</code> plugin.</p>
 <li><a href="https://github.com/FuelLabs/fuel.nix/pull/13/commits/ee1045ff1e6ce5df0e7f08aca4ce4cd6e72b3b51"><strong>Add forc-client to the refresh-manifests script</strong></a></li>
 <li><a href="https://github.com/FuelLabs/fuel.nix/pull/13/commits/117257429a3055abfe1bb8084be76f5facccfaba"><strong>Add forc-client package to the nix flake</strong></a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="updating-packages"><a class="header" href="#updating-packages">Updating Packages</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="updating-packages"><a class="header" href="#updating-packages">Updating Packages</a></h1>
 <p>Every now and then, a new nightly or published version of an upstream package
 may add some new dependency or build environment requirement.</p>
 <p>In order to avoid breaking older packages or invalidating the cache for existing
 versions, we can make the necessary changes for new versions by adding a new
 patch to <code>./patches.nix</code>.</p>
-<p>See the <a href="contributing/./internals/providing-packages.html#patching-manifests">Patching
+<p>See the <a href="#patching-manifests">Patching
 Manifests</a> section for
 details.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="updating-flake-inputs"><a class="header" href="#updating-flake-inputs">Updating Flake Inputs</a></h1>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="updating-flake-inputs"><a class="header" href="#updating-flake-inputs">Updating Flake Inputs</a></h1>
 <p>Nix flakes can be thought of as a collection of pure functions that produce a
 plan for how to provide packages, devShells and other outputs.</p>
 <p>Any external inputs to these functions must be declared as a part of the flake
-inputs. Apart from these, only files available within the flake's repository (or
+inputs. Apart from these, only files available within the flake’s repository (or
 <a href="https://nixos.org/manual/nixpkgs/stable/#chap-pkgs-fetchers">fetchers</a> that can
 verify reproducibility of the fetched content using a hash) may be used to
 construct flake outputs.</p>
-<p>Here's what <strong>fuel.nix</strong>'s flake inputs look like today:</p>
+<p>Here’s what <strong>fuel.nix</strong>’s flake inputs look like today:</p>
 <pre><code class="language-nix">  inputs = {
     nixpkgs = {
       url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -862,12 +889,12 @@ patch, etc.</p>
 <pre><code class="language-console">nix flake lock --update-input nixpkgs
 </code></pre>
 <p>After updating, be sure to commit the changes to the lock file (CI should fail
-if you forget). It's best to update inputs in a dedicated PR, as doing so may
-have implications on the way package's are built.</p>
+if you forget). It’s best to update inputs in a dedicated PR, as doing so may
+have implications on the way package’s are built.</p>
 <h3 id="cache-implications"><a class="header" href="#cache-implications">Cache Implications</a></h3>
-<p>It's worth keeping in mind that updating inputs will result in new derivations
+<p>It’s worth keeping in mind that updating inputs will result in new derivations
 for existing packages in the case that existing packages use something provided
-by the updated input that might have changed. As a result, it's better to update
+by the updated input that might have changed. As a result, it’s better to update
 <code>nixpkgs</code> only as necessary.</p>
 <p>A possible future solution to this might be to update nixpkgs versions in
 the same way that we update Rust versions, i.e. using <code>patches.nix</code>. This may
@@ -894,6 +921,11 @@ outputs.</p>
 
         </div>
 
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
 
 
 
@@ -902,13 +934,13 @@ outputs.</p>
         </script>
 
 
-        <script src="elasticlunr.min.js"></script>
-        <script src="mark.min.js"></script>
-        <script src="searcher.js"></script>
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
 
-        <script src="clipboard.min.js"></script>
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
 
         <!-- Custom JS scripts -->
 
