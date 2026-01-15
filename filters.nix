@@ -17,6 +17,8 @@ with pkgs.lib; [
   (m: m.pname != "forc-wallet" || versionAtLeast m.version "0.1.0")
   (m: m.pname != "forc-migrate" || versionAtLeast m.version "0.69.1")
   (m: m.pname != "forc-publish" || versionAtLeast m.version "0.69.1")
+  # forc-node disabled pending resolution of #196 and #209.
+  (m: m.pname != "forc-node")
   (m: m.pname != "fuel-core" || versionAtLeast m.version "0.9.0")
   (m: m.pname != "fuel-core-client" || (versionAtLeast m.version "0.14.2" && m.date >= "2022-12-17"))
   (m: m.pname != "fuel-gql-cli" || (versionAtLeast m.version "0.9.0" && m.date < "2022-12-17"))
