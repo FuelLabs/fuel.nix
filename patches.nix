@@ -145,6 +145,24 @@ in [
     };
   }
 
+  # `forc-wallet` also requires openssl for building
+  {
+    condition = m: m.pname == "forc-wallet";
+    patch = m: {
+      nativeBuildInputs =
+        (m.nativeBuildInputs or [])
+        ++ [
+          pkgs.perl # for openssl-sys
+          pkgs.pkg-config # for openssl-sys
+        ];
+      buildInputs =
+        (m.buildInputs or [])
+        ++ [
+          pkgs.openssl
+        ];
+    };
+  }
+
   # The forc plugins that reside in the Sway repo are in a dedicated
   # subdirectory.
   {
