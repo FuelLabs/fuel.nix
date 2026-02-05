@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-6a31ffde.js";
+            window.path_to_searchindex_js = "../searchindex-2919a550.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-0394e988.js"></script>
@@ -195,9 +195,12 @@ declare -A pkg_forc=(
     [name]="forc"
     [repo]="${fuel_repos[sway]}"
 )
+# forc-client migrated to forc monorepo at 0.71.0; legacy repo (sway) for older versions.
 declare -A pkg_forc_client=(
     [name]="forc-client"
-    [repo]="${fuel_repos[sway]}"
+    [repo]="${fuel_repos[forc]}"
+    [legacy_repo]="${fuel_repos[sway]}"
+    [legacy_before]="0.71.0"
 )
 declare -A pkg_forc_doc=(
     [name]="forc-doc"

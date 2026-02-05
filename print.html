@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-6a31ffde.js";
+            window.path_to_searchindex_js = "searchindex-2919a550.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-0394e988.js"></script>
@@ -315,7 +315,7 @@ packages with the following:</p>
 <tr><td><a href="https://github.com/fuellabs/fuel-core"><code>fuel-core</code></a></td><td>The Fuel VM node client.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/fuel-core"><code>fuel-core-client</code></a></td><td>A Fuel VM transaction client.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc</code></a></td><td>The Fuel Orchestrator. Compiler, packaging and plugin support.</td></tr>
-<tr><td><a href="https://github.com/fuellabs/sway"><code>forc-client</code></a></td><td>Provides the <code>forc deploy</code> and <code>forc run</code> commands.</td></tr>
+<tr><td><a href="https://github.com/fuellabs/forc"><code>forc-client</code></a></td><td>Provides the <code>forc deploy</code> and <code>forc run</code> commands.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/forc"><code>forc-crypto</code></a></td><td>A Forc plugin for hashing arbitrary data.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-debug</code></a></td><td>A Forc plugin for debugging via CLI and IDE.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-doc</code></a></td><td>Sway API documentation generator.</td></tr>
@@ -323,7 +323,7 @@ packages with the following:</p>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-lsp</code></a></td><td>The Sway Language Server Protocol implementation.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/forc"><code>forc-node</code></a></td><td>A CLI for running a Fuel node locally.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-tx</code></a></td><td>Construct transactions with a CLI.</td></tr>
-<tr><td><a href="https://github.com/fuellabs/sway"><code>forc-call</code></a></td><td>A Forc plugin to call contracts and query the chain from the CLI.</td></tr>
+<tr><td><a href="https://github.com/fuellabs/forc"><code>forc-call</code></a></td><td>A Forc plugin to call contracts and query the chain from the CLI.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-migrate</code></a></td><td>Migrate Sway projects to the next breaking version.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/sway"><code>forc-publish</code></a></td><td>Publish a package to the Forc registry.</td></tr>
 <tr><td><a href="https://github.com/fuellabs/forc"><code>forc-wallet</code></a></td><td>A Fuel Wallet CLI implementation.</td></tr>
@@ -757,9 +757,12 @@ declare -A pkg_forc=(
     [name]="forc"
     [repo]="${fuel_repos[sway]}"
 )
+# forc-client migrated to forc monorepo at 0.71.0; legacy repo (sway) for older versions.
 declare -A pkg_forc_client=(
     [name]="forc-client"
-    [repo]="${fuel_repos[sway]}"
+    [repo]="${fuel_repos[forc]}"
+    [legacy_repo]="${fuel_repos[sway]}"
+    [legacy_before]="0.71.0"
 )
 declare -A pkg_forc_doc=(
     [name]="forc-doc"
