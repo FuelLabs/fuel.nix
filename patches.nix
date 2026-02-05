@@ -264,6 +264,14 @@ in [
     };
   }
 
+  # forc-client 0.71.0+ is built from the forc monorepo where it's in a subdirectory.
+  {
+    condition = m: m.pname == "forc-client" && m.src.gitRepoUrl == "https://github.com/fuellabs/forc";
+    patch = m: {
+      buildAndTestSubdir = "forc-client";
+    };
+  }
+
   # forc-node requires clang and rocksdb for fuel-core dependencies.
   {
     condition = m: m.pname == "forc-node";

@@ -31,9 +31,12 @@ declare -A pkg_forc=(
     [name]="forc"
     [repo]="${fuel_repos[sway]}"
 )
+# forc-client migrated to forc monorepo at 0.71.0; legacy repo (sway) for older versions.
 declare -A pkg_forc_client=(
     [name]="forc-client"
-    [repo]="${fuel_repos[sway]}"
+    [repo]="${fuel_repos[forc]}"
+    [legacy_repo]="${fuel_repos[sway]}"
+    [legacy_before]="0.71.0"
 )
 # forc-crypto migrated to forc monorepo at 0.71.0; legacy repo (sway) for older versions.
 declare -A pkg_forc_crypto=(

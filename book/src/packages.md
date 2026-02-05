@@ -8,7 +8,7 @@ The `fuel.nix` flake provides the following packages:
 | [`fuel-core`][fuel-core-repo] | The Fuel VM node client. |
 | [`fuel-core-client`][fuel-core-repo] | A Fuel VM transaction client. |
 | [`forc`][sway-repo] | The Fuel Orchestrator. Compiler, packaging and plugin support. |
-| [`forc-client`][sway-repo] | Provides the `forc deploy` and `forc run` commands. |
+| [`forc-client`][forc-repo] | Provides the `forc deploy` and `forc run` commands. |
 | [`forc-crypto`][forc-repo] | A Forc plugin for hashing arbitrary data. |
 | [`forc-debug`][sway-repo] | A Forc plugin for debugging via CLI and IDE. |
 | [`forc-doc`][sway-repo] | Sway API documentation generator. |
@@ -16,7 +16,7 @@ The `fuel.nix` flake provides the following packages:
 | [`forc-lsp`][sway-repo] | The Sway Language Server Protocol implementation. |
 | [`forc-node`][forc-repo] | A CLI for running a Fuel node locally. |
 | [`forc-tx`][sway-repo] | Construct transactions with a CLI. |
-| [`forc-call`][sway-repo] | A Forc plugin to call contracts and query the chain from the CLI. |
+| [`forc-call`][forc-repo] | A Forc plugin to call contracts and query the chain from the CLI. |
 | [`forc-migrate`][sway-repo] |  Migrate Sway projects to the next breaking version. |
 | [`forc-publish`][sway-repo] | Publish a package to the Forc registry. |
 | [`forc-wallet`][forc-repo] | A Fuel Wallet CLI implementation. |
