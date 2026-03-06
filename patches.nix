@@ -485,4 +485,18 @@ in [
       };
     };
   }
+
+  # `fuel-core` bumped its toolchain to Rust 1.93 in `e9f8651b050dd5...`.
+  # That commit first appears in nightly manifests dated 2026-03-05.
+  {
+    condition = m:
+      m.src.gitRepoUrl
+      == "https://github.com/fuellabs/fuel-core"
+      && m.date >= "2026-03-05";
+    patch = m: {
+      rust = pkgs.rust-bin.stable."1.93.0".default.override {
+        targets = ["wasm32-unknown-unknown"];
+      };
+    };
+  }
 ]
